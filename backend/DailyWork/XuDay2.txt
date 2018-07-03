@@ -1,1 +1,3 @@
 1.Learn something about observer pattern, and Rxjava - Observable & Observer
+2.hystrix-javanica
+	observable & observer
