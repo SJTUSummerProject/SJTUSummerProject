@@ -10,14 +10,15 @@ import Collections from '@material-ui/icons/Collections';
 import Divider from '@material-ui/core/Divider';
 import Bookmark from '@material-ui/icons/Bookmark';
 import LogoutVariant from 'mdi-material-ui/LogoutVariant';
-
+import FormDialog from "./FormDialog";
 
 // not login
 export const NavMenuList1 = (
     <div>
-        <ListItem button onClick={() => {alert("Login")}}>
+        <ListItem>
             <ListItemIcon><AccountCircle/></ListItemIcon>
-            <ListItemText inset primary='Sign up'/>
+            <FormDialog/>
+            <ListItemText inset primary=''/>
         </ListItem>
         <ListItem button onClick={() => {alert("Login")}}>
             <ListItemIcon><AccountCircle/></ListItemIcon>
