@@ -1,4 +1,0 @@
-1.粗略了解有关hystrix、zuul、eureka、feign、zipkin、docker的知识
-2.通过构建一个基础的spring cloud项目整合hystrix zuul eureka 与 zipkin，对这些组件有了一定的认识
-
-
