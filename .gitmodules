@@ -1,0 +1,3 @@
+[submodule "frontend/Ticket"]
+	path = frontend/Ticket
+	url = git@github.com:Highe-Stark/Ticket.git
