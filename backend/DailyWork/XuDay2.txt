@@ -1,0 +1,1 @@
+1.Learn something about observer pattern, and Rxjava - Observable & Observer
