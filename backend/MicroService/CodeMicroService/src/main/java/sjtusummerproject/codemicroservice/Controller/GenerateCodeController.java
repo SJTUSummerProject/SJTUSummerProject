@@ -12,11 +12,14 @@ import sjtusummerproject.codemicroservice.Service.GenerateCodeService;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value="/Code")
@@ -28,13 +31,14 @@ public class GenerateCodeController {
     @GetMapping(value="/Generate")
     @ResponseBody
     public HashMap<String, Object> GenerateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("in generate code controller");
+        UUID uuid = UUID.randomUUID();
+        Cookie cookie = new Cookie("CodeUUID",uuid.toString());
+        response.addCookie(cookie);
+        /* 获得hashmap： 包括 code图片 + code-answer*/
         HashMap<String,Object> res = generateCodeService.GetCode();
-        System.out.println("after generate code controller");
         ServletOutputStream responseOutputStream = response.getOutputStream();
         // 输出图象到页面
         ImageIO.write((BufferedImage)res.get("image"), "JPG", responseOutputStream);
-
         // 以下关闭输入流！
         responseOutputStream.flush();
         responseOutputStream.close();

@@ -14,52 +14,6 @@ import java.util.Random;
 
 @Service
 public class GenerateCodeServiceImpl implements GenerateCodeService {
-
-    private int imgWidth = 0;//验证码图片的宽度
-    private int imgHeight = 0;//验证码图片的高度
-    private int codeCount = 0;//验证码的个数
-    private int x = 0;
-    private int fontHeight;
-    private int codeY;
-    private String fontStyle;
-    private static final long serialVersionUID = 128554012633034503L;
-
-    GenerateCodeServiceImpl(){
-        init();
-    }
-    /**
-     * 初始化配置参数
-     */
-    public void init() {
-        // 宽度
-        String strWidth = "120";
-        // 高度
-        String strHeight = "40";
-        // 字符个数
-        String strCodeCount = "4";
-
-        fontStyle = "Times New Roman";
-
-        // 将配置的信息转换成数值
-        try {
-            if (strWidth != null && strWidth.length() != 0) {
-                imgWidth = Integer.parseInt(strWidth);
-            }
-            if (strHeight != null && strHeight.length() != 0) {
-                imgHeight = Integer.parseInt(strHeight);
-            }
-            if (strCodeCount != null && strCodeCount.length() != 0) {
-                codeCount = Integer.parseInt(strCodeCount);
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        x = imgWidth / (codeCount + 1);
-        fontHeight = imgHeight - 2;
-        codeY = imgHeight - 12;
-    }
-
     public HashMap<String,Object> GetCode() {
         // 在内存中创建图象
         BufferedImage image = new BufferedImage(imgWidth, imgHeight,
@@ -123,12 +77,57 @@ public class GenerateCodeServiceImpl implements GenerateCodeService {
 
         HashMap<String,Object> result = new HashMap<String,Object>();
         result.put("image",image);
-        result.put("text-ans",sRand);
+        result.put("code-ans",sRand);
 
         System.out.println("in generate code the image "+image);
         System.out.println("in generate code the ans "+sRand);
 
         return result;
+    }
+
+    private int imgWidth = 0;//验证码图片的宽度
+    private int imgHeight = 0;//验证码图片的高度
+    private int codeCount = 0;//验证码的个数
+    private int x = 0;
+    private int fontHeight;
+    private int codeY;
+    private String fontStyle;
+    private static final long serialVersionUID = 128554012633034503L;
+
+    GenerateCodeServiceImpl(){
+        init();
+    }
+    /**
+     * 初始化配置参数
+     */
+    public void init() {
+        // 宽度
+        String strWidth = "120";
+        // 高度
+        String strHeight = "40";
+        // 字符个数
+        String strCodeCount = "4";
+
+        fontStyle = "Times New Roman";
+
+        // 将配置的信息转换成数值
+        try {
+            if (strWidth != null && strWidth.length() != 0) {
+                imgWidth = Integer.parseInt(strWidth);
+            }
+            if (strHeight != null && strHeight.length() != 0) {
+                imgHeight = Integer.parseInt(strHeight);
+            }
+            if (strCodeCount != null && strCodeCount.length() != 0) {
+                codeCount = Integer.parseInt(strCodeCount);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        x = imgWidth / (codeCount + 1);
+        fontHeight = imgHeight - 2;
+        codeY = imgHeight - 12;
     }
 
     Color getRandColor(int fc, int bc) {// 给定范围获得随机颜色
