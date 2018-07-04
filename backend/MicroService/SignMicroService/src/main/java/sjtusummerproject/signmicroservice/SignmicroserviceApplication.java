@@ -1,15 +1,14 @@
-package sjtusummerproject.codemicroservice;
+package sjtusummerproject.signmicroservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
-@SpringBootApplication
 @EnableDiscoveryClient
-public class CodemicroserviceApplication {
+@SpringBootApplication
+public class SignmicroserviceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CodemicroserviceApplication.class, args);
+		SpringApplication.run(SignmicroserviceApplication.class, args);
 	}
 }

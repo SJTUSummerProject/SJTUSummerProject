@@ -1,0 +1,2 @@
+1.利用java生成一个验证码图片：
+https://blog.csdn.net/linzhiqiang0316/article/details/51289870
