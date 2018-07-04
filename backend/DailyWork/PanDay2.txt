@@ -1,0 +1,4 @@
+discuss and design the services of the sign-in and register
+learn somenthing about the k8s for DevOps instead of docker and design to use k8s for clustering and include the docker
+configure the environment of the k8s, manually install the master and the node for cluster 
+run a demo by k8s
