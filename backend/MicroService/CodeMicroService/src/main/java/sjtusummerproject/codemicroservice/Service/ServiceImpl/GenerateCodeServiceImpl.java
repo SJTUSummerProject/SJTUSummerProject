@@ -77,7 +77,7 @@ public class GenerateCodeServiceImpl implements GenerateCodeService {
 
         HashMap<String,Object> result = new HashMap<String,Object>();
         result.put("image",image);
-        result.put("text-ans",sRand);
+        result.put("code-ans",sRand);
 
         System.out.println("in generate code the image "+image);
         System.out.println("in generate code the ans "+sRand);
