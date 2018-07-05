@@ -31,6 +31,7 @@ public class GenerateCodeController {
     @GetMapping(value="/Generate")
     @ResponseBody
     public HashMap<String, Object> GenerateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("in generate code");
         UUID uuid = UUID.randomUUID();
         Cookie cookie = new Cookie("CodeUUID",uuid.toString());
         response.addCookie(cookie);

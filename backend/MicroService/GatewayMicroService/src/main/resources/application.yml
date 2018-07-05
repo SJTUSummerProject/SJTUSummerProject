@@ -1,12 +1,12 @@
-#zuul:
-#  # 禁止服务自动添加
-#  ignoredServices: '*'
-#  # 手动添加服务
-#  routes:
-#    # 需要映射的微服务地址
-#    asset:
-#      path: /asset/**
-#      # 可忽略，服务器会自动发现
-#      serviceId: ASSET
-#      # 关键配置项
-#      stripPrefix: false
+zuul:
+    host:
+        connect-timeout-millis: 10000
+        socket-timeout-millis: 60000
+
+hystrix:
+    command:
+        default:
+            execution:
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 60000
