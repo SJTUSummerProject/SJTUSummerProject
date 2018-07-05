@@ -2,12 +2,12 @@ package sjtusummerproject.usermicroservice.DataModel.Domain;
 
 import javax.persistence.*;
 
-enum Authority{
-    Admin,Customer
-}
-enum Status{
-    UnActive,Active
-}
+//enum Authority{
+//    Admin,Customer
+//}
+//enum Status{
+//    UnActive,Active
+//}
 
 @Entity
 @Table( name = "User")
@@ -18,8 +18,8 @@ public class UserEntity {
     String username;
     String password;
     String email;
-    Status status;
-    Authority authority;
+    String status;
+    String authority;
 
     public Long getId() {
         return id;
@@ -53,19 +53,19 @@ public class UserEntity {
         this.email = email;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Authority getAuthority() {
+    public String getAuthority() {
         return authority;
     }
 
-    public void setAuthority(Authority authority) {
+    public void setAuthority(String authority) {
         this.authority = authority;
     }
 }
