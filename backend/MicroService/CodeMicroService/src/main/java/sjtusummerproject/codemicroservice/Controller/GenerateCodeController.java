@@ -42,6 +42,6 @@ public class GenerateCodeController {
         // 以下关闭输入流！
         responseOutputStream.flush();
         responseOutputStream.close();
-        return res;
+        return null;
     }
 }
