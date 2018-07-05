@@ -1,6 +1,7 @@
 package sjtusummerproject.codemicroservice.Controller;
 
 
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
@@ -30,13 +32,14 @@ public class GenerateCodeController {
 
     @GetMapping(value="/Generate")
     @ResponseBody
-    public HashMap<String, Object> GenerateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public HashMap<String,Object> GenerateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("in generate code");
         UUID uuid = UUID.randomUUID();
         Cookie cookie = new Cookie("CodeUUID",uuid.toString());
         response.addCookie(cookie);
         /* 获得hashmap： 包括 code图片 + code-answer*/
         HashMap<String,Object> res = generateCodeService.GetCode();
+        ByteOutputStream byteOutputStream = new ByteOutputStream();
         ServletOutputStream responseOutputStream = response.getOutputStream();
         // 输出图象到页面
         ImageIO.write((BufferedImage)res.get("image"), "JPG", responseOutputStream);
