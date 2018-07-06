@@ -31,6 +31,7 @@ public class EmailController {
     @GetMapping(value="/Active")
     @ResponseBody
     public String ActiveEmail(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("in active controller the code "+request.getParameter("code"));
         activeEmailService.Active(request.getParameter("code"));
         return "<h1>Success</h1>";
     }

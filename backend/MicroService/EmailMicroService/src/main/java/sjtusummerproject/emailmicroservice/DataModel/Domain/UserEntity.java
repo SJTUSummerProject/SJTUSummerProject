@@ -1,17 +1,15 @@
-package sjtusummerproject.usermicroservice.DataModel.Domain;
+package sjtusummerproject.emailmicroservice.DataModel.Domain;
 
-import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
-@Table( name = "User")
-public class UserEntity {
-    @Id
-    private Long id;
-    private String username;
-    private String password;
-    private String email;
-    private String status;
-    private String authority;
+public class UserEntity implements Serializable{
+    Long id;
+    String username;
+    String password;
+    String email;
+    String status;
+    String authority;
+
 
     public Long getId() {
         return id;
@@ -60,5 +58,4 @@ public class UserEntity {
     public void setAuthority(String authority) {
         this.authority = authority;
     }
-
 }

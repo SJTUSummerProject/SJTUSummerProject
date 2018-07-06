@@ -10,6 +10,7 @@ import sjtusummerproject.usermicroservice.Service.ManageUserService;
 public class ManageUserServiceImpl implements ManageUserService {
     @Autowired
     UserRepository userRepository;
+
     @Override
     public UserEntity QueryUserOption(String username) {
         return userRepository.findFirstByUsername(username);
