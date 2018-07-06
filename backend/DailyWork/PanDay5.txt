@@ -1,0 +1,5 @@
+continuesly learan the k8s
+build the deployment environment
+build the dns service discovery 
+decide to use k8s's loadbalancer and dns to instead eureka and ribbon
+almost finish the learning of the k8s and start to build the images of the exited service to run on the production environment
