@@ -1,4 +1,4 @@
-package com.testmq.rabbitmq.Config;
+package sjtusummerproject.signmicroservice.Config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitConfig {
+public class RabbitMQConfig {
 
-    public final static String QUEUE_NAME = "signup-queue";
-    public final static String EXCHANGE_NAME = "signup-exchange";
-    public final static String ROUTING_KEY = "signup-key";
+    public final static String QUEUE_NAME = "SignUpQueue";
+    public final static String EXCHANGE_NAME = "SignUpExchange";
+    public final static String ROUTING_KEY = "SignUpKey";
 
     // 创建队列
     @Bean
@@ -37,7 +37,7 @@ public class RabbitConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("192.168.238.132", 5672);
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("127.0.0.1", 5672);
         connectionFactory.setUsername("guest");
         connectionFactory.setPassword("guest");
         return connectionFactory;
