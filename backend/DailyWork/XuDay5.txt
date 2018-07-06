@@ -1,0 +1,4 @@
+1.add code validate
+2.complete sign dependency
+3.learn something about Redis
+
