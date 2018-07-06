@@ -1,6 +1,9 @@
 package sjtusummerproject.emailmicroservice.Service.ServiceImpl;
 
+import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -13,6 +16,10 @@ import sjtusummerproject.emailmicroservice.Service.UserUuidManageService;
 public class ActiveEmailServiceImpl implements ActiveEmailService {
     @Autowired
     UserUuidManageService userUuidManageService;
+
+    @Autowired
+    RedisTemplate<String,Object> redistTemplate;
+
     /**
      * 激活用户
      * @param code 用户激活码
@@ -22,8 +29,9 @@ public class ActiveEmailServiceImpl implements ActiveEmailService {
         System.out.println("Active!");
         System.out.println("uuid "+code);
 
-        UserUuidEntity userUuidEntity = userUuidManageService.QueryUserUuidService(code);
-        String username = userUuidEntity.getUsername();
+//        UserUuidEntity userUuidEntity = userUuidManageService.QueryUserUuidService(code);
+//        String username = userUuidEntity.getUsername();
+        String username = (String)redistTemplate.opsForValue().get(code);
         System.out.println("the uuid username : "+ username);
 
 
@@ -37,7 +45,8 @@ public class ActiveEmailServiceImpl implements ActiveEmailService {
             RestTemplate template = new RestTemplate();
             // 封装参数，千万不要替换为Map与HashMap，否则参数无法传递
             MultiValueMap<String,String> postbody = new LinkedMultiValueMap<>();
-            postbody.add("username",userUuidEntity.getUsername());
+//            postbody.add("username",userUuidEntity.getUsername());
+            postbody.add("username",username);
             postbody.add("status","Active");
 
             // 1、使用postForObject请求接口
