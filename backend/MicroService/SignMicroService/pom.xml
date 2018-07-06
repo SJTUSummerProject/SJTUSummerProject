@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.14.RELEASE</version>
+		<version>1.5.13.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<spring-cloud.version>Edgware.SR4</spring-cloud.version>
+		<spring-cloud.version>Dalston.SR1</spring-cloud.version>
 	</properties>
 
 	<dependencies>
@@ -40,8 +40,21 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
 
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>4.0.2</version>
+		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>net.sf.json-lib</groupId>-->
+			<!--<artifactId>json-lib-ext-spring</artifactId>-->
+		<!--</dependency>-->
+	</dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
