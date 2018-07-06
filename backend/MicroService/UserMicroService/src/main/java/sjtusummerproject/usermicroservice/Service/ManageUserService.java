@@ -5,7 +5,7 @@ import sjtusummerproject.usermicroservice.DataModel.Domain.UserEntity;
 
 public interface ManageUserService {
     public UserEntity QueryUserOption(String username);
-    public void AddUserOption(String username, String password, String email, String status);
+    public String AddUserOption(String username, String password, String email, String status);
     public void DeleteUserOption(String username);
     public void UpdateUserStatusOption(String username, String status);
     public void UpdateUserPasswordOption(String username, String password);

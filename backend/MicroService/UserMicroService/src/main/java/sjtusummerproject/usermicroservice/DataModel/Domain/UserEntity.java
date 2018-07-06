@@ -2,24 +2,17 @@ package sjtusummerproject.usermicroservice.DataModel.Domain;
 
 import javax.persistence.*;
 
-//enum Authority{
-//    Admin,Customer
-//}
-//enum Status{
-//    UnActive,Active
-//}
-
 @Entity
 @Table( name = "User")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    Long id;
-    String username;
-    String password;
-    String email;
-    String status;
-    String authority;
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String username;
+    private String password;
+    private String email;
+    private String status;
+    private String authority;
 
     public Long getId() {
         return id;
@@ -68,4 +61,5 @@ public class UserEntity {
     public void setAuthority(String authority) {
         this.authority = authority;
     }
+
 }

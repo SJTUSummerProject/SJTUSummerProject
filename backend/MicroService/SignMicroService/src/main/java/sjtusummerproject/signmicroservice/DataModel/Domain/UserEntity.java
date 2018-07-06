@@ -1,6 +1,8 @@
 package sjtusummerproject.signmicroservice.DataModel.Domain;
 
-public class UserEntity {
+import java.io.Serializable;
+
+public class UserEntity implements Serializable{
 
     Long id;
     String username;

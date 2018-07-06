@@ -26,8 +26,9 @@ public class UserController {
 
     @PostMapping(value = "/Add")
     @ResponseBody
-    public void AddUser(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("status")String status, String authority ,HttpServletRequest request, HttpServletResponse response){
-        manageUserService.AddUserOption(username,password,email,status);
+    public String AddUser(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("status")String status, String authority ,HttpServletRequest request, HttpServletResponse response){
+        System.out.println("in add user controller");
+        return manageUserService.AddUserOption(username,password,email,status);
     }
 
     @GetMapping(value="/Delete")

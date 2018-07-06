@@ -16,6 +16,7 @@ public class InvokeEmailMessageServiceImpl implements InvokeEmailMessageService{
     private RabbitTemplate rabbitTemplate;
 
     public Object AddEmailServiceRabbit(UserEntity user) {
+        System.out.println("in add email service");
         String value = new DateTime().toString("yyyy-MM-dd HH:mm:ss");
         System.out.println("send message {}"+value);
         HashMap<String,Object> message = new HashMap<>();

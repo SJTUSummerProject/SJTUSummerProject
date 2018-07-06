@@ -17,14 +17,23 @@ public class ManageUserServiceImpl implements ManageUserService {
 
     /* 此处有硬编码！-将authority设置为customer */
     @Override
-    public void AddUserOption(String username, String password, String email, String status) {
+    public String AddUserOption(String username, String password, String email, String status) {
+        System.out.println("in add user");
         UserEntity userToAdd = new UserEntity();
+        userToAdd.setId(0L);
         userToAdd.setUsername(username);
         userToAdd.setPassword(password);
         userToAdd.setEmail(email);
         userToAdd.setStatus(status);
         userToAdd.setAuthority("Customer");/* 硬编码！ */
-        userRepository.save(userToAdd);
+        /* username is unique */
+        try {
+            userRepository.save(userToAdd);
+            return "ok";
+        }
+        catch (Exception e){
+            return "error";
+        }
     }
 
     @Override

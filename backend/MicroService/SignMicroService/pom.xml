@@ -50,6 +50,10 @@
 			<artifactId>hutool-all</artifactId>
 			<version>4.0.2</version>
 		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>net.sf.json-lib</groupId>-->
+			<!--<artifactId>json-lib-ext-spring</artifactId>-->
+		<!--</dependency>-->
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
