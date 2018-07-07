@@ -4,18 +4,15 @@ package sjtusummerproject.codemicroservice.Controller;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONArray;
 import sjtusummerproject.codemicroservice.Service.GenerateCodeService;
+import sjtusummerproject.codemicroservice.Service.RedisAnswerUuidManageService;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
@@ -26,6 +23,9 @@ public class CodeController {
 
     @Autowired
     GenerateCodeService generateCodeService;
+
+    @Autowired
+    RedisAnswerUuidManageService redisAnswerUuidManageService;
 
     @GetMapping(value="/Generate")
     @ResponseBody
@@ -40,6 +40,8 @@ public class CodeController {
         ServletOutputStream responseOutputStream = response.getOutputStream();
         // 输出图象到页面
         ImageIO.write((BufferedImage)res.get("image"), "JPG", responseOutputStream);
+        // 将uuid与answer存入Redis中，24小时有效
+        redisAnswerUuidManageService.AddAnswerUuidRedis(uuid.toString(),(String)res.get("code-ans"));
         // 以下关闭输入流！
         responseOutputStream.flush();
         responseOutputStream.close();
@@ -50,6 +52,38 @@ public class CodeController {
     @ResponseBody
     public String ValidateCode(HttpServletRequest request, HttpServletResponse response){
         System.out.println("in validate code");
-        return null;
+        String Answer = request.getParameter("answer");
+        Cookie[] cookies = request.getCookies();
+        String Uuid = new String();
+        for(int i=0; i<cookies.length; i++){
+            if(cookies[i].getName().equals("CodeUUID")){
+                Uuid = cookies[i].getValue();
+            }
+        }
+
+        /* Cookie 里有Uuid */
+        if(Uuid.length()!=0){
+            String redisAnswer = redisAnswerUuidManageService.QueryAnswerRedis(Uuid);
+            /* Redis 里有Uuid对应的answer */
+            if(redisAnswer != null){
+                /* 用户输入的验证码是对的 */
+                if(redisAnswer.equals(Answer)){
+                    return "ok";
+                }
+                /* 用户输入的验证码是错的 */
+                else{
+                    return "wrong";
+                }
+            }
+            /* Redis 李敏啊没有Uuid对应的answer，说明验证码已经过期 */
+            else{
+                return "code has expired";
+            }
+        }
+        /* Cookie 里没有Uuid */
+        else{
+            System.out.println("Uuid是空的");
+            return "no cookie";
+        }
     }
 }
