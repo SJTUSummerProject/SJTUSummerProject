@@ -1,26 +1,16 @@
 package sjtusummerproject.signmicroservice.Service.ServiceImpl;
 
-import net.sf.json.JSON;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import sjtusummerproject.signmicroservice.DataModel.Domain.UserEntity;
 import sjtusummerproject.signmicroservice.Service.InvokeUserService;
-import net.sf.json.JSONArray;
-
-import java.util.HashMap;
 
 @Service
 public class InvokeUserServiceImpl implements InvokeUserService {
@@ -35,7 +25,6 @@ public class InvokeUserServiceImpl implements InvokeUserService {
 
     @Override
     public String AddUserMicroService(UserEntity user) {
-//        RestTemplate restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
 
         /* 发送给 UserMicroService */
         String url="http://localhost:6780/User/Add";

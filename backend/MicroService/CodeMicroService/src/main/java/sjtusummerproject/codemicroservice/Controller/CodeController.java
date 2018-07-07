@@ -3,10 +3,7 @@ package sjtusummerproject.codemicroservice.Controller;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONArray;
 import sjtusummerproject.codemicroservice.Service.GenerateCodeService;
@@ -25,7 +22,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value="/Code")
-public class GenerateCodeController {
+public class CodeController {
 
     @Autowired
     GenerateCodeService generateCodeService;
@@ -46,6 +43,13 @@ public class GenerateCodeController {
         // 以下关闭输入流！
         responseOutputStream.flush();
         responseOutputStream.close();
+        return null;
+    }
+
+    @PostMapping(value="/Validate")
+    @ResponseBody
+    public String ValidateCode(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("in validate code");
         return null;
     }
 }

@@ -24,8 +24,6 @@ public class SendEmailServiceImpl implements SendEmailService{
      */
     public boolean sendMail(String to, String code) {
         try {
-//            to = "2286455782@qq.com";
-//            code = UUID.randomUUID().toString().replace("-","");
 
             //0.1 确定连接位置
             Properties props = new Properties();
@@ -42,7 +40,6 @@ public class SendEmailServiceImpl implements SendEmailService{
                     return new PasswordAuthentication("XuIsleSky@163.com","Xu19980725");
                 }
             };
-
             //1 获得连接
             /**
              * props：包含配置信息的对象，Properties类型

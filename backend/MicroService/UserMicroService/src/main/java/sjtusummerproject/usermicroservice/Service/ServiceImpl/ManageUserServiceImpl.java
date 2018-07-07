@@ -44,8 +44,11 @@ public class ManageUserServiceImpl implements ManageUserService {
 
     @Override
     public void UpdateUserStatusOption(String username, String status) {
-        UserEntity userToUpdateStatus = userRepository.findFirstByUsername(username);
+        UserEntity userToUpdateStatus = userRepository.findByUsername(username.trim());
+        System.out.println("the username id 3 "+username.trim());
+        System.out.println("the username id 1 "+userToUpdateStatus.getId());
         userToUpdateStatus.setStatus(status);
+        System.out.println("the username id 2 "+userToUpdateStatus.getId());
         userRepository.save(userToUpdateStatus);
     }
 
