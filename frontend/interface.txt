@@ -1,0 +1,28 @@
+前端与后端交互的借口：
+目前只有两个microservice需要：1.sign microservice 2.code microservice
+
+1.sign microservice-登陆
+	1.1 sign up
+		http://localhost:6778/Sign/Up	Post方法
+			传入参数: username，password, email
+			return：不会返回任何值
+	1.2 sign in
+		http://localhost:6778/Sign/In	Post方法
+			传入参数: username，password
+			return：
+				用户名匹配，密码匹配：”ok”
+				用户名不匹配: “no user exists”
+				用户名匹配，密码不匹配: “password not match”
+	1.3 sign out
+2.code microservice-验证码
+	2.1 code generate
+		http://localhost:6777/Code/Generate	Get方法
+			return：一张图片
+	2.2 code validate
+		http://localhost:6777/Code/Validate	Post方法
+			传入参数：answer	(即用户输入的验证码)
+			return:
+				用户输入的验证码是对的：”ok”
+				用户输入的验证码是错的：”wrong”
+				用户在创建验证码后24小时才设置验证码，此时验证码已过期：”code has expired”
+				cookie里没有对应的uuid：”no cookie”（目前不用管，只是设想的一种错误）
