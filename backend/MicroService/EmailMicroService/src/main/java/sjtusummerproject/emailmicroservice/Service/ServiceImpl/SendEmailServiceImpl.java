@@ -24,20 +24,13 @@ public class SendEmailServiceImpl implements SendEmailService{
      */
     public boolean sendMail(String to, String code) {
         try {
-            to = "2286455782@qq.com";
-            code = UUID.randomUUID().toString().replace("-","");
 
             //0.1 确定连接位置
             Properties props = new Properties();
-//            props.put("username", "huyuyang6688@163.com");
-//            props.put("password", "123456");
-//            props.put("mail.transport.protocol", "smtp" );
             //获取163邮箱smtp服务器的地址
             props.put("mail.host", "smtp.163.com");
             //是否进行权限验证。
             props.setProperty("mail.smtp.auth", "true");
-//            props.put("mail.smtp.host", "smtp.163.com");
-//            props.put("mail.smtp.port", "25" );
 
             //0.2确定权限（账号和密码）
             Authenticator authenticator = new Authenticator() {
@@ -47,7 +40,6 @@ public class SendEmailServiceImpl implements SendEmailService{
                     return new PasswordAuthentication("XuIsleSky@163.com","Xu19980725");
                 }
             };
-
             //1 获得连接
             /**
              * props：包含配置信息的对象，Properties类型
@@ -76,13 +68,13 @@ public class SendEmailServiceImpl implements SendEmailService{
              *         收件人的地址，或者是一个Address[]，用来装抄送或者暗送人的名单。或者用来群发。可以是相同邮箱服务器的，也可以是不同的
              *         这里我们发送给我们的qq邮箱
              */
-             message.setRecipient(RecipientType.TO, new InternetAddress("704252212@qq.com"));
+             message.setRecipient(RecipientType.TO, new InternetAddress(to));
              // 2.3 主题（标题）
              message.setSubject("激活账号");
              // 2.4 正文
              String str =
                     "您好，您在本论坛注册用户，点击下面url进行激活<br/>" +
-                    "<a href='http://localhost:6779/Email/Active?code="+code+"'>http://localhost:6779/Email/Active</a>" +
+                    "<a href='http://localhost:6779/Email/Active?code="+code+"'>http://localhost:6779/Email/Active?code="+code+"</a>" +
                     "如果不能点击，请复制直接激活<br/>" +
                     "如果不是本人，请删除邮件";
                      //设置编码，防止发送的内容中文乱码。

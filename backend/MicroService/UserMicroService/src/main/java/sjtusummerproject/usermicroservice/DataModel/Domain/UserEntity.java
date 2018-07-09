@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table( name = "User")
 public class UserEntity {
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
     private String password;
