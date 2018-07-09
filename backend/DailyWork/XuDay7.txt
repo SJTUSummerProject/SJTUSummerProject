@@ -1,0 +1,2 @@
+1.learn regular expression
+2.learn python
