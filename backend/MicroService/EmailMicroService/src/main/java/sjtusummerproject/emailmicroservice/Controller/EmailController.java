@@ -31,7 +31,11 @@ public class EmailController {
     @GetMapping(value="/Active")
     @ResponseBody
     public String ActiveEmail(HttpServletRequest request, HttpServletResponse response){
-        activeEmailService.Active(request.getParameter("code"));
-        return "<h1>Success</h1>";
+        System.out.println("in active controller the code "+request.getParameter("code"));
+        Boolean trueOrFalse = activeEmailService.Active(request.getParameter("code"));
+        if(trueOrFalse == true)
+            return "<h1>Success!</h1>";
+        else
+            return "<h1>The code has expired!</h1>";
     }
 }
