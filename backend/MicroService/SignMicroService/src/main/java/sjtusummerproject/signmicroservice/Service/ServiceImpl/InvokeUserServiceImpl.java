@@ -15,19 +15,15 @@ import sjtusummerproject.signmicroservice.Service.InvokeUserService;
 @Service
 public class InvokeUserServiceImpl implements InvokeUserService {
     @Bean
-    @LoadBalanced
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
-
-    @Autowired
-    private LoadBalancerClient loadBalancerClient;
 
     @Override
     public String AddUserMicroService(UserEntity user) {
 
         /* 发送给 UserMicroService */
-        String url="http://localhost:6780/User/Add";
+        String url="http://usermicroservice:8080/User/Add";
         /* 注意：必须 http、https……开头，不然报错，浏览器地址栏不加 http 之类不出错是因为浏览器自动帮你补全了 */
         System.out.println("即将发请求");
         RestTemplate template = new RestTemplate();
@@ -48,7 +44,7 @@ public class InvokeUserServiceImpl implements InvokeUserService {
     @Override
     public UserEntity QueryUserMicroService(UserEntity user) {
         /* 发送给 UserMicroService */
-        String url="http://localhost:6780/User/Query?"+"username="+user.getUsername();
+        String url="http://usermicroservice:8080/User/Query?"+"username="+user.getUsername();
         /* 注意：必须 http、https……开头，不然报错，浏览器地址栏不加 http 之类不出错是因为浏览器自动帮你补全了 */
         System.out.println("即将发请求2");
         RestTemplate template = new RestTemplate();

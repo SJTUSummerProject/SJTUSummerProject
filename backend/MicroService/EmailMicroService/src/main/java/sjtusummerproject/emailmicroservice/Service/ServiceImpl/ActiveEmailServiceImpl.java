@@ -9,15 +9,12 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import sjtusummerproject.emailmicroservice.Service.ActiveEmailService;
-import sjtusummerproject.emailmicroservice.Service.UserUuidManageService;
 
 @Service
 public class ActiveEmailServiceImpl implements ActiveEmailService {
-    @Autowired
-    UserUuidManageService userUuidManageService;
 
     @Autowired
-    RedisTemplate<String,Object> redistTemplate;
+    RedisTemplate redistTemplate;
     /**
      * 激活用户
      * @param code 用户激活码
@@ -35,7 +32,7 @@ public class ActiveEmailServiceImpl implements ActiveEmailService {
         if(username!=null && username!=""){
             //如果存在用户，将此用户状态设为可用
             /* 发送给 UserMicroService */
-            String url="http://localhost:6780/User/UpdateStatus";
+            String url="http://usermicroservcie:8080/User/UpdateStatus";
             /* 注意：必须 http、https……开头，不然报错，浏览器地址栏不加 http 之类不出错是因为浏览器自动帮你补全了 */
             System.out.println("即将发请求 update status");
             RestTemplate template = new RestTemplate();

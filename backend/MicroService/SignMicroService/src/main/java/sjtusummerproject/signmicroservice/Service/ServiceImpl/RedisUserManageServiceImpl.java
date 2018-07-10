@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RedisUserManageServiceImpl implements RedisUserManageService {
     @Autowired
-    RedisTemplate<String,Object> redisTemplate;
+    RedisTemplate redisTemplate;
 
     @Override
     public String AddUserStatusRedis(String username) {

@@ -74,7 +74,7 @@ public class SendEmailServiceImpl implements SendEmailService{
              // 2.4 正文
              String str =
                     "您好，您在本论坛注册用户，点击下面url进行激活<br/>" +
-                    "<a href='http://localhost:6779/Email/Active?code="+code+"'>http://localhost:6779/Email/Active?code="+code+"</a>" +
+                    "<a href='http://192.168.26.132:30003/Email/Active?code="+code+"'>click here!</a>" +
                     "如果不能点击，请复制直接激活<br/>" +
                     "如果不是本人，请删除邮件";
                      //设置编码，防止发送的内容中文乱码。
