@@ -1,0 +1,4 @@
+finish the k8s cluster with 1 master and 4 nodes by buy the server on the ali cloud
+initially deploy the service on the platform
+learn something about the certificate and the devops 
+modify the userservice add the token to the cookie to validate teh user
