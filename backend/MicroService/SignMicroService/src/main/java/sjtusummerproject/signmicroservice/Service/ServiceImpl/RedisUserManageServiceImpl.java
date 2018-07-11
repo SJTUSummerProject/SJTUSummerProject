@@ -29,16 +29,13 @@ public class RedisUserManageServiceImpl implements RedisUserManageService {
     }
 
     @Override
-    public String AddUserPasswordRedis(String username, String password) {
-        System.out.println("in add user paddword redis");
-        redisTemplate.opsForValue().set(username,password,24,TimeUnit.HOURS);
-        return "ok";
+    public void AddTokenAuthRedis(String token, String auth){
+        redisTemplate.opsForValue().set(token, auth, 24, TimeUnit.HOURS);
     }
 
+
     @Override
-    public String QueryUserPasswordRedis(String username) {
-        System.out.println("in query user password redis");
-        String password = (String )redisTemplate.opsForValue().get(username);
-        return password;
+    public void DeleteTokenRedis(String token){
+        redisTemplate.delete(token);
     }
 }

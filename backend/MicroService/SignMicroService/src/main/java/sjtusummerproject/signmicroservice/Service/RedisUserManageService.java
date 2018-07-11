@@ -3,6 +3,6 @@ package sjtusummerproject.signmicroservice.Service;
 public interface RedisUserManageService {
     public String QueryUserStatusRedis(String username);
     public String AddUserStatusRedis(String username);
-    public String QueryUserPasswordRedis(String username);
-    public String AddUserPasswordRedis(String username, String password);
+    public void AddTokenAuthRedis(String token, String auth);
+    public void DeleteTokenRedis(String token);
 }

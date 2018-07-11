@@ -7,4 +7,5 @@ import javax.swing.text.html.parser.Entity;
 public interface InvokeUserService {
     public String AddUserMicroService(UserEntity user);
     public UserEntity QueryUserMicroService(UserEntity user);
+    public String validUser(String name, String password);
 }

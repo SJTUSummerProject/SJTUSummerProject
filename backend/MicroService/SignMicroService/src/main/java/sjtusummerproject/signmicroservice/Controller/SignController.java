@@ -10,8 +10,10 @@ import sjtusummerproject.signmicroservice.Service.InvokeUserService;
 import sjtusummerproject.signmicroservice.Service.InvokeEmailMessageService;
 import sjtusummerproject.signmicroservice.Service.RedisUserManageService;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/Sign")
@@ -74,48 +76,43 @@ public class SignController {
     }
 
     @PostMapping(value="/In")
-    public String SignIn(HttpServletRequest request, HttpServletResponse response){
+    public boolean SignIn(HttpServletRequest request, HttpServletResponse response){
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        UserEntity receiveUser = new UserEntity();
-        receiveUser.setUsername(username);
-        receiveUser.setPassword(password);
-
-        String Ispassword = redisUserManageService.QueryUserPasswordRedis(username);
-        /* 已经被缓存 */
-        if(Ispassword != null){
-            if(Ispassword.equals(password)){
-                return "ok";
-            }else{
-                return "password not match";
-            }
+        String auth = invokeUserService.validUser(username, password);
+        if (auth.isEmpty()){
+        	return false;
         }
-        /* 没有被缓存 */
-        else {
-            UserEntity userEntity = invokeUserService.QueryUserMicroService(receiveUser);
-
-            /* 不存在此用户 */
-            if (userEntity == null) {
-                return "no user exists";
-            } else {
-                /* 账号匹配，密码匹配 */
-                if (userEntity.getPassword().equals(password)) {
-                    redisUserManageService.AddUserPasswordRedis(username,password);
-                    return "ok";
-                }
-                /* 账号匹配，密码不匹配 */
-                else {
-                    return "password not match";
-                }
-            }
+        else{
+            String token = addCookieToResponse(response);
+        	redisUserManageService.AddTokenAuthRedis(token, auth);
+        	return true;
         }
     }
 
     @PostMapping(value="/Out")
-    public String SignOut(HttpServletRequest request, HttpServletResponse response){
-        String username = request.getParameter("username");
+    public void SignOut(HttpServletRequest request, HttpServletResponse response){
+        String token = getTokenFromRequest(request);
+        redisUserManageService.DeleteTokenRedis(token);
+    }
 
-        return null;
+    private String addCookieToResponse(HttpServletResponse response){
+		UUID uuid = UUID.randomUUID();
+		String token = uuid.toString();
+        Cookie cookie = new Cookie("Token", token);
+        response.addCookie(cookie);
+        return token;
+    }
+
+    private String getTokenFromRequest(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        String token = new String();
+        for (int i=0; i<cookies.length; i++){
+            if (cookies[i].getName().equals("token")){
+                token = cookies[i].getValue();
+            }
+        }
+        return token;
     }
 }
