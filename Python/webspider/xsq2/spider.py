@@ -185,7 +185,9 @@ type = SHOW_TYPES.get(arguments['<type>'])
 # url = ('https://www.damai.cn/projectlist.do?cityID={}&mcid={}&ccid={}').format(
 #     city, type['mcid'], type['ccid']
 # )
-
+########################################################################################################
+#主代码
+########################################################################################################
 nodesImages = []
 nodesInfos = []
 PageHtml = []
@@ -209,8 +211,6 @@ for i in cities:
     NodesLiTag = NodesInXSQ.findAll('li')
 
     PageInXSQ = bsObj.find("div",{"class":"pager"})
-    text = PageInXSQ.get_text();
-    print(PageInXSQ.get_text())
 
     #有分页
     if(PageInXSQ.get_text()!='\n'):
@@ -237,6 +237,7 @@ for i in cities:
         Dicts = {}
         for EachLiTag in NodesLiTag:
             EachImage = EachLiTag.find("img").get("src")
+            EachDetailLink = EachLiTag.find("div",{"class":"thumb"}).find("a").get("href")
             EachTitle = EachLiTag.find("h3", {"class": "title"}).find("a").get_text()
             EachBriefIntro = EachLiTag.find("p").get_text()
             EachDate = EachLiTag.find("p", {"class": "date"}).get_text()
@@ -249,6 +250,25 @@ for i in cities:
             EachDict["date"] = EachDate
             EachDict["venue"] = EachVenue
 
+            if (i == "xm"):
+                print("in xiamen")
+                print("the title" + EachTitle)
+
+            detailUrl = "http://www.xishiqu.com"+EachDetailLink;
+            detailHtml = urlopen(detailUrl)
+            detailObject = BeautifulSoup(detailHtml,"html.parser")
+            detailIntroBox = detailObject.find("div",{"class":"intro-box"})
+            detailIntroBoxDls = detailIntroBox.findAll("dl")
+            EachPrice = ""
+            for EachDetailDl in detailIntroBoxDls:
+
+                if(EachDetailDl.find("dt").get_text()=="票面价："):
+                    EachPrice = EachDetailDl.find("dd").get_text()
+                    if (i == "xm"):
+                        print("in xiamen")
+                        print("the title" + EachTitle)
+                        print(EachPrice)
+                    EachDict["price"]=EachPrice
             nodesInfos.append(EachDict);
             Dicts[count] = EachDict
             count += 1
@@ -292,6 +312,22 @@ for i in cities:
             EachDict["briefintro"] = EachBriefIntro
             EachDict["date"] = EachDate
             EachDict["venue"] = EachVenue
+
+            detailUrl = "http://www.xishiqu.com" + EachDetailLink;
+            detailHtml = urlopen(detailUrl)
+            detailObject = BeautifulSoup(detailHtml, "html.parser")
+            detailIntroBox = detailObject.find("div", {"class": "intro-box"})
+            detailIntroBoxDls = detailIntroBox.findAll("dl")
+            EachPrice = ""
+            for EachDetailDl in detailIntroBoxDls:
+
+                if (EachDetailDl.find("dt").get_text() == "票面价："):
+                    EachPrice = EachDetailDl.find("dd").get_text()
+                    if (i == "xm"):
+                        print("in xiamen")
+                        print("the title" + EachTitle)
+                        print(EachPrice)
+                    EachDict["price"] = EachPrice
 
             nodesInfos.append(EachDict);
             Dicts[count] = EachDict
