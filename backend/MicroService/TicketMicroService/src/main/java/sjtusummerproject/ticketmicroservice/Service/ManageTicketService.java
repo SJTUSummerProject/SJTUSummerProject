@@ -1,10 +1,22 @@
 package sjtusummerproject.ticketmicroservice.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 
 import java.util.List;
 
 public interface ManageTicketService {
+    /* page */
+    public Page<TicketEntity> QueryTicketPageOptionShow(Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByType(String type, Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByCity(String city, Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByDateRange(String firstDate,String secondDate,Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByPriceRange(double lowPrice, double highPrice,Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByCityAndDateRange(String city, String firstDate, String secondDate, Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRange(String city, double lowPrice, double highPrice, Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRangeAndDateRange(String city, double lowPrice, double highPrice, String firstDate, String secondDate, Pageable pageable);
+    /* no page */
     public List<TicketEntity> QueryTicketOptionByExactDate(String date);
     public List<TicketEntity> QueryTicketOptionByDateRange(String firstDate,String secondDate);
     public List<TicketEntity> QueryTicketOptionByCity(String City);
