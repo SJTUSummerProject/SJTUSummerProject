@@ -250,7 +250,6 @@ for i in cities:
             EachDict["date"] = EachDate
             EachDict["venue"] = EachVenue
 
-<<<<<<< HEAD
             if (i == "xm"):
                 print("in xiamen")
                 print("the title" + EachTitle)
@@ -270,7 +269,7 @@ for i in cities:
                         print("the title" + EachTitle)
                         print(EachPrice)
                     EachDict["price"]=EachPrice
-=======
+
             EachDetailUrl = "http://www.xishiqu.com"+EachLiTag.find("div",{"class":"thumb"}).find("a").get("href")
             EachDetailHtml = urlopen(EachDetailUrl)
             EachDetailBsObj = BeautifulSoup(EachDetailHtml, 'html.parser')
@@ -283,7 +282,7 @@ for i in cities:
                     EachDict["price"] = EachDl.find("dd").get_text()
 
 
->>>>>>> xtq
+
             nodesInfos.append(EachDict);
             Dicts[count] = EachDict
             count += 1
@@ -328,7 +327,6 @@ for i in cities:
             EachDict["date"] = EachDate
             EachDict["venue"] = EachVenue
 
-<<<<<<< HEAD
             detailUrl = "http://www.xishiqu.com" + EachDetailLink;
             detailHtml = urlopen(detailUrl)
             detailObject = BeautifulSoup(detailHtml, "html.parser")
@@ -344,7 +342,7 @@ for i in cities:
                         print("the title" + EachTitle)
                         print(EachPrice)
                     EachDict["price"] = EachPrice
-=======
+
             EachDetailUrl = "http://www.xishiqu.com" + EachLiTag.find("div", {"class": "thumb"}).find("a").get("href")
             EachDetailHtml = urlopen(EachDetailUrl)
             EachDetailBsObj = BeautifulSoup(EachDetailHtml, 'html.parser')
@@ -355,7 +353,7 @@ for i in cities:
                 if (EachDl.find("dt").get_text() == "票面价："):
                     EachDetailPrice = EachDl.find("dd").get_text()
                     EachDict["price"] = EachDl.find("dd").get_text()
->>>>>>> xtq
+
 
             nodesInfos.append(EachDict);
             Dicts[count] = EachDict

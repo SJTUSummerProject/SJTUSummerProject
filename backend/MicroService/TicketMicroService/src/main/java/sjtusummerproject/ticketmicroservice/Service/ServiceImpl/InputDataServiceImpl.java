@@ -116,6 +116,7 @@ public class InputDataServiceImpl implements InputDataService{
     }
 
     public String parsejson(String string,String cityName){
+        System.out.println("head is? "+string);
         JSONObject jsonObject= JSONObject.fromObject(string);
         System.out.println(jsonObject);
         Map<String,String> tmp = new HashMap<>();
