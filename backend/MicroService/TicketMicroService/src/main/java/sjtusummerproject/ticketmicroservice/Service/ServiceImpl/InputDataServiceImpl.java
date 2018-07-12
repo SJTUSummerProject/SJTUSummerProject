@@ -156,16 +156,16 @@ public class InputDataServiceImpl implements InputDataService{
             Double EachLowPrice = ParseLowPrice(tmp1.get("price"));
             Double EachHighPrice = ParseHighPrice(tmp1.get("price"));
 
-            ArrayList<Date> tmpDateList = (ArrayList)ParseStringtoDateList(EachDate);
+            HashMap<String,Object> tmpDatesMap = ParseStringtoDateList(EachDate);
 
             TicketEntity ticketEntity = new TicketEntity();
             ticketEntity.setType(EachType);
             /*dates*/
-            ticketEntity.setDates(tmpDateList);
+            ticketEntity.setDates((String)tmpDatesMap.get("Dates"));
             /*startdate*/
-            ticketEntity.setStartDate(tmpDateList.get(0));
+            ticketEntity.setStartDate((Date)tmpDatesMap.get("startDate"));
             /*enddate*/
-            ticketEntity.setEndDate(tmpDateList.get(tmpDateList.size()-1));
+            ticketEntity.setEndDate((Date)tmpDatesMap.get("endDate"));
             /*time*/
             ticketEntity.setTime("20:00");
             ticketEntity.setCity(EachCity);
@@ -185,9 +185,9 @@ public class InputDataServiceImpl implements InputDataService{
         return "ok";
     }
 
-    public List<Date> ParseStringtoDateList(String Date){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<Date> res = new ArrayList<>();
+    public HashMap<String,Object> ParseStringtoDateList(String Date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        HashMap<String,Object> res = new HashMap<>();
         int count = 0;
 
         String startDateString = null;
@@ -204,14 +204,19 @@ public class InputDataServiceImpl implements InputDataService{
         Date startDate = new Date();
         Date endDate = new Date();
 
-        startDateString = startDateString.replace("年","-").replace("月","-").replace("日"," ").trim()+" 00:00:00";
-        endDateString = endDateString.replace("年","-").replace("月","-").replace("日"," ").trim()+" 00:00:00";
+        startDateString = startDateString.replace("年","-").replace("月","-").replace("日"," ").trim();
+        endDateString = endDateString.replace("年","-").replace("月","-").replace("日"," ").trim();
         try {
             startDate = sdf.parse(startDateString);
             endDate = sdf.parse(endDateString);
+            res.put("startDate",startDate);
+            res.put("endDate",endDate);
+
+            String datesString = "";
             Date tmpDate = startDate;
             while(tmpDate.compareTo(endDate)==-1){
-                res.add(tmpDate);
+                datesString += sdf.format(tmpDate)+" , ";
+
                 Calendar addDate = Calendar.getInstance();
                 addDate.setTime(tmpDate); //注意在此处将 addDate 的值改为特定日期
                 addDate.add(addDate.DATE, 1); //特定时间的1年后
@@ -220,7 +225,8 @@ public class InputDataServiceImpl implements InputDataService{
                 if(count > 3)
                     break;
             }
-            res.add(endDate);
+            datesString += sdf.format(endDate);
+            res.put("Dates",datesString);
         }catch (Exception e){
             System.out.println("崩了？");
         }

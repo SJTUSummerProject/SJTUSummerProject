@@ -1,21 +1,92 @@
 package sjtusummerproject.ticketmicroservice.Service.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import sjtusummerproject.ticketmicroservice.DataModel.Dao.TicketPageRepository;
 import sjtusummerproject.ticketmicroservice.DataModel.Dao.TicketRepository;
 import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+@CacheConfig(cacheNames = "TicketRedis")
 @Service
 public class ManageTicketServiceImpl implements ManageTicketService {
     @Autowired
     TicketRepository ticketRepository;
 
+    @Autowired
+    TicketPageRepository ticketPageRepository;
+
+    /********************************************************************************/
+    /* page */
+
+    @Cacheable(key = "ShowPage")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionShow(Pageable pageable) {
+        return ticketPageRepository.findAll(pageable);
+    }
+
+    @Cacheable(key = "#type")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByType(String type, Pageable pageable) {
+        return ticketPageRepository.findAllByType(type,pageable);
+    }
+
+    @Cacheable(key = "#city")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByCity(String city, Pageable pageable) {
+        return ticketPageRepository.findAllByCity(city,pageable);
+    }
+
+    @Cacheable(key = "#firstDateString + #secondDateString")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByDateRange(String firstDateString, String secondDateString, Pageable pageable) {
+        Date firstDate = ChangeStringToDate(firstDateString);
+        Date secondDate = ChangeStringToDate(secondDateString);
+
+        return ticketPageRepository.findAllByStartDateBetweenOrEndDateBetween(firstDate,secondDate,firstDate,secondDate,pageable);
+    }
+
+    @Cacheable(key = "#lowPrice + #highPrice")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByPriceRange(double lowPrice, double highPrice, Pageable pageable) {
+        return ticketPageRepository.findAllByLowpriceBetweenOrHighpriceBetween(lowPrice,highPrice,lowPrice,highPrice,pageable);
+    }
+
+    @Cacheable(key = "#city + #firstDateString + #secondDateString")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByCityAndDateRange(String city, String firstDateString, String secondDateString, Pageable pageable) {
+        Date firstDate = ChangeStringToDate(firstDateString);
+        Date secondDate = ChangeStringToDate(secondDateString);
+
+        return ticketPageRepository.findAllByCityAndStartDateBetweenOrCityAndEndDateBetween(city,firstDate,secondDate,city,firstDate,secondDate,pageable);
+    }
+
+    @Cacheable(key = "#city + #lowPrice + #highPrice")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRange(String city, double lowPrice, double highPrice, Pageable pageable) {
+        return ticketPageRepository.findAllByCityAndLowpriceBetweenOrCityAndHighpriceBetween(city,lowPrice,highPrice,city,lowPrice,highPrice,pageable);
+    }
+
+    @Cacheable(key = "#city + #lowPrice + #highPrice + #firstDateString + #secondDateString")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRangeAndDateRange(String city, double lowPrice, double highPrice, String firstDateString, String secondDateString, Pageable pageable) {
+        Date firstDate = ChangeStringToDate(firstDateString);
+        Date secondDate = ChangeStringToDate(secondDateString);
+        return ticketPageRepository.findAllByCityAndLowpriceBetweenAndStartDateBetweenOrCityAndLowpriceBetweenAndEndDateBetweenOrCityAndHighpriceBetweenAndStartDateBetweenOrCityAndHighpriceBetweenAndEndDateBetween(city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,pageable);
+    }
+
+    /********************************************************************************/
+    /* no page */
     @Override
     public List<TicketEntity> QueryTicketOptionByExactDate(String date) {
 //        List<TicketEntity> list = ticketRepository.findAllByDate(date);
@@ -300,5 +371,18 @@ public class ManageTicketServiceImpl implements ManageTicketService {
             return true;
         else
             return false;
+    }
+
+    /* Change String-form:2018-09-09 to Date */
+    public Date ChangeStringToDate(String dateString){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        try {
+            date = sdf.parse(dateString);
+            return date;
+        }catch (Exception e){
+            System.out.println("ChangeStringToDate 崩了");
+            return null;
+        }
     }
 }

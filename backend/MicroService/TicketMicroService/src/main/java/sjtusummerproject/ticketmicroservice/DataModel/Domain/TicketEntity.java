@@ -15,9 +15,11 @@ public class TicketEntity {
     //类型：演唱会 体育赛事等等
     private String type;
     //日期
-    private ArrayList<Date> dates = new ArrayList<>();
+    private String dates;
+    //起始日期
     @Temporal(TemporalType.DATE)
     private Date startDate;
+    //终止日期
     @Temporal(TemporalType.DATE)
     private Date endDate;
     //时间
@@ -39,11 +41,11 @@ public class TicketEntity {
     //顶价
     private double highprice;
 
-    public ArrayList<Date> getDates() {
+    public String getDates() {
         return dates;
     }
 
-    public void setDates(ArrayList<Date> dates) {
+    public void setDates(String dates) {
         this.dates = dates;
     }
 
