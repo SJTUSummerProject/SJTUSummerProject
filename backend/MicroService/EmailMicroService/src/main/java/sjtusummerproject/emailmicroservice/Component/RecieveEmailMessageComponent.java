@@ -2,6 +2,8 @@ package sjtusummerproject.emailmicroservice.Component;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
@@ -18,8 +20,9 @@ public class RecieveEmailMessageComponent {
     @Autowired
     SendEmailService sendEmailService;
 
-    @Autowired
-    RedisTemplate<String,Object> redisTemplate;
+	@Autowired
+            @Qualifier("redisTemplate")
+    RedisTemplate redisTemplate;
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
     public void consumeMessage(MultiValueMap<String,String> message){

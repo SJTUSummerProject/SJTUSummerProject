@@ -25,17 +25,17 @@ public class EmailController {
     @ResponseBody
     public void SendEmail(HttpServletRequest request, HttpServletResponse response){
         System.out.println("send email!");
-        sendEmailService.sendMail("123","123");
+        sendEmailService.sendMail("1755405701@qq.com","123");
     }
 
     @GetMapping(value="/Active")
     @ResponseBody
-    public String ActiveEmail(HttpServletRequest request, HttpServletResponse response){
+    public boolean ActiveEmail(HttpServletRequest request, HttpServletResponse response){
         System.out.println("in active controller the code "+request.getParameter("code"));
         Boolean trueOrFalse = activeEmailService.Active(request.getParameter("code"));
         if(trueOrFalse == true)
-            return "<h1>Success!</h1>";
+            return true;
         else
-            return "<h1>The code has expired!</h1>";
+            return false;
     }
 }

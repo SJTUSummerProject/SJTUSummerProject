@@ -50,16 +50,10 @@ public class CodeController {
 
     @PostMapping(value="/Validate")
     @ResponseBody
-    public String ValidateCode(HttpServletRequest request, HttpServletResponse response){
+    public boolean ValidateCode(HttpServletRequest request, HttpServletResponse response){
         System.out.println("in validate code");
-        String Answer = request.getParameter("answer");
-        Cookie[] cookies = request.getCookies();
-        String Uuid = new String();
-        for(int i=0; i<cookies.length; i++){
-            if(cookies[i].getName().equals("CodeUUID")){
-                Uuid = cookies[i].getValue();
-            }
-        }
+        String Answer = request.getParameter("answer").toLowerCase();
+        String Uuid = request.getParameter("token");
 
         /* Cookie 里有Uuid */
         if(Uuid.length()!=0){
@@ -68,22 +62,11 @@ public class CodeController {
             if(redisAnswer != null){
                 /* 用户输入的验证码是对的 */
                 if(redisAnswer.equals(Answer)){
-                    return "ok";
+                    return true;
                 }
                 /* 用户输入的验证码是错的 */
-                else{
-                    return "wrong";
-                }
-            }
-            /* Redis 李敏啊没有Uuid对应的answer，说明验证码已经过期 */
-            else{
-                return "code has expired";
             }
         }
-        /* Cookie 里没有Uuid */
-        else{
-            System.out.println("Uuid是空的");
-            return "no cookie";
-        }
+        return false;
     }
 }
