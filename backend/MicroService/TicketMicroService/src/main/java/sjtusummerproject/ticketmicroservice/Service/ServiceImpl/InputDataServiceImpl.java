@@ -141,6 +141,7 @@ public class InputDataServiceImpl implements InputDataService{
                 if(l.equals("venue"))
                     s = ParseVenue(s);
             }
+
             /*插入演唱会*/
             Long Eachid = 0L;
             String EachType = "vocal concert";
@@ -186,6 +187,7 @@ public class InputDataServiceImpl implements InputDataService{
     public List<Date> ParseStringtoDateList(String Date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<Date> res = new ArrayList<>();
+        int count = 0;
 
         String startDateString = null;
         String endDateString = null;
@@ -213,6 +215,9 @@ public class InputDataServiceImpl implements InputDataService{
                 addDate.setTime(tmpDate); //注意在此处将 addDate 的值改为特定日期
                 addDate.add(addDate.DATE, 1); //特定时间的1年后
                 tmpDate = addDate.getTime();
+                count ++;
+                if(count > 3)
+                    break;
             }
             res.add(endDate);
         }catch (Exception e){

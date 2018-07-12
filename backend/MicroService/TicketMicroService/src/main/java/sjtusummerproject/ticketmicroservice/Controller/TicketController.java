@@ -2,6 +2,7 @@ package sjtusummerproject.ticketmicroservice.Controller;
 
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 import sjtusummerproject.ticketmicroservice.Service.FilterTicketService;
@@ -27,6 +28,15 @@ public class TicketController {
 
     @Autowired
     FilterTicketService filterTicketService;
+
+    @GetMapping(value="/QueryByShowPage")
+    @ResponseBody
+    public List<TicketEntity> QueryTicketByShowPage(HttpServletRequest request, HttpServletResponse response){
+        String type = request.getParameter("type");
+        int pageNumber = Integer.parseInt(request.getParameter("pagenumber"));
+        
+        return null;
+    }
 
     @GetMapping(value="/QueryById")
     @ResponseBody
