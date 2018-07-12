@@ -10,10 +10,8 @@ import sjtusummerproject.ticketmicroservice.Service.InputDataService;
 
 import javax.json.JsonObject;
 import java.io.*;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class InputDataServiceImpl implements InputDataService{
@@ -33,34 +31,35 @@ public class InputDataServiceImpl implements InputDataService{
     }
 
     public TicketEntity parseentityfromstring(String string){
-        JSONObject jsonObject = JSONObject.fromObject(string);
-        TicketEntity ticketEntity = new TicketEntity();
-        for(Object k : jsonObject.keySet()){
-            if(k.toString().equals("id"))
-                ticketEntity.setId(Long.parseLong(jsonObject.get(k).toString()));
-            else if(k.toString().equals("type"))
-                ticketEntity.setType(jsonObject.get(k).toString());
-            else if(k.toString().equals("date"))
-                ticketEntity.setDate(jsonObject.get(k).toString());
-            else if(k.toString().equals("city"))
-                ticketEntity.setCity(jsonObject.get(k).toString());
-            else if(k.toString().equals("venue"))
-                ticketEntity.setVenue(jsonObject.get(k).toString());
-            else if(k.toString().equals("title"))
-                ticketEntity.setTitle(jsonObject.get(k).toString());
-            else if(k.toString().equals("image"))
-                ticketEntity.setImage(jsonObject.get(k).toString());
-            else if(k.toString().equals("intro"))
-                ticketEntity.setIntro(jsonObject.get(k).toString());
-            else if(k.toString().equals("stock"))
-                ticketEntity.setStock(Long.parseLong(jsonObject.get(k).toString()));
-            else if(k.toString().equals("lowprice"))
-                ticketEntity.setLowprice(Double.valueOf(jsonObject.get(k).toString()));
-            else
-                ticketEntity.setHighprice(Double.valueOf(jsonObject.get(k).toString()));
-
-        }
-        return ticketEntity;
+//        JSONObject jsonObject = JSONObject.fromObject(string);
+//        TicketEntity ticketEntity = new TicketEntity();
+//        for(Object k : jsonObject.keySet()){
+//            if(k.toString().equals("id"))
+//                ticketEntity.setId(Long.parseLong(jsonObject.get(k).toString()));
+//            else if(k.toString().equals("type"))
+//                ticketEntity.setType(jsonObject.get(k).toString());
+//            else if(k.toString().equals("date"))
+//                ticketEntity.setDate(jsonObject.get(k).toString());
+//            else if(k.toString().equals("city"))
+//                ticketEntity.setCity(jsonObject.get(k).toString());
+//            else if(k.toString().equals("venue"))
+//                ticketEntity.setVenue(jsonObject.get(k).toString());
+//            else if(k.toString().equals("title"))
+//                ticketEntity.setTitle(jsonObject.get(k).toString());
+//            else if(k.toString().equals("image"))
+//                ticketEntity.setImage(jsonObject.get(k).toString());
+//            else if(k.toString().equals("intro"))
+//                ticketEntity.setIntro(jsonObject.get(k).toString());
+//            else if(k.toString().equals("stock"))
+//                ticketEntity.setStock(Long.parseLong(jsonObject.get(k).toString()));
+//            else if(k.toString().equals("lowprice"))
+//                ticketEntity.setLowprice(Double.valueOf(jsonObject.get(k).toString()));
+//            else
+//                ticketEntity.setHighprice(Double.valueOf(jsonObject.get(k).toString()));
+//
+//        }
+//        return ticketEntity;
+        return null;
     }
     public String inputdata(List<String> list){
         traversedir(list);
@@ -127,6 +126,7 @@ public class InputDataServiceImpl implements InputDataService{
         for(String k : tmp.keySet()){
             System.out.println(tmp.get(k));
             JSONObject detailObject = JSONObject.fromObject(tmp.get(k));
+            /* 每一个票 */
             Map<String,String> tmp1 = new HashMap<>();
             for(Object l : detailObject.keySet()) {
                 Object s = detailObject.get(l);
@@ -154,9 +154,18 @@ public class InputDataServiceImpl implements InputDataService{
             Double EachLowPrice = ParseLowPrice(tmp1.get("price"));
             Double EachHighPrice = ParseHighPrice(tmp1.get("price"));
 
+            ArrayList<Date> tmpDateList = (ArrayList)ParseStringtoDateList(EachDate);
+
             TicketEntity ticketEntity = new TicketEntity();
             ticketEntity.setType(EachType);
-            ticketEntity.setDate(EachDate);
+            /*dates*/
+            ticketEntity.setDates(tmpDateList);
+            /*startdate*/
+            ticketEntity.setStartDate(tmpDateList.get(0));
+            /*enddate*/
+            ticketEntity.setEndDate(tmpDateList.get(tmpDateList.size()-1));
+            /*time*/
+            ticketEntity.setTime("20:00");
             ticketEntity.setCity(EachCity);
             ticketEntity.setVenue(EachVenue);
             ticketEntity.setTitle(EachTitle);
@@ -172,6 +181,45 @@ public class InputDataServiceImpl implements InputDataService{
 
         }
         return "ok";
+    }
+
+    public List<Date> ParseStringtoDateList(String Date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<Date> res = new ArrayList<>();
+
+        String startDateString = null;
+        String endDateString = null;
+        if(Date.contains("至")){
+            startDateString = Date.split("至")[0];
+            endDateString = Date.split("至")[1];
+        }
+        else{
+            startDateString = Date;
+            endDateString = Date;
+        }
+
+        Date startDate = new Date();
+        Date endDate = new Date();
+
+        startDateString = startDateString.replace("年","-").replace("月","-").replace("日"," ").trim()+" 00:00:00";
+        endDateString = endDateString.replace("年","-").replace("月","-").replace("日"," ").trim()+" 00:00:00";
+        try {
+            startDate = sdf.parse(startDateString);
+            endDate = sdf.parse(endDateString);
+            Date tmpDate = startDate;
+            while(tmpDate.compareTo(endDate)==-1){
+                res.add(tmpDate);
+                Calendar addDate = Calendar.getInstance();
+                addDate.setTime(tmpDate); //注意在此处将 addDate 的值改为特定日期
+                addDate.add(addDate.DATE, 1); //特定时间的1年后
+                tmpDate = addDate.getTime();
+            }
+            res.add(endDate);
+        }catch (Exception e){
+            System.out.println("崩了？");
+        }
+
+        return res;
     }
 
     public String ParseDate(String date){

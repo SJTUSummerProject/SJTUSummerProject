@@ -8,7 +8,6 @@ import sjtusummerproject.ticketmicroservice.Service.FilterTicketService;
 import sjtusummerproject.ticketmicroservice.Service.InputDataService;
 import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
 import sjtusummerproject.ticketmicroservice.Service.OpenFileService;
-import sjtusummerproject.ticketmicroservice.Service.ServiceImpl.OpenFileServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

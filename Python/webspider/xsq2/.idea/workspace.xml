@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7421f025-32a7-4e58-842e-48ccb7240b00" name="Default" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Test/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Test/.idea/misc.xml" beforeDir="false" />
@@ -1389,6 +1390,17 @@
       <change beforePath="$PROJECT_DIR$/演唱会信息/有/长沙演唱会信息.txt" beforeDir="false" afterPath="$PROJECT_DIR$/演唱会信息/有/长沙演唱会信息.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/演唱会信息/有/香港演唱会信息.txt" beforeDir="false" afterPath="$PROJECT_DIR$/演唱会信息/有/香港演唱会信息.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/演唱会信息/有/马鞍山演唱会信息.txt" beforeDir="false" afterPath="$PROJECT_DIR$/演唱会信息/有/马鞍山演唱会信息.txt" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/演唱会信息/有/上海演唱会信息.txt" beforeDir="false" afterPath="$PROJECT_DIR$/演唱会信息/有/上海演唱会信息.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Controller/TicketController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/DataModel/Dao/TicketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/DataModel/Dao/TicketRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/DataModel/Domain/TicketEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/DataModel/Domain/TicketEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/FilterTicketServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/FilterTicketServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/ManageTicketServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/ManageTicketServiceImpl.java" afterDir="false" />
+>>>>>>> xtq
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -1398,15 +1410,24 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/xsq2$spider.coverage" NAME="spider Coverage Results" MODIFIED="1531273802964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+=======
+    <SUITE FILE_PATH="coverage/xsq2$spider.coverage" NAME="spider Coverage Results" MODIFIED="1531376329235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+>>>>>>> xtq
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="spider.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spider.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="568">
               <caret line="329" column="49" selection-start-line="329" selection-start-column="49" selection-end-line="329" selection-end-column="49" />
+=======
+            <state relative-caret-position="176">
+              <caret line="257" column="50" selection-start-line="257" selection-start-column="50" selection-end-line="257" selection-end-column="50" />
+>>>>>>> xtq
               <folding>
                 <element signature="e#86#96#0" expanded="true" />
               </folding>
@@ -1417,12 +1438,24 @@
       <file leaf-file-name="codecs.py" pinned="false" current-in-tab="false">
         <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
+            <state relative-caret-position="4620">
               <caret line="308" selection-start-line="308" selection-end-line="308" />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+=======
+      <file leaf-file-name="pyquery.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="10170">
+              <caret line="678" selection-start-line="678" selection-end-line="678" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+>>>>>>> xtq
       <file leaf-file-name="cities.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cities.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -1470,10 +1503,16 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds">
+<<<<<<< HEAD
     <option name="x" value="131" />
     <option name="y" value="60" />
     <option name="width" value="1224" />
     <option name="height" value="762" />
+=======
+    <option name="y" value="23" />
+    <option name="width" value="728" />
+    <option name="height" value="800" />
+>>>>>>> xtq
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -1554,7 +1593,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="131" y="60" width="1224" height="762" extended-state="0" />
+=======
+    <frame x="0" y="23" width="728" height="800" extended-state="0" />
+>>>>>>> xtq
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -1562,22 +1605,32 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.499183" weight="0.32848838" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3298969" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2859477" />
+=======
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3298969" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.3298969" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24587911" />
+>>>>>>> xtq
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.7647059" weight="0.39389536" />
+=======
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.9028571" visible="true" weight="0.4104683" />
+>>>>>>> xtq
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3298969" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3298969" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1594,6 +1647,11 @@
           <line>239</line>
           <option name="timeStamp" value="41" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spider.py</url>
+          <line>251</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -1602,14 +1660,54 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
+<<<<<<< HEAD
       <option name="time" value="43" />
+=======
+      <option name="time" value="42" />
+>>>>>>> xtq
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/spider.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="3585">
           <caret line="239" selection-start-line="239" selection-end-line="239" selection-end-column="90" />
+=======
+        <state relative-caret-position="3030">
+          <caret line="202" column="32" selection-start-line="202" selection-start-column="32" selection-end-line="202" selection-end-column="32" />
+          <folding>
+            <element signature="e#86#96#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4620">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10170">
+          <caret line="678" selection-start-line="678" selection-end-line="678" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="975">
+          <caret line="65" column="19" selection-start-line="65" selection-start-column="19" selection-end-line="65" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3060">
+          <caret line="204" column="34" selection-start-line="204" selection-start-column="34" selection-end-line="204" selection-end-column="34" />
+>>>>>>> xtq
           <folding>
             <element signature="e#86#96#0" expanded="true" />
           </folding>
@@ -1642,6 +1740,7 @@
     </entry>
     <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="4620">
           <caret line="308" selection-start-line="308" selection-end-line="308" />
         </state>
@@ -1656,6 +1755,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py" />
+=======
+        <state relative-caret-position="10170">
+          <caret line="678" selection-start-line="678" selection-end-line="678" />
+        </state>
+      </provider>
+    </entry>
+>>>>>>> xtq
     <entry file="file://$PROJECT_DIR$/城市" />
     <entry file="file://$PROJECT_DIR$/演唱会信息txt.txt" />
     <entry file="file://$PROJECT_DIR$/城市.txt" />
@@ -1669,15 +1775,20 @@
     </entry>
     <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
+        <state relative-caret-position="4620">
           <caret line="308" selection-start-line="308" selection-end-line="308" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/spider.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="568">
           <caret line="329" column="49" selection-start-line="329" selection-start-column="49" selection-end-line="329" selection-end-column="49" />
+=======
+        <state relative-caret-position="176">
+          <caret line="257" column="50" selection-start-line="257" selection-start-column="50" selection-end-line="257" selection-end-column="50" />
+>>>>>>> xtq
           <folding>
             <element signature="e#86#96#0" expanded="true" />
           </folding>
