@@ -15,57 +15,59 @@ public class FilterTicketServiceImpl implements FilterTicketService{
 
     @Override
     public List<TicketEntity> FilterTicketOptionByExactDate(List<TicketEntity> list, String date) {
-        List<TicketEntity> res = new LinkedList<>();
-        HashMap<String,Integer> OriginDateMap = SplitDateString(date);
-        for(TicketEntity EachEntity : list){
-            String EachEntityDate = EachEntity.getDate();
-            if(EachEntityDate.contains("至")){
-                String EachEntityDate1 = EachEntityDate.split("至")[0].trim();
-                String EachEntityDate2 = EachEntityDate.split("至")[1].trim();
-                HashMap<String,Integer> StartDateMap = SplitDateString(EachEntityDate1);
-                HashMap<String,Integer> EndDateMap = SplitDateString(EachEntityDate2);
-                if((CompareDate(StartDateMap,OriginDateMap)==true)&&(CompareDate(OriginDateMap,EndDateMap)==true))
-                    res.add(EachEntity);
-                else
-                    continue;
-            }
-            else{
-                if(EachEntityDate.equals(date))
-                    res.add(EachEntity);
-            }
-        }
-        return res;
+//        List<TicketEntity> res = new LinkedList<>();
+//        HashMap<String,Integer> OriginDateMap = SplitDateString(date);
+//        for(TicketEntity EachEntity : list){
+//            String EachEntityDate = EachEntity.getDate();
+//            if(EachEntityDate.contains("至")){
+//                String EachEntityDate1 = EachEntityDate.split("至")[0].trim();
+//                String EachEntityDate2 = EachEntityDate.split("至")[1].trim();
+//                HashMap<String,Integer> StartDateMap = SplitDateString(EachEntityDate1);
+//                HashMap<String,Integer> EndDateMap = SplitDateString(EachEntityDate2);
+//                if((CompareDate(StartDateMap,OriginDateMap)==true)&&(CompareDate(OriginDateMap,EndDateMap)==true))
+//                    res.add(EachEntity);
+//                else
+//                    continue;
+//            }
+//            else{
+//                if(EachEntityDate.equals(date))
+//                    res.add(EachEntity);
+//            }
+//        }
+//        return res;
+        return null;
     }
 
     @Override
     public List<TicketEntity> FilterTicketOptionByDateRange(List<TicketEntity> list, String firstdate, String seconddate) {
-        HashMap<String,Integer> DateMap1 = SplitDateString(firstdate);
-        HashMap<String,Integer> DateMap2 = SplitDateString(seconddate);
-        List<TicketEntity> res = new LinkedList<>();
-        for(TicketEntity EachEntity : list){
-            String EachEntityDate = EachEntity.getDate();
-            if(EachEntityDate.contains("至")){
-                String EachEntityDate1 = EachEntityDate.split("至")[0].trim();
-                String EachEntityDate2 = EachEntityDate.split("至")[1].trim();
-                HashMap<String,Integer> StartDateMap = SplitDateString(EachEntityDate1);
-                HashMap<String,Integer> EndDateMap = SplitDateString(EachEntityDate2);
-                if((CompareDate(DateMap1,StartDateMap)==true)&&(CompareDate(StartDateMap,DateMap2)==true))
-                    res.add(EachEntity);
-                else if((CompareDate(DateMap1,EndDateMap)==true)&&(CompareDate(EndDateMap,DateMap2)==true))
-                    res.add(EachEntity);
-                else
-                    continue;
-            }
-            else{
-                HashMap<String,Integer> ExactDateMap = SplitDateString(EachEntityDate);
-                if((CompareDate(DateMap1,ExactDateMap)==true)&&(CompareDate(ExactDateMap,DateMap2)==true))
-                    res.add(EachEntity);
-                else
-                    continue;
-            }
-        }
-
-        return res;
+//        HashMap<String,Integer> DateMap1 = SplitDateString(firstdate);
+//        HashMap<String,Integer> DateMap2 = SplitDateString(seconddate);
+//        List<TicketEntity> res = new LinkedList<>();
+//        for(TicketEntity EachEntity : list){
+//            String EachEntityDate = EachEntity.getDate();
+//            if(EachEntityDate.contains("至")){
+//                String EachEntityDate1 = EachEntityDate.split("至")[0].trim();
+//                String EachEntityDate2 = EachEntityDate.split("至")[1].trim();
+//                HashMap<String,Integer> StartDateMap = SplitDateString(EachEntityDate1);
+//                HashMap<String,Integer> EndDateMap = SplitDateString(EachEntityDate2);
+//                if((CompareDate(DateMap1,StartDateMap)==true)&&(CompareDate(StartDateMap,DateMap2)==true))
+//                    res.add(EachEntity);
+//                else if((CompareDate(DateMap1,EndDateMap)==true)&&(CompareDate(EndDateMap,DateMap2)==true))
+//                    res.add(EachEntity);
+//                else
+//                    continue;
+//            }
+//            else{
+//                HashMap<String,Integer> ExactDateMap = SplitDateString(EachEntityDate);
+//                if((CompareDate(DateMap1,ExactDateMap)==true)&&(CompareDate(ExactDateMap,DateMap2)==true))
+//                    res.add(EachEntity);
+//                else
+//                    continue;
+//            }
+//        }
+//
+//        return res;
+        return null;
     }
 
     @Override

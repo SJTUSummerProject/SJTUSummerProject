@@ -1,9 +1,10 @@
 package sjtusummerproject.ticketmicroservice.DataModel.Domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table( name = "ticket" )
@@ -14,7 +15,13 @@ public class TicketEntity {
     //类型：演唱会 体育赛事等等
     private String type;
     //日期
-    private String date;
+    private ArrayList<Date> dates = new ArrayList<>();
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
+    //时间
+    private String time;
     //城市
     private String city;
     //地址-具体地址如某某体育馆
@@ -31,6 +38,38 @@ public class TicketEntity {
     private double lowprice;
     //顶价
     private double highprice;
+
+    public ArrayList<Date> getDates() {
+        return dates;
+    }
+
+    public void setDates(ArrayList<Date> dates) {
+        this.dates = dates;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public double getLowprice() {
         return lowprice;
@@ -78,14 +117,6 @@ public class TicketEntity {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getVenue() {
