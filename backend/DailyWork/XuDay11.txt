@@ -1,1 +1,4 @@
 1.learning tensorflow
+2.optimazer : 
+	momentum
+	adagrad
