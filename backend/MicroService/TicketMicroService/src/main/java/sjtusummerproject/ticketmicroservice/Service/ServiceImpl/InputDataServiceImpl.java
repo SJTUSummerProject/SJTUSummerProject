@@ -166,6 +166,7 @@ public class InputDataServiceImpl implements InputDataService{
             /*enddate*/
             ticketEntity.setEndDate((Date)tmpDatesMap.get("endDate"));
             /*time*/
+            System.out.println("the city "+cityName);
             ticketEntity.setTime("20:00");
             ticketEntity.setCity(EachCity);
             ticketEntity.setVenue(EachVenue);

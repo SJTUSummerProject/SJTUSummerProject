@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7421f025-32a7-4e58-842e-48ccb7240b00" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/演唱会信息/有/上海演唱会信息.txt" beforeDir="false" afterPath="$PROJECT_DIR$/演唱会信息/有/上海演唱会信息.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Controller/TicketController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/DataModel/Dao/TicketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/DataModel/Dao/TicketRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/DataModel/Domain/TicketEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/DataModel/Domain/TicketEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/FilterTicketServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/FilterTicketServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/DailyWork/XuDay11.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/DailyWork/XuDay11.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/ManageTicketServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/ManageTicketServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -27,8 +22,8 @@
       <file leaf-file-name="spider.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spider.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="257" column="50" selection-start-line="257" selection-start-column="50" selection-end-line="257" selection-end-column="50" />
+            <state relative-caret-position="3850">
+              <caret line="257" column="40" selection-start-line="257" selection-start-column="40" selection-end-line="257" selection-end-column="40" />
               <folding>
                 <element signature="e#86#96#0" expanded="true" />
               </folding>
@@ -48,7 +43,7 @@
       <file leaf-file-name="pyquery.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10170">
+            <state relative-caret-position="10050">
               <caret line="678" selection-start-line="678" selection-end-line="678" />
             </state>
           </provider>
@@ -100,6 +95,7 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="660" />
     <option name="y" value="23" />
     <option name="width" value="728" />
     <option name="height" value="800" />
@@ -109,6 +105,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -120,7 +117,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -182,8 +178,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="728" height="800" extended-state="0" />
-    <editor active="true" />
+    <frame x="660" y="23" width="728" height="800" extended-state="0" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.09714286" side_tool="true" weight="0.39911634" />
@@ -198,7 +193,7 @@
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.9028571" visible="true" weight="0.4104683" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.9028571" weight="0.4104683" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -239,6 +234,37 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3855">
+          <caret line="257" column="40" lean-forward="true" selection-start-line="257" selection-start-column="40" selection-end-line="257" selection-end-column="40" />
+          <folding>
+            <element signature="e#86#96#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4620">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10050">
+          <caret line="678" selection-start-line="678" selection-end-line="678" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="975">
+          <caret line="65" column="19" selection-start-line="65" selection-start-column="19" selection-end-line="65" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/spider.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3030">
@@ -303,7 +329,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10170">
+        <state relative-caret-position="10050">
           <caret line="678" selection-start-line="678" selection-end-line="678" />
         </state>
       </provider>
@@ -328,8 +354,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="257" column="50" selection-start-line="257" selection-start-column="50" selection-end-line="257" selection-end-column="50" />
+        <state relative-caret-position="3850">
+          <caret line="257" column="40" selection-start-line="257" selection-start-column="40" selection-end-line="257" selection-end-column="40" />
           <folding>
             <element signature="e#86#96#0" expanded="true" />
           </folding>
