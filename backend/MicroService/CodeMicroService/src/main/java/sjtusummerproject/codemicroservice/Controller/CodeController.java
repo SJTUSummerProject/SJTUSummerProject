@@ -33,6 +33,7 @@ public class CodeController {
         System.out.println("in generate code");
         UUID uuid = UUID.randomUUID();
         Cookie cookie = new Cookie("CodeUUID",uuid.toString());
+        cookie.setPath("/");
         response.addCookie(cookie);
         /* 获得hashmap： 包括 code图片 + code-answer*/
         HashMap<String,Object> res = generateCodeService.GetCode();

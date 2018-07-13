@@ -123,6 +123,7 @@ public class SignController {
 		UUID uuid = UUID.randomUUID();
 		String token = uuid.toString();
         Cookie cookie = new Cookie("Token", token);
+        cookie.setPath("/");
         response.addCookie(cookie);
         return token;
     }
