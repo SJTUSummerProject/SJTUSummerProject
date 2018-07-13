@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7421f025-32a7-4e58-842e-48ccb7240b00" name="Default" comment="">
 <<<<<<< HEAD
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Test/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Test/.idea/misc.xml" beforeDir="false" />
@@ -1401,6 +1402,12 @@
       <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/ManageTicketServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/ManageTicketServiceImpl.java" afterDir="false" />
 >>>>>>> xtq
+=======
+      <change beforePath="$PROJECT_DIR$/../../../backend/DailyWork/XuDay11.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/DailyWork/XuDay11.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/ManageTicketServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/ManageTicketServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/application.properties" afterDir="false" />
+>>>>>>> xtq
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -1422,11 +1429,16 @@
         <entry file="file://$PROJECT_DIR$/spider.py">
           <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
+<<<<<<< HEAD
             <state relative-caret-position="568">
               <caret line="329" column="49" selection-start-line="329" selection-start-column="49" selection-end-line="329" selection-end-column="49" />
 =======
             <state relative-caret-position="176">
               <caret line="257" column="50" selection-start-line="257" selection-start-column="50" selection-end-line="257" selection-end-column="50" />
+>>>>>>> xtq
+=======
+            <state relative-caret-position="3850">
+              <caret line="257" column="40" selection-start-line="257" selection-start-column="40" selection-end-line="257" selection-end-column="40" />
 >>>>>>> xtq
               <folding>
                 <element signature="e#86#96#0" expanded="true" />
@@ -1449,7 +1461,7 @@
       <file leaf-file-name="pyquery.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10170">
+            <state relative-caret-position="10050">
               <caret line="678" selection-start-line="678" selection-end-line="678" />
             </state>
           </provider>
@@ -1504,11 +1516,15 @@
   </component>
   <component name="ProjectFrameBounds">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <option name="x" value="131" />
     <option name="y" value="60" />
     <option name="width" value="1224" />
     <option name="height" value="762" />
 =======
+=======
+    <option name="x" value="660" />
+>>>>>>> xtq
     <option name="y" value="23" />
     <option name="width" value="728" />
     <option name="height" value="800" />
@@ -1520,6 +1536,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -1531,7 +1548,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1594,11 +1610,15 @@
   </component>
   <component name="ToolWindowManager">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <frame x="131" y="60" width="1224" height="762" extended-state="0" />
 =======
     <frame x="0" y="23" width="728" height="800" extended-state="0" />
 >>>>>>> xtq
     <editor active="true" />
+=======
+    <frame x="660" y="23" width="728" height="800" extended-state="0" />
+>>>>>>> xtq
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.500817" side_tool="true" visible="true" weight="0.32848838" />
@@ -1620,9 +1640,13 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
 <<<<<<< HEAD
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.7647059" weight="0.39389536" />
 =======
       <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.9028571" visible="true" weight="0.4104683" />
+>>>>>>> xtq
+=======
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.9028571" weight="0.4104683" />
 >>>>>>> xtq
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1671,9 +1695,43 @@
     <entry file="file://$PROJECT_DIR$/spider.py">
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
+<<<<<<< HEAD
         <state relative-caret-position="3585">
           <caret line="239" selection-start-line="239" selection-end-line="239" selection-end-column="90" />
 =======
+=======
+        <state relative-caret-position="3855">
+          <caret line="257" column="40" lean-forward="true" selection-start-line="257" selection-start-column="40" selection-end-line="257" selection-end-column="40" />
+          <folding>
+            <element signature="e#86#96#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4620">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10050">
+          <caret line="678" selection-start-line="678" selection-end-line="678" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="975">
+          <caret line="65" column="19" selection-start-line="65" selection-start-column="19" selection-end-line="65" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+>>>>>>> xtq
         <state relative-caret-position="3030">
           <caret line="202" column="32" selection-start-line="202" selection-start-column="32" selection-end-line="202" selection-end-column="32" />
           <folding>
@@ -1754,9 +1812,15 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py" />
 =======
         <state relative-caret-position="10170">
+=======
+    <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10050">
+>>>>>>> xtq
           <caret line="678" selection-start-line="678" selection-end-line="678" />
         </state>
       </provider>
@@ -1783,11 +1847,16 @@
     <entry file="file://$PROJECT_DIR$/spider.py">
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
+<<<<<<< HEAD
         <state relative-caret-position="568">
           <caret line="329" column="49" selection-start-line="329" selection-start-column="49" selection-end-line="329" selection-end-column="49" />
 =======
         <state relative-caret-position="176">
           <caret line="257" column="50" selection-start-line="257" selection-start-column="50" selection-end-line="257" selection-end-column="50" />
+>>>>>>> xtq
+=======
+        <state relative-caret-position="3850">
+          <caret line="257" column="40" selection-start-line="257" selection-start-column="40" selection-end-line="257" selection-end-column="40" />
 >>>>>>> xtq
           <folding>
             <element signature="e#86#96#0" expanded="true" />
