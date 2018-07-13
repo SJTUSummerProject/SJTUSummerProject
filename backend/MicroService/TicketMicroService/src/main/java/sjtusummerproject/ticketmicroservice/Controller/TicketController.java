@@ -1,7 +1,7 @@
 package sjtusummerproject.ticketmicroservice.Controller;
 
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,8 +20,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value="/Ticket")
 public class TicketController {
-    private int PageSize = 4;
-    private int PageOffset = 1;
+    @Value("${ticket.page.size}")
+    private int PageSize;
+    @Value("${ticket.page.offset}")
+    private int PageOffset;
 
     @Autowired
     ManageTicketService manageTicketService;
@@ -46,6 +48,7 @@ public class TicketController {
     @GetMapping(value="/QueryShowPage")
     @ResponseBody
     public Page<TicketEntity> QueryTicketShowPage(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("page:"+request.getParameter("pagenumber"));
         return manageTicketService.QueryTicketPageOptionShow(CreatePageable(request));
     }
 

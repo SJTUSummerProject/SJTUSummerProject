@@ -13,10 +13,10 @@ import java.util.List;
 @Service
 public class OpenFileServiceImpl implements OpenFileService {
     public List<String> getfilestring(){
-        File file = new File("/Users/sky/Desktop/软件工程导论/SJTUSummerProject/SJTUSummerProject/backend/MicroService/TicketMicroService/city.txt");
         BufferedReader reader = null;
         List<String> resList = new LinkedList<String>();
         try {
+            File file = org.springframework.util.ResourceUtils.getFile("classpath:city.txt");
             reader = new BufferedReader(new FileReader(file));
             String tempString = null;
             // 一次读入一行，直到读入null为文件结束
