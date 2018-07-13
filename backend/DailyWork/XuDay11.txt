@@ -2,3 +2,8 @@
 2.optimazer : 
 	momentum
 	adagrad
+	rmsprop
+	adam
+3.visualization:
+	tensorboard
+4.Collaborative filtering algorithm
