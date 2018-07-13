@@ -1,0 +1,2 @@
+1.自增id
+	alter table ticket modify column id bigint(20) auto_increment
