@@ -1,6 +1,7 @@
 package sjtusummerproject.ticketmicroservice.DataModel.Domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table( name = "ticket" )
-public class TicketEntity {
+public class TicketEntity implements Serializable{
     @Id
     @GeneratedValue()
     private Long id;
