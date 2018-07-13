@@ -38,12 +38,14 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     @Cacheable(key = "#type")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByType(String type, Pageable pageable) {
+        System.out.println("没有使用redis1");
         return ticketPageRepository.findAllByType(type,pageable);
     }
 
     @Cacheable(key = "#city")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCity(String city, Pageable pageable) {
+        System.out.println("没有使用redis");
         return ticketPageRepository.findAllByCity(city,pageable);
     }
 
@@ -306,6 +308,8 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         return null;
     }
 
+    /********************************************************************************/
+    /** 自定义内部函数 **/
     public HashMap<String,Integer> SplitDateString(String date){
         HashMap<String,Integer> res = new HashMap<>();
 
