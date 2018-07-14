@@ -31,14 +31,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-hystrix</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -95,24 +87,6 @@
                     </resources>
                 </configuration>
             </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<compilerArguments>
-						<Xlint />
-					</compilerArguments>
-					<verbose>true</verbose>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<showWarnings>true</showWarnings>
-					<compilerArguments>
-						<verbose />
-						<bootclasspath>${JAVA_HOME}/jre/lib/rt.jar</bootclasspath>
-					</compilerArguments>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
