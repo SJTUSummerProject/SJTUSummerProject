@@ -13,5 +13,5 @@ public interface InputDataService {
     public String ParseVenue(String venue);
     public double ParseLowPrice(String price);
     public double ParseHighPrice(String price);
-    public List<TicketEntity> getfilterlist(String filterString);
+    public List<TicketEntity> getfilterlist (String filterString) ;
 }
