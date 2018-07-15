@@ -27,28 +27,18 @@ public class CodeController {
     @Autowired
     RedisAnswerUuidManageService redisAnswerUuidManageService;
 
-    @GetMapping(value="/Prepare")
-    public String prepareCode(HttpServletRequest request, HttpServletResponse response){
-        UUID uuid = UUID.randomUUID();
-        String token = uuid.toString();
-        Cookie cookie = new Cookie("CodeUUID", token);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-        return token;
-    }
-
     @GetMapping(value="/Generate")
     @ResponseBody
     public HashMap<String,Object> GenerateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String token = request.getParameter("token");
         /* 获得hashmap： 包括 code图片 + code-answer*/
         HashMap<String,Object> res = generateCodeService.GetCode();
         ByteOutputStream byteOutputStream = new ByteOutputStream();
         ServletOutputStream responseOutputStream = response.getOutputStream();
         // 输出图象到页面
         ImageIO.write((BufferedImage)res.get("image"), "JPG", responseOutputStream);
-        // 将uuid与answer存入Redis中，24小时有效
-        redisAnswerUuidManageService.AddAnswerUuidRedis(token, (String)res.get("code-ans"));
+        String answer = (String)res.get("code-ans");
+        // 将answer存入Redis中，10分钟有效
+        redisAnswerUuidManageService.AddAnswerUuidRedis(answer.toLowerCase(), "1");
         // 以下关闭输入流！
         responseOutputStream.flush();
         responseOutputStream.close();
@@ -60,20 +50,11 @@ public class CodeController {
     public boolean ValidateCode(HttpServletRequest request, HttpServletResponse response){
         System.out.println("in validate code");
         String Answer = request.getParameter("answer").toLowerCase();
-        String Uuid = request.getParameter("token");
 
         /* Cookie 里有Uuid */
-        if(Uuid.length()!=0){
-            String redisAnswer = redisAnswerUuidManageService.QueryAnswerRedis(Uuid);
-            /* Redis 里有Uuid对应的answer */
-            if(redisAnswer != null){
-                /* 用户输入的验证码是对的 */
-                if(redisAnswer.equals(Answer)){
-                    return true;
-                }
-                /* 用户输入的验证码是错的 */
-            }
-        }
-        return false;
+        String redisAnswer = redisAnswerUuidManageService.QueryAnswerRedis(Answer);
+        /* Redis 里有Uuid对应的answer */
+        if(redisAnswer != null) return true;
+        else return false;
     }
 }

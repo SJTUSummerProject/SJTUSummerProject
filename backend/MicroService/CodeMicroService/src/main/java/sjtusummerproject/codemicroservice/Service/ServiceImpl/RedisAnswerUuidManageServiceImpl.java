@@ -13,16 +13,14 @@ public class RedisAnswerUuidManageServiceImpl implements RedisAnswerUuidManageSe
     private RedisTemplate redisTemplate;
 
     @Override
-    public String QueryAnswerRedis(String Uuid) {
-        System.out.println("in query answer uuid redis");
-        String Answer = (String)redisTemplate.opsForValue().get(Uuid);
+    public String QueryAnswerRedis(String answer) {
+        String Answer = (String)redisTemplate.opsForValue().get(answer);
         return Answer;
     }
 
     @Override
-    public String AddAnswerUuidRedis(String Uuid, String Answer) {
-        System.out.println("in query answer redis");
-        redisTemplate.opsForValue().set(Uuid,Answer,24, TimeUnit.HOURS);
-        return "ok";
+    public void AddAnswerUuidRedis(String answer, String flag) {
+        System.out.println("The answer is "+answer);
+        redisTemplate.opsForValue().set(answer, flag,10l, TimeUnit.MINUTES);
     }
 }
