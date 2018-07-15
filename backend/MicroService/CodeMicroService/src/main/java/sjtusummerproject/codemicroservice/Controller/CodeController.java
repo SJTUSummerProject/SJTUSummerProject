@@ -27,14 +27,20 @@ public class CodeController {
     @Autowired
     RedisAnswerUuidManageService redisAnswerUuidManageService;
 
+    @GetMapping(value="/Prepare")
+    public String prepareCode(HttpServletRequest request, HttpServletResponse response){
+        UUID uuid = UUID.randomUUID();
+        String token = uuid.toString();
+        Cookie cookie = new Cookie("CodeUUID", token);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return token;
+    }
+
     @GetMapping(value="/Generate")
     @ResponseBody
     public HashMap<String,Object> GenerateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("in generate code");
-        UUID uuid = UUID.randomUUID();
-        Cookie cookie = new Cookie("CodeUUID",uuid.toString());
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        String token = request.getParameter("token");
         /* 获得hashmap： 包括 code图片 + code-answer*/
         HashMap<String,Object> res = generateCodeService.GetCode();
         ByteOutputStream byteOutputStream = new ByteOutputStream();
@@ -42,7 +48,7 @@ public class CodeController {
         // 输出图象到页面
         ImageIO.write((BufferedImage)res.get("image"), "JPG", responseOutputStream);
         // 将uuid与answer存入Redis中，24小时有效
-        redisAnswerUuidManageService.AddAnswerUuidRedis(uuid.toString(),(String)res.get("code-ans"));
+        redisAnswerUuidManageService.AddAnswerUuidRedis(token, (String)res.get("code-ans"));
         // 以下关闭输入流！
         responseOutputStream.flush();
         responseOutputStream.close();
