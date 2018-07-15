@@ -62,39 +62,42 @@ public class InputDataServiceImpl implements InputDataService{
         return null;
     }
     public String inputdata(List<String> list){
-        traversedir(list);
-        return "ok";
+    	try {
+            traversedir(list);
+            return "ok";
+        }
+        catch (Exception e){
+    	   return "faliure";
+        }
     }
 
-    public String traversedir(List<String> citylist){
-        String dirName = "/Users/sky/Desktop/软件工程导论/SJTUSummerProject/SJTUSummerProject/Python/webspider/xsq2/演唱会信息/有";
+    public String traversedir(List<String> citylist) {
         //如果dir不以文件分隔符结尾，自动添加文件分隔符
-        if (!dirName.endsWith(File.separator)) {
-            dirName = dirName + File.separator;
-        }
-        File dirFile = new File(dirName);
-        //如果dir对应的文件不存在，或者不是一个文件夹则退出
-        if (!dirFile.exists() || (!dirFile.isDirectory())) {
-            System.out.println("List失败！找不到目录：" + dirName);
-        }
+        try{
+            File dirFile = org.springframework.util.ResourceUtils.getFile("classpath:有"+File.separator);
+            //如果dir对应的文件不存在，或者不是一个文件夹则退出
 
-        //列出文件夹下所有的文件
-        File[] files = dirFile.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isFile()) {
-                System.out.println(files[i].getAbsolutePath() + " 是文件！");
-                String absolutePath = files[i].getAbsolutePath();
-                String city = null;
-                for(String eachCity : citylist){
-                    if(absolutePath.contains(eachCity))
-                        city = eachCity;
+            //列出文件夹下所有的文件
+            File[] files = dirFile.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isFile()) {
+                    System.out.println(files[i].getAbsolutePath() + " 是文件！");
+                    String absolutePath = files[i].getAbsolutePath();
+                    String city = null;
+                    for(String eachCity : citylist){
+                        if(absolutePath.contains(eachCity))
+                            city = eachCity;
+                    }
+                    readdirfile(files[i].getAbsolutePath(),city);
+                } else if (files[i].isDirectory()) {
+                    System.out.println(files[i].getAbsolutePath() + " 是目录！");
                 }
-                readdirfile(files[i].getAbsolutePath(),city);
-            } else if (files[i].isDirectory()) {
-                System.out.println(files[i].getAbsolutePath() + " 是目录！");
             }
+            return "ok";
         }
-        return "ok";
+        catch (Exception e){
+            return "failure";
+        }
     }
 
     public String readdirfile(String filename,String cityName){
