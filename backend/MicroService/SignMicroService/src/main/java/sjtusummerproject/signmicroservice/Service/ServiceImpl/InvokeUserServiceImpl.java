@@ -57,15 +57,25 @@ public class InvokeUserServiceImpl implements InvokeUserService {
     }
 
     @Override
-    public String validUser(String name, String password){
+    public UserEntity validUser(String name, String password){
     	UserEntity userEntity = QueryUserMicroService(name);
     	if (userEntity == null || !userEntity.getPassword().equals(password) || userEntity.getStatus().equals("UnActive")){
-    	    return "";
+    	    return null;
         }
         else {
-    	    return userEntity.getAuthority();
+    	    return userEntity;
         }
 
+    }
+
+    @Override
+    public UserEntity GenerateUser(String username, String password, String Email, String status){
+        UserEntity user = new UserEntity();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(Email);
+        user.setStatus("UnActive");
+        return user;
     }
 }
 

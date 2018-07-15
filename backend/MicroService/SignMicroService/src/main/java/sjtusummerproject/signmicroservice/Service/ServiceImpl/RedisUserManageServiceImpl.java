@@ -1,8 +1,10 @@
 package sjtusummerproject.signmicroservice.Service.ServiceImpl;
 
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import sjtusummerproject.signmicroservice.DataModel.Domain.UserEntity;
 import sjtusummerproject.signmicroservice.Service.RedisUserManageService;
 
 import java.util.concurrent.TimeUnit;
@@ -29,8 +31,11 @@ public class RedisUserManageServiceImpl implements RedisUserManageService {
     }
 
     @Override
-    public void AddTokenAuthRedis(String token, String auth){
-        redisTemplate.opsForValue().set(token, auth, 24, TimeUnit.HOURS);
+    public void AddTokenUserRedis(String token, UserEntity user){
+        JSONObject jsonObject = JSONObject.fromObject(user);
+        String userString = jsonObject.toString();
+        System.out.println("userJson: "+userString);
+        redisTemplate.opsForValue().set(token, userString, 24, TimeUnit.HOURS);
     }
 
 
