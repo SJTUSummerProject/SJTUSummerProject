@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7421f025-32a7-4e58-842e-48ccb7240b00" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../backend/DailyWork/XuDay11.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/DailyWork/XuDay11.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/ManageTicketServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/ManageTicketServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../xsqgejuhuaju/cities.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ai/test1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ai/test1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,8 +21,8 @@
       <file leaf-file-name="spider.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spider.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3850">
-              <caret line="257" column="40" selection-start-line="257" selection-start-column="40" selection-end-line="257" selection-end-column="40" />
+            <state relative-caret-position="408">
+              <caret line="40" column="7" lean-forward="true" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
               <folding>
                 <element signature="e#86#96#0" expanded="true" />
               </folding>
@@ -52,8 +51,8 @@
       <file leaf-file-name="cities.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cities.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="975">
-              <caret line="65" column="19" selection-start-line="65" selection-start-column="19" selection-end-line="65" selection-end-column="19" />
+            <state relative-caret-position="30">
+              <caret line="2" lean-forward="true" selection-end-line="66" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -95,10 +94,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="660" />
+    <option name="x" value="15" />
     <option name="y" value="23" />
     <option name="width" value="728" />
-    <option name="height" value="800" />
+    <option name="height" value="793" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -178,7 +177,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="660" y="23" width="728" height="800" extended-state="0" />
+    <frame x="15" y="23" width="728" height="793" extended-state="0" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.09714286" side_tool="true" weight="0.39911634" />
@@ -187,7 +186,7 @@
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3298969" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3298969" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24587911" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24587911" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -338,13 +337,6 @@
     <entry file="file://$PROJECT_DIR$/演唱会信息txt.txt" />
     <entry file="file://$PROJECT_DIR$/城市.txt" />
     <entry file="file://$PROJECT_DIR$/演唱会信息.txt" />
-    <entry file="file://$PROJECT_DIR$/cities.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="975">
-          <caret line="65" column="19" selection-start-line="65" selection-start-column="19" selection-end-line="65" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4620">
@@ -352,10 +344,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" lean-forward="true" selection-end-line="66" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3850">
-          <caret line="257" column="40" selection-start-line="257" selection-start-column="40" selection-end-line="257" selection-end-column="40" />
+        <state relative-caret-position="408">
+          <caret line="40" column="7" lean-forward="true" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
           <folding>
             <element signature="e#86#96#0" expanded="true" />
           </folding>
