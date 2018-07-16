@@ -3,64 +3,28 @@ package sjtusummerproject.ticketmicroservice.Service.ServiceImpl;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Service;
 import sjtusummerproject.ticketmicroservice.DataModel.Dao.TicketRepository;
 import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 import sjtusummerproject.ticketmicroservice.Service.InputDataService;
 
-import javax.json.JsonObject;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class InputDataServiceImpl implements InputDataService{
+public class InputDataServiceImpl{
     @Autowired
     TicketRepository ticketRepository;
 
-    public List<TicketEntity> getfilterlist(String filterString){
-        System.out.println(filterString);
-        List<TicketEntity> ticketEntities = new LinkedList<>();
-        JSONArray filterJsonObject = JSONArray.fromObject(filterString);
+    @Autowired
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-        for(Object object : filterJsonObject){
-            System.out.println(object);
-            ticketEntities.add(parseentityfromstring(object.toString()));
-        }
-        return ticketEntities;
-    }
+    static long i=0l;
 
-    public TicketEntity parseentityfromstring(String string){
-//        JSONObject jsonObject = JSONObject.fromObject(string);
-//        TicketEntity ticketEntity = new TicketEntity();
-//        for(Object k : jsonObject.keySet()){
-//            if(k.toString().equals("id"))
-//                ticketEntity.setId(Long.parseLong(jsonObject.get(k).toString()));
-//            else if(k.toString().equals("type"))
-//                ticketEntity.setType(jsonObject.get(k).toString());
-//            else if(k.toString().equals("date"))
-//                ticketEntity.setDate(jsonObject.get(k).toString());
-//            else if(k.toString().equals("city"))
-//                ticketEntity.setCity(jsonObject.get(k).toString());
-//            else if(k.toString().equals("venue"))
-//                ticketEntity.setVenue(jsonObject.get(k).toString());
-//            else if(k.toString().equals("title"))
-//                ticketEntity.setTitle(jsonObject.get(k).toString());
-//            else if(k.toString().equals("image"))
-//                ticketEntity.setImage(jsonObject.get(k).toString());
-//            else if(k.toString().equals("intro"))
-//                ticketEntity.setIntro(jsonObject.get(k).toString());
-//            else if(k.toString().equals("stock"))
-//                ticketEntity.setStock(Long.parseLong(jsonObject.get(k).toString()));
-//            else if(k.toString().equals("lowprice"))
-//                ticketEntity.setLowprice(Double.valueOf(jsonObject.get(k).toString()));
-//            else
-//                ticketEntity.setHighprice(Double.valueOf(jsonObject.get(k).toString()));
-//
-//        }
-//        return ticketEntity;
-        return null;
-    }
     public String inputdata(List<String> list){
     	try {
             traversedir(list);
@@ -74,23 +38,26 @@ public class InputDataServiceImpl implements InputDataService{
     public String traversedir(List<String> citylist) {
         //如果dir不以文件分隔符结尾，自动添加文件分隔符
         try{
-            File dirFile = org.springframework.util.ResourceUtils.getFile("classpath:有"+File.separator);
-            //如果dir对应的文件不存在，或者不是一个文件夹则退出
-
-            //列出文件夹下所有的文件
-            File[] files = dirFile.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isFile()) {
-                    System.out.println(files[i].getAbsolutePath() + " 是文件！");
-                    String absolutePath = files[i].getAbsolutePath();
+            //得到"数据"文件夹
+            File dataDirFile = org.springframework.util.ResourceUtils.getFile("classpath:数据"+File.separator);
+            //得到"数据"文件夹下的所有文件夹
+            File[] underDataDirFiles = dataDirFile.listFiles();
+            for(int i = 0; i<underDataDirFiles.length;i++){
+                String type = ParseType(underDataDirFiles[i].getName());//获得 票品类型
+                //得到"有" 文件夹
+                File underTypeDirFile = underDataDirFiles[i].listFiles()[0];
+                //File underTypeDirFile=org.springframework.util.ResourceUtils.getFile("classpath:有"+File.separator);
+                //得到不同城市的具体数据文件
+                File[] underYouDirFiles = underTypeDirFile.listFiles();
+                System.out.print(1);
+                for(int j = 0; j < underYouDirFiles.length;j++) {
+                    String absolutePath = underYouDirFiles[j].getAbsolutePath();
                     String city = null;
-                    for(String eachCity : citylist){
-                        if(absolutePath.contains(eachCity))
+                    for (String eachCity : citylist) {
+                        if (absolutePath.contains(eachCity))
                             city = eachCity;
                     }
-                    readdirfile(files[i].getAbsolutePath(),city);
-                } else if (files[i].isDirectory()) {
-                    System.out.println(files[i].getAbsolutePath() + " 是目录！");
+                    readdirfile(underYouDirFiles[j].getAbsolutePath(), city, type);
                 }
             }
             return "ok";
@@ -100,7 +67,7 @@ public class InputDataServiceImpl implements InputDataService{
         }
     }
 
-    public String readdirfile(String filename,String cityName){
+    public String readdirfile(String filename,String cityName,String type){
         File datafile = new File(filename);
         BufferedReader reader = null;
         try {
@@ -108,8 +75,8 @@ public class InputDataServiceImpl implements InputDataService{
             String tempString = null;
             // 一次读入一行，直到读入null为文件结束
             while ((tempString = reader.readLine()) != null) {
-                System.out.println(tempString);
-                parsejson(tempString,cityName);
+//                System.out.println(tempString);
+                parsejson(tempString,cityName,type);
             }
             reader.close();
         } catch (IOException e) {
@@ -118,16 +85,18 @@ public class InputDataServiceImpl implements InputDataService{
         return "ok";
     }
 
-    public String parsejson(String string,String cityName){
+    public String parsejson(String string,String cityName,String type){
+        String sql = "INSERT INTO ticket(id,city,dates,end_date,highprice,image,intro,lowprice,start_date,stock,time,title,type,venue)" +
+                " VALUES(:id,:city,:dates,:endDate,:highprice,:image,:intro,:lowprice,:startDate,:stock,:time,:title,:type,:venue)"
+                ;
         JSONObject jsonObject= JSONObject.fromObject(string);
-        System.out.println(jsonObject);
         Map<String,String> tmp = new HashMap<>();
         for(Object k : jsonObject.keySet()){
             Object v = jsonObject.get(k);
             tmp.put(k.toString(),v.toString());
         }
+        List<TicketEntity> ticketEntities = new ArrayList<>();
         for(String k : tmp.keySet()){
-            System.out.println(tmp.get(k));
             JSONObject detailObject = JSONObject.fromObject(tmp.get(k));
             /* 每一个票 */
             Map<String,String> tmp1 = new HashMap<>();
@@ -137,8 +106,6 @@ public class InputDataServiceImpl implements InputDataService{
             }
             for(String l : tmp1.keySet()){
                 String s = tmp1.get(l);
-                System.out.println(s);
-                System.out.println(cityName);
                 if(l.equals("date"))
                     s = ParseDate(s);
                 if(l.equals("venue"))
@@ -146,8 +113,7 @@ public class InputDataServiceImpl implements InputDataService{
             }
 
             /*插入演唱会*/
-            Long Eachid = 0L;
-            String EachType = "vocal concert";
+            String EachType = type;
             String EachDate = ParseDate(tmp1.get("date"));
             String EachCity = cityName;
             String EachVenue = ParseVenue(tmp1.get("venue"));
@@ -179,12 +145,13 @@ public class InputDataServiceImpl implements InputDataService{
             ticketEntity.setStock(EachStock);
             ticketEntity.setLowprice(EachLowPrice);
             ticketEntity.setHighprice(EachHighPrice);
+            ticketEntity.setId(++i);
 
-            ticketRepository.save(ticketEntity);
-            System.out.println("highprice "+EachHighPrice);
-            System.out.println("lowprice "+EachLowPrice);
+            ticketEntities.add(ticketEntity);
 
         }
+        SqlParameterSource[] sqlParameterSource = SqlParameterSourceUtils.createBatch(ticketEntities.toArray());
+        namedParameterJdbcTemplate.batchUpdate(sql,sqlParameterSource);
         return "ok";
     }
 
@@ -239,13 +206,13 @@ public class InputDataServiceImpl implements InputDataService{
 
     public String ParseDate(String date){
         String[] result = date.split("：");
-        System.out.println(result[1]);
+//        System.out.println(result[1]);
         return result[1];
     }
 
     public String ParseVenue(String venue){
         String[] result = venue.split("\\[");
-        System.out.println(result[0]);
+//        System.out.println(result[0]);
         return result[0];
     }
 
@@ -277,5 +244,26 @@ public class InputDataServiceImpl implements InputDataService{
             String lowprice = price.replace('￥',' ').trim();
             return Double.valueOf(lowprice);
         }
+    }
+
+    public String ParseType(String filename){
+        String type ;
+        filename = filename.trim();
+        System.out.println(filename);
+        if(filename.contains("儿童亲子"))
+            type = "parenting";
+        else if(filename.contains("歌剧话剧"))
+            type = "opera";
+        else if(filename.contains("曲艺杂技"))
+            type = "acrobatics";
+        else if(filename.contains("体育赛事"))
+            type = "sports";
+        else if(filename.contains("舞蹈芭蕾"))
+            type = "dancing";
+        else if(filename.contains("演唱会"))
+            type = "vocal concert";
+        else    //音乐会
+            type = "concert";
+        return type;
     }
 }

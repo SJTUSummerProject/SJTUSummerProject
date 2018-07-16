@@ -11,6 +11,8 @@ import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 import sjtusummerproject.ticketmicroservice.Service.FilterTicketService;
 import sjtusummerproject.ticketmicroservice.Service.InputDataService;
 import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
+import sjtusummerproject.ticketmicroservice.Service.OpenFileService;
+import sjtusummerproject.ticketmicroservice.Service.ServiceImpl.InputDataServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +33,7 @@ public class TicketController {
     OpenFileService openFileService;
 
     @Autowired
-    InputDataService inputDataService;
+    InputDataServiceImpl inputDataService;
 
     @Autowired
     FilterTicketService filterTicketService;
@@ -243,15 +245,15 @@ public class TicketController {
         return "ok";
     }
 
-    @PostMapping(value = "/FilterByExactDate")
-    @ResponseBody
-    public List<TicketEntity> FilterTicketByExactDate(HttpServletRequest request, HttpServletResponse response){
-        List<TicketEntity> toFilterEntity = inputDataService.getfilterlist(request.getParameter("filterlist"));
-        System.out.println(request.getParameter("date"));
-        if(toFilterEntity==null)
-            return null;
-        List<TicketEntity> res = filterTicketService.FilterTicketOptionByExactDate(toFilterEntity,request.getParameter("date"));
-        return res;
-    }
+//    @PostMapping(value = "/FilterByExactDate")
+//    @ResponseBody
+//    public List<TicketEntity> FilterTicketByExactDate(HttpServletRequest request, HttpServletResponse response){
+//        List<TicketEntity> toFilterEntity = inputDataService.getfilterlist(request.getParameter("filterlist"));
+//        System.out.println(request.getParameter("date"));
+//        if(toFilterEntity==null)
+//            return null;
+//        List<TicketEntity> res = filterTicketService.FilterTicketOptionByExactDate(toFilterEntity,request.getParameter("date"));
+//        return res;
+//    }
 
 }
