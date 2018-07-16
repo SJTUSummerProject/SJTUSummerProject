@@ -59,7 +59,7 @@ public class InvokeUserServiceImpl implements InvokeUserService {
     @Override
     public UserEntity validUser(String name, String password){
     	UserEntity userEntity = QueryUserMicroService(name);
-    	if (userEntity == null || !userEntity.getPassword().equals(password) || userEntity.getStatus().equals("UnActive")){
+    	if (userEntity == null || !userEntity.getPassword().equals(password)){
     	    return null;
         }
         else {
