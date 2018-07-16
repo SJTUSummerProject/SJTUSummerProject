@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mail-microservice
+spec:
+  selector:
+    app: mailmicroservice
+  type: NodePort
+  ports:
+  - port: 8080
+    nodePort: 30003

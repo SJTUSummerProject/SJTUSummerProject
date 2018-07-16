@@ -1,0 +1,2 @@
+modify the signservice and the code service, let the signservice call the code service for the validation in order to increase the security, change the smtp method of the mailservice because aliyun ECS forbidden the 25 port.
+deploy the codeservice, the userservice, the signservice, the maiservice the rabbitmq, the mysql on the k8s cluster

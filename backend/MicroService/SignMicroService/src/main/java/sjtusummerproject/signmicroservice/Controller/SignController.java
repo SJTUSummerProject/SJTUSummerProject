@@ -5,13 +5,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import sjtusummerproject.signmicroservice.DataModel.Domain.UserEntity;
+import sjtusummerproject.signmicroservice.Service.InvokeCodeService;
 import sjtusummerproject.signmicroservice.Service.InvokeUserService;
 import sjtusummerproject.signmicroservice.Service.InvokeEmailMessageService;
 import sjtusummerproject.signmicroservice.Service.RedisUserManageService;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/Sign")
@@ -26,96 +30,67 @@ public class SignController {
     @Autowired
     RedisUserManageService redisUserManageService;
 
+    @Autowired
+    InvokeCodeService invokeCodeService;
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    String status = "UnActive";
+
     @PostMapping(value="/Up")
     @ResponseBody
-    public void SignUp(HttpServletRequest request, HttpServletResponse response){
+    public String SignUp(HttpServletRequest request, HttpServletResponse response){
+        String answer = request.getParameter("answer");
+
+        if (!invokeCodeService.validCode(answer, answer)) return "code";
         /* 去除username的首尾空格 */
         String username = request.getParameter("username").trim();
         String password = request.getParameter("password");
         String email = request.getParameter("email");
 
-        System.out.println("username "+username);
-        System.out.println("password "+password);
-        System.out.println("email "+email);
-
-        UserEntity user = new UserEntity();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEmail(email);
-        user.setStatus("UnActive");
-
-        /* 先看在Redis里有没有缓存username的信息 */
-        String IsRedis = redisUserManageService.QueryUserStatusRedis(user.getUsername());
-        /* 如果Redis里面有缓存,看数据库是否存有对应的信息 */
-        if(IsRedis == null){
-            UserEntity findUser = invokeUserService.QueryUserMicroService(user);
-            /* 如果数据库中完全没有user的信息，说明是全新的用户 */
-            if(findUser == null){
-                /* 完全没在数据库里 */
-                System.out.println("完全没在数据库里");
-                invokeUserService.AddUserMicroService(user);    /* 用户信息入库 */
-                redisUserManageService.AddUserStatusRedis(user.getUsername());   /* 用户信息入redis */
-                invokeEmailMessageService.AddEmailServiceRabbit(user); /* 发送邮件 */
-            }
-            else if(findUser.getStatus().equals("UnActive")){
-                /* 重新发送邮件 */
-                System.out.println("code 过期 重新发送邮件");
-                redisUserManageService.AddUserStatusRedis(user.getUsername());   /* 用户信息入redis */
-                invokeEmailMessageService.AddEmailServiceRabbit(user); /* 重新发送邮件 */
-            }
-            else if(findUser.getStatus().equals("Active")){
-                System.out.println("In the database");
-            }
+        UserEntity user = invokeUserService.GenerateUser(username, password, email, status);
+        //check rename situation
+        UserEntity findUser = invokeUserService.QueryUserMicroService(username);
+        // 如果数据库中完全没有user的信息，说明是全新的用户
+        if(findUser == null){
+            invokeUserService.AddUserMicroService(user);    /* 用户信息入库 */
+            redisUserManageService.AddUserStatusRedis(user.getUsername());   /* 用户信息入redis */
+            invokeEmailMessageService.AddEmailServiceRabbit(user); /* 发送邮件 */
+            return "success";
         }
-        /* 如果Redis里面有缓存,则不需要再发邮件 */
-        else if(IsRedis.equals("ok")){
-            System.out.println("still in redis");
+        //数据库中存在未激活用户,则重新发送邮件
+        else if(findUser.getStatus().equals("UnActive")){
+            invokeEmailMessageService.AddEmailServiceRabbit(user); /* 重新发送邮件 */
+            return "resend";
         }
+        //用户名已经存在
+        return "exited";
     }
 
     @PostMapping(value="/In")
     public String SignIn(HttpServletRequest request, HttpServletResponse response){
+        //validate the code
+        String answer = request.getParameter("answer");
+        boolean isValid = invokeCodeService.validCode(answer, answer);
+        if (!isValid) return "code";
+
+        //validate the user
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
-        UserEntity receiveUser = new UserEntity();
-        receiveUser.setUsername(username);
-        receiveUser.setPassword(password);
-
-        String Ispassword = redisUserManageService.QueryUserPasswordRedis(username);
-        /* 已经被缓存 */
-        if(Ispassword != null){
-            if(Ispassword.equals(password)){
-                return "ok";
-            }else{
-                return "password not match";
-            }
-        }
-        /* 没有被缓存 */
+        UserEntity userEntity = invokeUserService.validUser(username, password);
+        //get the result
+        if (userEntity == null) return "fail";
         else {
-            UserEntity userEntity = invokeUserService.QueryUserMicroService(receiveUser);
-
-            /* 不存在此用户 */
-            if (userEntity == null) {
-                return "no user exists";
-            } else {
-                /* 账号匹配，密码匹配 */
-                if (userEntity.getPassword().equals(password)) {
-                    redisUserManageService.AddUserPasswordRedis(username,password);
-                    return "ok";
-                }
-                /* 账号匹配，密码不匹配 */
-                else {
-                    return "password not match";
-                }
-            }
+            String token = UUID.randomUUID().toString();
+            redisUserManageService.AddTokenUserRedis(token, userEntity);
+            return token;
         }
     }
 
     @PostMapping(value="/Out")
-    public String SignOut(HttpServletRequest request, HttpServletResponse response){
-        String username = request.getParameter("username");
-
-        return null;
+    public void SignOut(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter("token");
+        redisUserManageService.DeleteTokenRedis(token);
     }
 }

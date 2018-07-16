@@ -1,8 +1,10 @@
 package sjtusummerproject.signmicroservice.Service.ServiceImpl;
 
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import sjtusummerproject.signmicroservice.DataModel.Domain.UserEntity;
 import sjtusummerproject.signmicroservice.Service.RedisUserManageService;
 
 import java.util.concurrent.TimeUnit;
@@ -10,11 +12,11 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RedisUserManageServiceImpl implements RedisUserManageService {
     @Autowired
-    RedisTemplate<String,Object> redisTemplate;
+    RedisTemplate redisTemplate;
 
     @Override
     public String AddUserStatusRedis(String username) {
-        System.out.println("in add redis the username "+username);
+        //System.out.println("in add redis the username "+username);
         redisTemplate.opsForValue().set(username,"ok",24,TimeUnit.HOURS);
 
         return "ok";
@@ -22,23 +24,23 @@ public class RedisUserManageServiceImpl implements RedisUserManageService {
 
     @Override
     public String QueryUserStatusRedis(String username) {
-        System.out.println("in query redis the username "+username);
+        //System.out.println("in query redis the username "+username);
         String IsRedis = (String)redisTemplate.opsForValue().get(username);
-        System.out.println("the isredis : "+IsRedis);
+        //System.out.println("the isredis : "+IsRedis);
         return IsRedis;
     }
 
     @Override
-    public String AddUserPasswordRedis(String username, String password) {
-        System.out.println("in add user paddword redis");
-        redisTemplate.opsForValue().set(username,password,24,TimeUnit.HOURS);
-        return "ok";
+    public void AddTokenUserRedis(String token, UserEntity user){
+        JSONObject jsonObject = JSONObject.fromObject(user);
+        String userString = jsonObject.toString();
+        System.out.println("userJson: "+userString);
+        redisTemplate.opsForValue().set(token, userString, 24, TimeUnit.HOURS);
     }
 
+
     @Override
-    public String QueryUserPasswordRedis(String username) {
-        System.out.println("in query user password redis");
-        String password = (String )redisTemplate.opsForValue().get(username);
-        return password;
+    public void DeleteTokenRedis(String token){
+        redisTemplate.delete(token);
     }
 }
