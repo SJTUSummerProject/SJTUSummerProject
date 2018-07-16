@@ -27,7 +27,7 @@ public class UserController {
     @PostMapping(value = "/Add")
     @ResponseBody
     public String AddUser(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("status")String status, String authority ,HttpServletRequest request, HttpServletResponse response){
-        System.out.println("in add user controller");
+        //System.out.println("in add user controller");
         return manageUserService.AddUserOption(username,password,email,status);
     }
 
@@ -41,8 +41,8 @@ public class UserController {
     @PostMapping(value="/UpdateStatus")
     @ResponseBody
     public void UpdateUserStatus(@RequestParam(name="username")String username,@RequestParam(name="status") String status,HttpServletRequest request, HttpServletResponse response){
-        System.out.println("in update status");
-        System.out.println("the username "+username);
+        //System.out.println("in update status");
+        //System.out.println("the username "+username);
         manageUserService.UpdateUserStatusOption(username,status);
     }
 

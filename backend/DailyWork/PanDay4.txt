@@ -1,0 +1,3 @@
+learn how to use the k8s
+fix the bug to deploy the kubedns
+use the kubeadm to deploy the k8s successfully

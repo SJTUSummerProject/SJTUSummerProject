@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RedisAnswerUuidManageServiceImpl implements RedisAnswerUuidManageService {
     @Autowired
-    RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Override
     public String QueryAnswerRedis(String Uuid) {
