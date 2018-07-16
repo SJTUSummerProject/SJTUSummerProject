@@ -11,7 +11,6 @@ import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 import sjtusummerproject.ticketmicroservice.Service.FilterTicketService;
 import sjtusummerproject.ticketmicroservice.Service.InputDataService;
 import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
-import sjtusummerproject.ticketmicroservice.Service.OpenFileService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
