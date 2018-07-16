@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Test/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Test/.idea/misc.xml" beforeDir="false" />
@@ -1414,6 +1415,49 @@
       <change beforePath="$PROJECT_DIR$/../../ai/test1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ai/test1/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
 >>>>>>> xtq
+=======
+      <change beforePath="$PROJECT_DIR$/../../ai/test1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ai/test1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Controller/TicketController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/InputDataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/InputDataService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/OpenFileService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/上海演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/东莞演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/中山市演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/佛山演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/北京演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/南宁演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/厦门演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/合肥演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/哈尔滨演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/大连演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/天津演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/太原演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/威海演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/宁波演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/广州演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/成都演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/无锡演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/昆明演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/杭州演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/武汉演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/沈阳演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/济南演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/深圳演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/澳门演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/烟台演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/石家庄演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/福州演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/苏州演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/西安市演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/郑州演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/重庆演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/长沙演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/青岛演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/香港演唱会信息.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../backend/MicroService/TicketMicroService/src/main/resources/有/马鞍山演唱会信息.txt" beforeDir="false" />
+>>>>>>> xtq
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -1437,6 +1481,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <state relative-caret-position="568">
               <caret line="329" column="49" selection-start-line="329" selection-start-column="49" selection-end-line="329" selection-end-column="49" />
 =======
@@ -1450,6 +1495,10 @@
 =======
             <state relative-caret-position="408">
               <caret line="40" column="7" lean-forward="true" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
+>>>>>>> xtq
+=======
+            <state relative-caret-position="15">
+              <caret line="40" column="7" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
 >>>>>>> xtq
               <folding>
                 <element signature="e#86#96#0" expanded="true" />
@@ -1483,7 +1532,7 @@
         <entry file="file://$PROJECT_DIR$/cities.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="30">
-              <caret line="2" lean-forward="true" selection-end-line="66" selection-end-column="1" />
+              <caret line="2" selection-end-line="66" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -1640,6 +1689,10 @@
 >>>>>>> xtq
 =======
     <frame x="15" y="23" width="728" height="793" extended-state="0" />
+<<<<<<< HEAD
+>>>>>>> xtq
+=======
+    <editor active="true" />
 >>>>>>> xtq
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -1722,10 +1775,44 @@
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <state relative-caret-position="3585">
           <caret line="239" selection-start-line="239" selection-end-line="239" selection-end-column="90" />
 =======
 =======
+=======
+        <state relative-caret-position="600">
+          <caret line="40" column="7" lean-forward="true" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
+          <folding>
+            <element signature="e#86#96#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4620">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../spider1/venv/lib/python3.6/site-packages/pyquery/pyquery.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10170">
+          <caret line="678" selection-start-line="678" selection-end-line="678" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" lean-forward="true" selection-end-line="66" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+>>>>>>> xtq
         <state relative-caret-position="3855">
           <caret line="257" column="40" lean-forward="true" selection-start-line="257" selection-start-column="40" selection-end-line="257" selection-end-column="40" />
           <folding>
@@ -1866,12 +1953,13 @@
     <entry file="file://$PROJECT_DIR$/cities.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
-          <caret line="2" lean-forward="true" selection-end-line="66" selection-end-column="1" />
+          <caret line="2" selection-end-line="66" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/spider.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1888,6 +1976,10 @@
 =======
         <state relative-caret-position="408">
           <caret line="40" column="7" lean-forward="true" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
+>>>>>>> xtq
+=======
+        <state relative-caret-position="15">
+          <caret line="40" column="7" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
 >>>>>>> xtq
           <folding>
             <element signature="e#86#96#0" expanded="true" />

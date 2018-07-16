@@ -1,0 +1,4 @@
+add the monitor for the cluster of the k8s
+rebuild the environment of the k8s 
+deploy the usermicroservice and mysql on the k8s 
+decide to use a new virtual machine 

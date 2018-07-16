@@ -1,7 +1,7 @@
 package sjtusummerproject.ticketmicroservice.Controller;
 
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +12,7 @@ import sjtusummerproject.ticketmicroservice.Service.FilterTicketService;
 import sjtusummerproject.ticketmicroservice.Service.InputDataService;
 import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
 import sjtusummerproject.ticketmicroservice.Service.OpenFileService;
+import sjtusummerproject.ticketmicroservice.Service.ServiceImpl.InputDataServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +21,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value="/Ticket")
 public class TicketController {
-    private int PageSize = 4;
-    private int PageOffset = 1;
+    @Value("${ticket.page.size}")
+    private int PageSize;
+    @Value("${ticket.page.offset}")
+    private int PageOffset;
 
     @Autowired
     ManageTicketService manageTicketService;
@@ -30,7 +33,7 @@ public class TicketController {
     OpenFileService openFileService;
 
     @Autowired
-    InputDataService inputDataService;
+    InputDataServiceImpl inputDataService;
 
     @Autowired
     FilterTicketService filterTicketService;
@@ -46,6 +49,7 @@ public class TicketController {
     @GetMapping(value="/QueryShowPage")
     @ResponseBody
     public Page<TicketEntity> QueryTicketShowPage(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("page:"+request.getParameter("pagenumber"));
         return manageTicketService.QueryTicketPageOptionShow(CreatePageable(request));
     }
 
@@ -241,15 +245,15 @@ public class TicketController {
         return "ok";
     }
 
-    @PostMapping(value = "/FilterByExactDate")
-    @ResponseBody
-    public List<TicketEntity> FilterTicketByExactDate(HttpServletRequest request, HttpServletResponse response){
-        List<TicketEntity> toFilterEntity = inputDataService.getfilterlist(request.getParameter("filterlist"));
-        System.out.println(request.getParameter("date"));
-        if(toFilterEntity==null)
-            return null;
-        List<TicketEntity> res = filterTicketService.FilterTicketOptionByExactDate(toFilterEntity,request.getParameter("date"));
-        return res;
-    }
+//    @PostMapping(value = "/FilterByExactDate")
+//    @ResponseBody
+//    public List<TicketEntity> FilterTicketByExactDate(HttpServletRequest request, HttpServletResponse response){
+//        List<TicketEntity> toFilterEntity = inputDataService.getfilterlist(request.getParameter("filterlist"));
+//        System.out.println(request.getParameter("date"));
+//        if(toFilterEntity==null)
+//            return null;
+//        List<TicketEntity> res = filterTicketService.FilterTicketOptionByExactDate(toFilterEntity,request.getParameter("date"));
+//        return res;
+//    }
 
 }
