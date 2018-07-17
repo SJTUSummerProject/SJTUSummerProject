@@ -1,7 +1,6 @@
 package sjtusummerproject.creepermicroservice.Service.ServiceImpl;
 
 import org.springframework.stereotype.Service;
-import sjtusummerproject.ticketmicroservice.Service.OpenFileService;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class OpenFileServiceImpl implements OpenFileService {
+public class OpenFileServiceImpl {
     public List<String> getfilestring(){
         BufferedReader reader = null;
         List<String> resList = new LinkedList<String>();

@@ -1,24 +1,17 @@
 package sjtusummerproject.creepermicroservice.DataModel.Domain;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@Table( name = "ticket" )
 public class TicketEntity implements Serializable{
-    @Id
-    @GeneratedValue()
     private Long id;
     //类型：演唱会 体育赛事等等
     private String type;
     //日期
     private String dates;
     //起始日期
-    @Temporal(TemporalType.DATE)
     private Date startDate;
     //终止日期
-    @Temporal(TemporalType.DATE)
     private Date endDate;
     //时间
     private String time;

@@ -6,8 +6,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Service;
-import sjtusummerproject.ticketmicroservice.DataModel.Dao.TicketRepository;
-import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
+import sjtusummerproject.creepermicroservice.DataModel.Domain.TicketEntity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,12 +18,9 @@ import java.util.*;
 @Service
 public class InputDataServiceImpl{
     @Autowired
-    TicketRepository ticketRepository;
-
-    @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    static long i=0l;
+    static long id = 0l;
 
     public String inputdata(List<String> list){
     	try {
@@ -40,14 +36,14 @@ public class InputDataServiceImpl{
         //如果dir不以文件分隔符结尾，自动添加文件分隔符
         try{
             //得到"数据"文件夹
-            File dataDirFile = org.springframework.util.ResourceUtils.getFile("classpath:有"+File.separator);
+            File dataDirFile = org.springframework.util.ResourceUtils.getFile("classpath:数据"+File.separator);
             //得到"数据"文件夹下的所有文件夹
             File[] underDataDirFiles = dataDirFile.listFiles();
             for(int i = 0; i<underDataDirFiles.length;i++){
                 String type = ParseType(underDataDirFiles[i].getName());//获得 票品类型
                 //得到"有" 文件夹
-                //File underTypeDirFile = underDataDirFiles[i].listFiles()[0];
-                File underTypeDirFile=org.springframework.util.ResourceUtils.getFile("classpath:有"+File.separator);
+                File underTypeDirFile = underDataDirFiles[i].listFiles()[0];
+                //File underTypeDirFile=org.springframework.util.ResourceUtils.getFile("classpath:有"+File.separator);
                 //得到不同城市的具体数据文件
                 File[] underYouDirFiles = underTypeDirFile.listFiles();
                 System.out.print(1);
@@ -150,7 +146,7 @@ public class InputDataServiceImpl{
             ticketEntity.setStock(EachStock);
             ticketEntity.setLowprice(EachLowPrice);
             ticketEntity.setHighprice(EachHighPrice);
-            ticketEntity.setId(++i);
+            ticketEntity.setId(++id);
 
             ticketEntities.add(ticketEntity);
 //            ticketRepository.save(ticketEntity);
