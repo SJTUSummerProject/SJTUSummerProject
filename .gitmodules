@@ -1,3 +1,6 @@
 [submodule "frontend/Ticket"]
 	path = frontend/Ticket
 	url = git@github.com:Highe-Stark/Ticket.git
+[submodule "Ticket"]
+	path = Ticket
+	url = https://github.com/Highe-Stark/Ticket.git
