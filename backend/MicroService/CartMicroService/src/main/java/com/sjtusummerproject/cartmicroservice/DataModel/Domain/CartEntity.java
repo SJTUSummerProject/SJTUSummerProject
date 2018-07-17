@@ -20,6 +20,15 @@ public class CartEntity {
     String title;
     String date;
     String venue;
+    String city;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public String getVenue() {
         return venue;
