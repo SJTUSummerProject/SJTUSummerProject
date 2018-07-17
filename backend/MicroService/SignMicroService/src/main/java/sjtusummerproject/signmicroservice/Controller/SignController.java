@@ -81,7 +81,10 @@ public class SignController {
         UserEntity userEntity = invokeUserService.validUser(username, password);
         //get the result
         if (userEntity == null) return "fail";
-        else {
+        else if (userEntity.getStatus().equals("UnActive")){
+            return "UnActive";
+        }
+        else{
             String token = UUID.randomUUID().toString();
             redisUserManageService.AddTokenUserRedis(token, userEntity);
             return token;

@@ -24,18 +24,12 @@ public class EmailController {
     @GetMapping(value="/Send")
     @ResponseBody
     public void SendEmail(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("send email!");
         sendEmailService.sendMail("1755405701@qq.com","123");
     }
 
     @GetMapping(value="/Active")
     @ResponseBody
     public boolean ActiveEmail(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("in active controller the code "+request.getParameter("code"));
-        Boolean trueOrFalse = activeEmailService.Active(request.getParameter("code"));
-        if(trueOrFalse == true)
-            return true;
-        else
-            return false;
+        return activeEmailService.Active(request.getParameter("code"));
     }
 }
