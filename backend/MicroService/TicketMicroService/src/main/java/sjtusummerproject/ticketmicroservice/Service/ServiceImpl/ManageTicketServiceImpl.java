@@ -29,27 +29,25 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     /********************************************************************************/
     /* page */
 
-    @Cacheable(key = "'ShowPage:'+#pageable.getPageNumber()")
+    @Cacheable(value="10m", key = "'ShowPage:'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionShow(Pageable pageable) {
         return ticketPageRepository.findAll(pageable);
     }
 
-    @Cacheable(key = "#type+':'+#pageable.getPageNumber()")
+    @Cacheable(value="10m",key = "#type+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByType(String type, Pageable pageable) {
-        System.out.println("没有使用redis1");
         return ticketPageRepository.findAllByType(type,pageable);
     }
 
-    @Cacheable(key = "#city+':'+#pageable.getPageNumber()")
+    @Cacheable(value="10m",key = "#city+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCity(String city, Pageable pageable) {
-        System.out.println("没有使用redis");
         return ticketPageRepository.findAllByCity(city,pageable);
     }
 
-    @Cacheable(key = "#firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
+    @Cacheable(value="10m",key = "#firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByDateRange(String firstDateString, String secondDateString, Pageable pageable) {
         Date firstDate = ChangeStringToDate(firstDateString);
@@ -58,13 +56,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         return ticketPageRepository.findAllByStartDateBetweenOrEndDateBetween(firstDate,secondDate,firstDate,secondDate,pageable);
     }
 
-    @Cacheable(key = "#lowPrice + #highPrice+':'+#pageable.getPageNumber()")
+    @Cacheable(value="10m",key = "#lowPrice + #highPrice+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByPriceRange(double lowPrice, double highPrice, Pageable pageable) {
         return ticketPageRepository.findAllByLowpriceBetweenOrHighpriceBetween(lowPrice,highPrice,lowPrice,highPrice,pageable);
     }
 
-    @Cacheable(key = "#city + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
+    @Cacheable(value="10m",key = "#city + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCityAndDateRange(String city, String firstDateString, String secondDateString, Pageable pageable) {
         Date firstDate = ChangeStringToDate(firstDateString);
@@ -73,13 +71,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         return ticketPageRepository.findAllByCityAndStartDateBetweenOrCityAndEndDateBetween(city,firstDate,secondDate,city,firstDate,secondDate,pageable);
     }
 
-    @Cacheable(key = "#city + #lowPrice + #highPrice+':'+#pageable.getPageNumber()")
+    @Cacheable(value="10m",key = "#city + #lowPrice + #highPrice+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRange(String city, double lowPrice, double highPrice, Pageable pageable) {
         return ticketPageRepository.findAllByCityAndLowpriceBetweenOrCityAndHighpriceBetween(city,lowPrice,highPrice,city,lowPrice,highPrice,pageable);
     }
 
-    @Cacheable(key = "#city + #lowPrice + #highPrice + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
+    @Cacheable(value="10m",key = "#city + #lowPrice + #highPrice + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRangeAndDateRange(String city, double lowPrice, double highPrice, String firstDateString, String secondDateString, Pageable pageable) {
         Date firstDate = ChangeStringToDate(firstDateString);
@@ -155,6 +153,8 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     }
 
     @Override
+
+    @Cacheable(value="10m", key = "'id:'+#id")
     public TicketEntity QueryTicketOptionById(Long id) {
         TicketEntity ticketEntity = ticketRepository.findById(id);
         return ticketEntity;
