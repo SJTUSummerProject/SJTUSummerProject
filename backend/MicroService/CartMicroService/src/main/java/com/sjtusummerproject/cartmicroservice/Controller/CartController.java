@@ -40,7 +40,6 @@ public class CartController {
         return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.ASC, "id"));
     }
 
-
     /* "/SaveInDetailPage" 包括了更新与插入 */
     @RequestMapping(value = "/SaveInDetailPage")
     @ResponseBody
@@ -52,7 +51,7 @@ public class CartController {
         String date = request.getParameter("date");
         int number = Integer.parseInt(request.getParameter("number"));
 
-        TicketEntity ticketEntity = ticketService.queryTicket(ticketId);
+        TicketEntity ticketEntity = ticketService.queryTicketById(ticketId);
         UserEntity userEntity = userService.queryById(userId);
         cartService.saveInDetailPageByMultiInfo(userEntity,ticketEntity,price,date,number);
         return "ok";
@@ -121,5 +120,19 @@ public class CartController {
         Long userId = Long.parseLong(request.getParameter("userid"));
 
         return cartService.findInCartByUserid(userId,createPageable(request));
+    }
+
+    @RequestMapping(value = "/QueryById")
+    @ResponseBody
+    public CartEntity queryById(HttpServletRequest request, HttpServletResponse response){
+        Long cartid = Long.parseLong(request.getParameter("cartid"));
+        return cartService.queryById(cartid);
+    }
+
+    @RequestMapping(value = "/QueryBatchByIds")
+    @ResponseBody
+    public List<CartEntity> queryBatchByIds(HttpServletRequest request, HttpServletResponse response){
+        String ids = request.getParameter("batchid");
+        return cartService.queryByBatchId(ids);
     }
 }

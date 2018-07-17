@@ -1,17 +1,10 @@
-package com.sjtusummerproject.cartmicroservice.DataModel.Domain;
+package com.sjtusummerproject.ordermicroservice.DataModel.Domain;
 
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.lang.invoke.SerializedLambda;
-
-
-@Entity
-@Table(name = "cart")
-public class CartEntity implements Serializable{
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+public class CartEntity {
     Long id;
 
     Long userId;

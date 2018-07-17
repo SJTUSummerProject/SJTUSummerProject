@@ -1,11 +1,6 @@
-package com.sjtusummerproject.cartmicroservice.DataModel.Domain;
+package com.sjtusummerproject.ordermicroservice.DataModel.Domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.io.Serializable;
-
-public class UserEntity implements Serializable{
+public class UserEntity {
     private Long id;
     private String username;
     private String password;
@@ -60,5 +55,4 @@ public class UserEntity implements Serializable{
     public void setAuthority(String authority) {
         this.authority = authority;
     }
-
 }

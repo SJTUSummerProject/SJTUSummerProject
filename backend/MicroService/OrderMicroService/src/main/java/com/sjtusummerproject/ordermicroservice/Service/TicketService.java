@@ -1,5 +1,7 @@
 package com.sjtusummerproject.ordermicroservice.Service;
 
-public interface TicketService {
+import com.sjtusummerproject.ordermicroservice.DataModel.Domain.TicketEntity;
 
+public interface TicketService {
+    public TicketEntity queryTicketById(Long id);
 }

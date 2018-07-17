@@ -1,7 +1,13 @@
 package com.sjtusummerproject.ordermicroservice.Controller;
 
+import com.sjtusummerproject.ordermicroservice.DataModel.Domain.CartEntity;
 import com.sjtusummerproject.ordermicroservice.DataModel.Domain.OrderEntity;
+import com.sjtusummerproject.ordermicroservice.DataModel.Domain.TicketEntity;
+import com.sjtusummerproject.ordermicroservice.DataModel.Domain.UserEntity;
+import com.sjtusummerproject.ordermicroservice.Service.CartService;
 import com.sjtusummerproject.ordermicroservice.Service.OrderService;
+import com.sjtusummerproject.ordermicroservice.Service.TicketService;
+import com.sjtusummerproject.ordermicroservice.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -14,12 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/Order")
 public class OrderController {
     @Autowired
     OrderService orderService;
+    @Autowired
+    TicketService ticketService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    CartService cartService;
+
 
     @Value("${cart.page.size}")
     private int PageSize;
@@ -49,7 +63,26 @@ public class OrderController {
         String date = request.getParameter("date");
         int number = Integer.parseInt(request.getParameter("number"));
 
-
-        return null;
+        TicketEntity ticketEntity = ticketService.queryTicketById(ticketid);
+        UserEntity userEntity = userService.queryById(userid);
+        return orderService.saveInDetailPage(userEntity,ticketEntity,price,date,number);
     }
+
+    /*
+    * 在购物车页面里生成订单 这个时候应该有很多票品
+    * 我们的票品信息应该从 CartEntity 获得 而不是TicketEntity
+    * */
+    @RequestMapping(value = "/AddBatchInCart")
+    @ResponseBody
+    public String addBatchInCart(HttpServletRequest request, HttpServletResponse response){
+        String cartids = request.getParameter("cartids");
+        Long userid = Long.parseLong(request.getParameter("userid"));
+
+        List<CartEntity> carts = cartService.queryByBatchIds(cartids);
+        UserEntity userEntity = userService.queryById(userid);
+
+        return orderService.saveBatchInCart(userEntity,carts);
+    }
+
+
 }
