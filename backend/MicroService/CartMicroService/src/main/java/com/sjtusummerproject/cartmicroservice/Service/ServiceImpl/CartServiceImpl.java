@@ -10,6 +10,7 @@ import com.sjtusummerproject.cartmicroservice.Service.CartService;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -98,6 +99,7 @@ public class CartServiceImpl implements CartService {
         return "ok";
     }
 
+    @Cacheable(value = "10m" ,key = "#id + ':'+#pageable.getPageNumber()")
     @Override
     public Page<CartEntity> findInCartByUserid(Long id, Pageable pageable) {
         return cartPageRepository.findAllByUserId(id,pageable);
