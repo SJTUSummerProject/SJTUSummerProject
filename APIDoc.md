@@ -56,7 +56,15 @@
         stock           库存
         lowerprice      底价
         highprice       顶价 
-
+    ### 票品类型
+        变量名             说明
+        parenting       儿童亲子
+        pera            歌剧话剧
+        acrobatics      曲艺杂技
+        sports          体育赛事
+        dancing         舞蹈芭蕾
+        concert         音乐会
+        vocal concert   演唱会
     * ### URL：GET /Ticket/QueryShowPage
         #### 传入参数
         变量名|类型|说明
