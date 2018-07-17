@@ -105,6 +105,69 @@ public class TicketController {
 
         return manageTicketService.QueryTicketPageOptionByCityAndPriceRangeAndDateRange(city,lowprice,highprice,firstDate,secondDate,CreatePageable(request));
     }
+
+    /**************************************************************/
+    /** add type **/
+    @RequestMapping(value="/QueryByTypeAndCityPage")
+    @ResponseBody
+    public Page<TicketEntity> QueryTicketByTypeAndCityPage(HttpServletRequest request, HttpServletResponse response){
+        String city = request.getParameter("city");
+        String type = request.getParameter("type");
+        return manageTicketService.QueryTicketPageOptionByTypeAndCity(type,city,CreatePageable(request));
+    }
+
+    @RequestMapping(value="/QueryByTypeAndDateRangePage")
+    @ResponseBody
+    public Page<TicketEntity> QueryTicketByTypeAndDateRangePage(HttpServletRequest request, HttpServletResponse response){
+        String firstDateString = request.getParameter("firstdate");
+        String secondDateString = request.getParameter("seconddate");
+        String type = request.getParameter("type");
+        return manageTicketService.QueryTicketPageOptionByTypeAndDateRange(type,firstDateString,secondDateString,CreatePageable(request));
+    }
+
+    @RequestMapping(value="/QueryByTypeAndPriceRangePage")
+    @ResponseBody
+    public Page<TicketEntity> QueryTicketByTypeAndPriceRangePage(HttpServletRequest request, HttpServletResponse response){
+        double lowprice = Double.valueOf(request.getParameter("lowprice"));
+        double highprice = Double.valueOf(request.getParameter("highprice"));
+        String type = request.getParameter("type");
+        return manageTicketService.QueryTicketPageOptionByTypeAndPriceRange(type,lowprice,highprice,CreatePageable(request));
+    }
+
+    @RequestMapping(value="/QueryByTypeAndCityAndDateRangePage")
+    @ResponseBody
+    public Page<TicketEntity> QueryTicketByTypeCityAndDateRangePage(HttpServletRequest request, HttpServletResponse response){
+        String city = request.getParameter("city");
+        String type = request.getParameter("type");
+        String firstDate = request.getParameter("firstdate");
+        String secondDate = request.getParameter("seconddate");
+        return manageTicketService.QueryTicketPageOptionByTypeAndCityAndDateRange(type,city,firstDate,secondDate,CreatePageable(request));
+    }
+
+    @RequestMapping(value="/QueryByTypeAndCityAndPriceRangePage")
+    @ResponseBody
+    public Page<TicketEntity> QueryTicketByTypeAndCityAndPriceRangePage(HttpServletRequest request, HttpServletResponse response){
+        String city = request.getParameter("city");
+        String type = request.getParameter("type");
+        double lowprice = Double.valueOf(request.getParameter("lowprice"));
+        double highprice = Double.valueOf(request.getParameter("highprice"));
+
+        return manageTicketService.QueryTicketPageOptionByTypeAndCityAndPriceRange(type,city,lowprice,highprice,CreatePageable(request));
+    }
+
+    @GetMapping(value="/QueryByTypeAndCityAndPriceRangeAndDateRangePage")
+    @ResponseBody
+    public Page<TicketEntity> QueryTicketByTypeCityAndPriceRangeAndDateRangePage(HttpServletRequest request, HttpServletResponse response){
+        String city = request.getParameter("city");
+        String type = request.getParameter("type");
+        String firstDate = request.getParameter("firstdate");
+        String secondDate = request.getParameter("seconddate");
+        double lowprice = Double.valueOf(request.getParameter("lowprice"));
+        double highprice = Double.valueOf(request.getParameter("highprice"));
+
+        return manageTicketService.QueryTicketPageOptionByTypeAndCityAndPriceRangeAndDateRange(type,city,lowprice,highprice,firstDate,secondDate,CreatePageable((request)));
+    }
+
     /**************************************************************/
     /* no page */
     @GetMapping(value="/QueryById")

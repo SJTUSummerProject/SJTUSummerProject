@@ -16,6 +16,14 @@ public interface ManageTicketService {
     public Page<TicketEntity> QueryTicketPageOptionByCityAndDateRange(String city, String firstDate, String secondDate, Pageable pageable);
     public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRange(String city, double lowPrice, double highPrice, Pageable pageable);
     public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRangeAndDateRange(String city, double lowPrice, double highPrice, String firstDate, String secondDate, Pageable pageable);
+    /******************************/
+    /** add type **/
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndCity(String type,String city, Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndDateRange(String type, String firstDate,String secondDate,Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndPriceRange(String type, double lowPrice, double highPrice,Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndDateRange(String type, String city, String firstDate, String secondDate, Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndPriceRange(String type, String city, double lowPrice, double highPrice, Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndPriceRangeAndDateRange(String type, String city,double lowPrice, double highPrice,String firstDate, String secondDate, Pageable pageable);
     /* no page */
     public List<TicketEntity> QueryTicketOptionByExactDate(String date);
     public List<TicketEntity> QueryTicketOptionByDateRange(String firstDate,String secondDate);

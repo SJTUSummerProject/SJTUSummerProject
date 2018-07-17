@@ -84,6 +84,50 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         Date secondDate = ChangeStringToDate(secondDateString);
         return ticketPageRepository.findAllByCityAndLowpriceBetweenAndStartDateBetweenOrCityAndLowpriceBetweenAndEndDateBetweenOrCityAndHighpriceBetweenAndStartDateBetweenOrCityAndHighpriceBetweenAndEndDateBetween(city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,pageable);
     }
+    /********************************************************************************/
+    /** add type **/
+    @Cacheable(value="10m",key = "#type + #city+':'+#pageable.getPageNumber()")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndCity(String type, String city, Pageable pageable) {
+        return ticketPageRepository.findAllByTypeAndCity(type,city,pageable);
+    }
+
+    @Cacheable(value="10m",key = "#type + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndDateRange(String type, String firstDateString, String secondDateString, Pageable pageable) {
+        Date firstDate = ChangeStringToDate(firstDateString);
+        Date secondDate = ChangeStringToDate(secondDateString);
+        return ticketPageRepository.findAllByTypeAndStartDateBetweenOrTypeAndEndDateBetween(type,firstDate,secondDate,type,firstDate,secondDate,pageable);
+    }
+
+    @Cacheable(value="10m",key = "#type + #lowPrice + #highPrice+':'+#pageable.getPageNumber()")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndPriceRange(String type, double lowPrice, double highPrice, Pageable pageable) {
+        return ticketPageRepository.findAllByTypeAndLowpriceBetweenOrTypeAndHighpriceBetween(type,lowPrice,highPrice,type,lowPrice,highPrice,pageable);
+    }
+
+    @Cacheable(value="10m",key = "#type + #city + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndDateRange(String type, String city, String firstDateString, String secondDateString, Pageable pageable) {
+        Date firstDate = ChangeStringToDate(firstDateString);
+        Date secondDate = ChangeStringToDate(secondDateString);
+        return ticketPageRepository.findAllByTypeAndCityAndStartDateBetweenOrTypeAndCityAndEndDateBetween(type,city,firstDate,secondDate,type,city,firstDate,secondDate,pageable);
+    }
+
+    @Cacheable(value="10m",key = "#type + #city + #lowPrice + #highPrice+':'+#pageable.getPageNumber()")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndPriceRange(String type, String city, double lowPrice, double highPrice, Pageable pageable) {
+        return ticketPageRepository.findAllByTypeAndCityAndLowpriceBetweenOrTypeAndCityAndHighpriceBetween(type,city,lowPrice,highPrice,type,city,lowPrice,highPrice,pageable);
+    }
+
+    @Cacheable(value="10m",key = "#type + #city + #lowPrice + #highPrice + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndPriceRangeAndDateRange(String type, String city, double lowPrice, double highPrice, String firstDateString, String secondDateString, Pageable pageable) {
+        Date firstDate = ChangeStringToDate(firstDateString);
+        Date secondDate = ChangeStringToDate(secondDateString);
+
+        return ticketPageRepository.findAllByTypeAndCityAndLowpriceBetweenAndStartDateBetweenOrTypeAndCityAndLowpriceBetweenAndEndDateBetweenOrTypeAndCityAndHighpriceBetweenAndStartDateBetweenOrTypeAndCityAndHighpriceBetweenAndEndDateBetween(type,city,lowPrice,highPrice,firstDate,secondDate,type,city,lowPrice,highPrice,firstDate,secondDate,type,city,lowPrice,highPrice,firstDate,secondDate,type,city,lowPrice,highPrice,firstDate,secondDate,pageable);
+    }
 
     /********************************************************************************/
     /* no page */
