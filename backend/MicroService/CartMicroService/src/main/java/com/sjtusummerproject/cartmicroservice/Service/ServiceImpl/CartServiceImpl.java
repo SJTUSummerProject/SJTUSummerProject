@@ -36,6 +36,7 @@ public class CartServiceImpl implements CartService {
         cartEntity.setNumber(number);
         cartEntity.setTitle(ticketEntity.getTitle());
         cartEntity.setDate(date);
+        cartEntity.setVenue(ticketEntity.getVenue());
 
         CartEntity isSavedIndb = cartRepository.findByUserIdAndTicketIdAndDateAndAndPrice(cartEntity.getUserId(),cartEntity.getTicketId(),cartEntity.getDate(),cartEntity.getPrice());
         if(isSavedIndb != null){
