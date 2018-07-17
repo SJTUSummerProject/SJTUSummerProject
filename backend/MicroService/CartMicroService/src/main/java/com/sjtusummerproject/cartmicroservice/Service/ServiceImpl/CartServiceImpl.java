@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
+
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -105,5 +107,23 @@ public class CartServiceImpl implements CartService {
     @Override
     public Page<CartEntity> findInCartByUserid(Long id, Pageable pageable) {
         return cartPageRepository.findAllByUserId(id,pageable);
+    }
+
+    @Override
+    public CartEntity queryById(Long id) {
+        return cartRepository.findById(id);
+    }
+
+    /* 假设ids的格式如下
+    *  [1,2,3,4,5,6]
+    * */
+    @Override
+    public List<CartEntity> queryByBatchId(String ids) {
+        String[] idSplit = ids.trim().replace("[","").replace("]","").split(",");
+        List<CartEntity> res = new LinkedList<>();
+        for(String eachId : idSplit){
+            res.add(queryById(Long.parseLong(eachId)));
+        }
+        return res;
     }
 }

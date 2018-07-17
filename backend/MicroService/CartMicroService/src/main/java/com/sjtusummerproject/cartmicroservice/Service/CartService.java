@@ -15,5 +15,7 @@ public interface CartService {
     public String numberEditInCartById(Long id, int number);
     public String deleteInCartById(Long id);
     public String deleteBatchInCartByIds(String ids);
+    public CartEntity queryById(Long id);
+    public List<CartEntity> queryByBatchId(String ids);
     public Page<CartEntity> findInCartByUserid(Long id, Pageable pageable);
 }

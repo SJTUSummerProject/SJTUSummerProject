@@ -14,7 +14,17 @@ public class OrderEntity implements Serializable{
     private Long orderId;
 
     private Long userId;
-    private String orderStatus;
+
+    /*
+    * 退款审核
+    * 已退款
+    * 待付款
+    * 已过期
+    * 已付款
+    * 待发货
+    * 已签收
+    * */
+    private String status;
 
     /* 下订单的具体时间 */
     @Temporal(TemporalType.DATE)
@@ -26,12 +36,12 @@ public class OrderEntity implements Serializable{
     //拥有mappedBy注解的实体类为关系被维护端
     //mappedBy="orderEntity"中的orderEntity是ItemEntity中的OrderEntity属性
 
-    public String getOrderStatus() {
-        return orderStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Date getOrderTime() {
