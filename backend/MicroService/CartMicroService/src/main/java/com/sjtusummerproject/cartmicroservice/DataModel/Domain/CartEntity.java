@@ -19,6 +19,15 @@ public class CartEntity {
     String image;
     String title;
     String date;
+    String venue;
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
 
     public Long getId() {
         return id;
