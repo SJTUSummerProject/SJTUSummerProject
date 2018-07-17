@@ -24,6 +24,14 @@ public class UserController {
         return user;
     }
 
+    @RequestMapping(value = "/QueryById")
+    @ResponseBody
+    public UserEntity QueryUserById(HttpServletRequest request, HttpServletResponse response){
+        Long id = Long.parseLong(request.getParameter("userid"));
+        UserEntity user = manageUserService.QueryUserByIdOption(id);
+        return user;
+    }
+
     @PostMapping(value = "/Add")
     @ResponseBody
     public String AddUser(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("status")String status, String authority ,HttpServletRequest request, HttpServletResponse response){
