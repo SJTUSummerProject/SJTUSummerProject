@@ -8,14 +8,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Service;
 import sjtusummerproject.creepermicroservice.DataModel.Domain.TicketEntity;
 
-<<<<<<< HEAD:backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java
-import java.io.*;
-=======
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
->>>>>>> deploy:backend/MicroService/creepermicroservice/src/main/java/sjtusummerproject/creepermicroservice/Service/ServiceImpl/InputDataServiceImpl.java
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -24,16 +20,8 @@ public class InputDataServiceImpl{
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-<<<<<<< HEAD:backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java
-    @Autowired
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    static long i=0l;
-
-=======
     static long id = 0l;
 
->>>>>>> deploy:backend/MicroService/creepermicroservice/src/main/java/sjtusummerproject/creepermicroservice/Service/ServiceImpl/InputDataServiceImpl.java
     public String inputdata(List<String> list){
     	try {
             traversedir(list);
@@ -99,10 +87,7 @@ public class InputDataServiceImpl{
                 " VALUES(:id,:city,:dates,:endDate,:highprice,:image,:intro,:lowprice,:startDate,:stock,:time,:title,:type,:venue)"
                 ;
         JSONObject jsonObject= JSONObject.fromObject(string);
-<<<<<<< HEAD:backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java
-=======
 //        System.out.println(jsonObject);
->>>>>>> deploy:backend/MicroService/creepermicroservice/src/main/java/sjtusummerproject/creepermicroservice/Service/ServiceImpl/InputDataServiceImpl.java
         Map<String,String> tmp = new HashMap<>();
         for(Object k : jsonObject.keySet()){
             Object v = jsonObject.get(k);
@@ -110,10 +95,7 @@ public class InputDataServiceImpl{
         }
         List<TicketEntity> ticketEntities = new ArrayList<>();
         for(String k : tmp.keySet()){
-<<<<<<< HEAD:backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java
-=======
 //            System.out.println(tmp.get(k));
->>>>>>> deploy:backend/MicroService/creepermicroservice/src/main/java/sjtusummerproject/creepermicroservice/Service/ServiceImpl/InputDataServiceImpl.java
             JSONObject detailObject = JSONObject.fromObject(tmp.get(k));
             /* 每一个票 */
             Map<String,String> tmp1 = new HashMap<>();
@@ -123,11 +105,8 @@ public class InputDataServiceImpl{
             }
             for(String l : tmp1.keySet()){
                 String s = tmp1.get(l);
-<<<<<<< HEAD:backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java
-=======
 //                System.out.println(s);
 //                System.out.println(cityName);
->>>>>>> deploy:backend/MicroService/creepermicroservice/src/main/java/sjtusummerproject/creepermicroservice/Service/ServiceImpl/InputDataServiceImpl.java
                 if(l.equals("date"))
                     s = ParseDate(s);
                 if(l.equals("venue"))
@@ -167,18 +146,12 @@ public class InputDataServiceImpl{
             ticketEntity.setStock(EachStock);
             ticketEntity.setLowprice(EachLowPrice);
             ticketEntity.setHighprice(EachHighPrice);
-<<<<<<< HEAD:backend/MicroService/TicketMicroService/src/main/java/sjtusummerproject/ticketmicroservice/Service/ServiceImpl/InputDataServiceImpl.java
-            ticketEntity.setId(++i);
-
-            ticketEntities.add(ticketEntity);
-=======
             ticketEntity.setId(++id);
 
             ticketEntities.add(ticketEntity);
 //            ticketRepository.save(ticketEntity);
 //            System.out.println("highprice "+EachHighPrice);
 //            System.out.println("lowprice "+EachLowPrice);
->>>>>>> deploy:backend/MicroService/creepermicroservice/src/main/java/sjtusummerproject/creepermicroservice/Service/ServiceImpl/InputDataServiceImpl.java
 
         }
         SqlParameterSource[] sqlParameterSource = SqlParameterSourceUtils.createBatch(ticketEntities.toArray());
