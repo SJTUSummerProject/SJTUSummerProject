@@ -5,14 +5,14 @@
     * ### URL：POST /Sign/Up
         #### 传入参数
         变量名| 类型 | 说明 
-         - | - | -
+         -| - | -
          answer       | String         | 验证码答案
          username     | String         | 用户名
          password     | String         | 密码
          email        | String         | 邮箱
         #### 返回参数：String
         字符串|说明
-        -  | -
+        -| -
          code    | 验证码错误
          success | 成功注册，等待邮件确认
          resend  | 用户名已经被注册但是还未激活，后端会重新发送邮件
@@ -26,7 +26,7 @@
         password  | String     | 密码
         #### 返回参数：String
         字符串|说明
-        - | -
+        -| -
         code     | 验证码错误
         fail     | 用户名或密码错误
         UnActive | 用户未激活，无需重新发送邮件
