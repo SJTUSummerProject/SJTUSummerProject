@@ -2,9 +2,7 @@ package com.sjtusummerproject.ordermicroservice.DataModel.Domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "orders")
@@ -20,7 +18,7 @@ public class OrderEntity implements Serializable{
     * 已退款
     * 待付款
     * 已过期
-    * 已付款
+    * 已删除
     * 待发货
     * 已签收
     * */
@@ -32,8 +30,11 @@ public class OrderEntity implements Serializable{
 
     /*拥有的票品项*/
     @OneToMany(mappedBy="orderEntity",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    private List<ItemEntity> items = new LinkedList<>();
+    private Set<ItemEntity> items = new HashSet<>();
     //拥有mappedBy注解的实体类为关系被维护端
+
+    public OrderEntity() {
+    }
     //mappedBy="orderEntity"中的orderEntity是ItemEntity中的OrderEntity属性
 
     public String getStatus() {
@@ -52,12 +53,21 @@ public class OrderEntity implements Serializable{
         this.orderTime = orderTime;
     }
 
-    public List<ItemEntity> getItems() {
+    public Set<ItemEntity> getItems() {
         return items;
     }
 
-    public void setItems(List<ItemEntity> items) {
+    public void setItems(Set<ItemEntity> items) {
         this.items = items;
+    }
+
+    public Long getOrderId() {
+
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     public Long getUserId() {

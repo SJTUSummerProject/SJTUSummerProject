@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 public class TicketServiceImpl implements TicketService{
     @Bean
@@ -24,6 +26,14 @@ public class TicketServiceImpl implements TicketService{
         TicketEntity result = template.getForObject(url, TicketEntity.class);
 
         System.out.println("the result in query ticket "+result);
+        return result;
+    }
+
+    @Override
+    public List<TicketEntity> queryTicketByBatchIds(String ids) {
+        String url=baseUrl+"/Ticket/QueryByBatchIds?"+"batchid="+ids;
+        RestTemplate template = new RestTemplate();
+        List<TicketEntity> result = template.getForObject(url,List.class);
         return result;
     }
 }

@@ -205,6 +205,20 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     }
 
     @Override
+    public List<TicketEntity> QueryTicketOptionByBatchIds(String ids) {
+        /*
+        * ids in form
+        * [1,2,3,4,5,6]
+        * */
+        String[] idSplit = ids.trim().replace("[","").replace("]","").split(",");
+        List<TicketEntity> res = new LinkedList<>();
+        for(String eachId : idSplit){
+            res.add(QueryTicketOptionById(Long.parseLong(eachId.trim())));
+        }
+        return res;
+    }
+
+    @Override
     public String AddTicketsOptionByJson(String ticketsInfo, String type) {
         return null;
     }

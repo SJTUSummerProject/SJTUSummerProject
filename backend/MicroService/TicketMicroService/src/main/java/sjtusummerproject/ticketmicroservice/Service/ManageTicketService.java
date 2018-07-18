@@ -32,7 +32,7 @@ public interface ManageTicketService {
 
     public List<TicketEntity> QueryTicketOptionByPriceRange(double firstPrice,double secondPrice);
     public TicketEntity QueryTicketOptionById(Long id);
-
+    public List<TicketEntity> QueryTicketOptionByBatchIds(String ids);
     public String AddTicketsOptionByJson(String ticketsInfo, String type);
     public String AddTicketOptionByString(String ticketsInfo, String type);
 
