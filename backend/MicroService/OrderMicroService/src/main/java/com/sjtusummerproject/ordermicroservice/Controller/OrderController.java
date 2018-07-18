@@ -173,4 +173,18 @@ public class OrderController {
     public String test3(HttpServletRequest request, HttpServletResponse response){
         return orderService.test3();
     }
+
+    @RequestMapping(value = "/test4")
+    @ResponseBody
+    public String test4(HttpServletRequest request, HttpServletResponse response){
+        String hey = request.getParameter("hey");
+        if(hey == null){
+            System.out.println("hey is null!");
+        }
+        else if(hey.equals("")){
+            System.out.println("hey equals \"\"");
+        }
+        System.out.println("not null");
+        return "ok";
+    }
 }

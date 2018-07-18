@@ -19,11 +19,11 @@ public class UserDetailController {
     @RequestMapping(value = "/SaveByUserid")
     @ResponseBody
     public UserDetailEntity saveByUserid(HttpServletRequest request, HttpServletResponse response){
-        Long userid = Long.parseLong(request.getParameter("userid"));
+        Long userid = Long.parseLong(request.getParameter("userid").trim());
         String avatar = request.getParameter("avatar"); //头像
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
-        double account = Double.parseDouble(request.getParameter("account"));
+        double account = Double.parseDouble(request.getParameter("account").trim());
 
         UserDetailEntity partUserDetail = new UserDetailEntity();
         partUserDetail.setId(userid);
@@ -33,5 +33,24 @@ public class UserDetailController {
         partUserDetail.setAccount(account);
 
         return manageUserDetailService.saveByUserId(userid,partUserDetail);
+    }
+
+    @RequestMapping(value = "/UpdateByUserid")
+    @ResponseBody
+    public UserDetailEntity updateByUserid(HttpServletRequest request, HttpServletResponse response){
+        Long userid = Long.parseLong(request.getParameter("userid").trim());
+        String avatar = request.getParameter("avatar");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        String account = request.getParameter("account").trim();
+
+        return manageUserDetailService.updateByUserId(userid,avatar,phone,address,account);
+    }
+
+    @RequestMapping(value = "/QueryByUserid")
+    @ResponseBody
+    public UserDetailEntity queryByUserid(HttpServletRequest request, HttpServletResponse response){
+        Long userid = Long.parseLong(request.getParameter("userid").trim());
+        return manageUserDetailService.queryByUserId(userid);
     }
 }
