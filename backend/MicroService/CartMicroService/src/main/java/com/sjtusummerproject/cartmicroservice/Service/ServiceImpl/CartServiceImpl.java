@@ -122,7 +122,7 @@ public class CartServiceImpl implements CartService {
         String[] idSplit = ids.trim().replace("[","").replace("]","").split(",");
         List<CartEntity> res = new LinkedList<>();
         for(String eachId : idSplit){
-            res.add(queryById(Long.parseLong(eachId)));
+            res.add(queryById(Long.parseLong(eachId.trim())));
         }
         return res;
     }

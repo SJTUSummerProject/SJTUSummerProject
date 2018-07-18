@@ -1,5 +1,7 @@
 package com.sjtusummerproject.ordermicroservice.DataModel.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,10 +21,18 @@ public class ItemEntity  {
     String date;
     String venue;
     String city;
+    /*
+    * status:
+    * 未操作
+    * 成功
+    * 失败
+    * */
+    String status;
 
     /* 所属订单*/
      @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)//可选属性optional=false,表示orderEntity不能为空
      @JoinColumn(name="order_id")//设置在item表中的关联字段(外键)
+     @JsonIgnore
      private OrderEntity orderEntity;
 
     public Long getItemId() {
@@ -103,5 +113,13 @@ public class ItemEntity  {
 
     public void setOrderEntity(OrderEntity orderEntity) {
         this.orderEntity = orderEntity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

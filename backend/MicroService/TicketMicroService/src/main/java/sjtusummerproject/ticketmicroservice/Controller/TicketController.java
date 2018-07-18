@@ -178,6 +178,12 @@ public class TicketController {
         return resTicket;
     }
 
+    @RequestMapping(value = "/QueryByBatchIds")
+    @ResponseBody
+    public List<TicketEntity> QueryTicketByIds(HttpServletRequest request, HttpServletResponse response){
+        String ids = request.getParameter("batchid");
+        return manageTicketService.QueryTicketOptionByBatchIds(ids);
+    }
 
 
 }
