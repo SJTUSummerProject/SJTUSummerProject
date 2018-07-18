@@ -16,6 +16,11 @@ public class ManageUserServiceImpl implements ManageUserService {
         return userRepository.findFirstByUsername(username);
     }
 
+    @Override
+    public UserEntity QueryUserByIdOption(Long id) {
+        return null;
+    }
+
     /* 此处有硬编码！-将authority设置为customer */
     @Override
     public String AddUserOption(String username, String password, String email, String status) {
