@@ -19,7 +19,7 @@ public class OrderEntity implements Serializable{
     * 待付款
     * 已过期
     * 已删除
-    * 待发货
+    * 待发货 - attention：没有 "已付款" 这个状态，付款之后就直接变成待发货的状态
     * 已签收
     * */
     private String status;
