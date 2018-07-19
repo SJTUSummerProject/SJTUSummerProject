@@ -114,7 +114,8 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orderEntity);
         res.put("message","success");
         res.put("Inventory shortage",failItems);
-        userDetailService.updateAccount(orderEntity.getUserId(),userDetail.getAccount()-succPrice);
+        /*减去succPrice*/
+        userDetailService.updateAccountMinus(orderEntity.getUserId(),succPrice);
         return res;
 
     }
