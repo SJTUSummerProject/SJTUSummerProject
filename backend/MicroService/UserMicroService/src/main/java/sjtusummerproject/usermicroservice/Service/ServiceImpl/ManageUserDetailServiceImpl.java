@@ -49,7 +49,7 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
 
 
     @Override
-    public UserDetailEntity updateByUserId(Long userid, String avatar, String phone, String address, String account) {
+    public UserDetailEntity updateByUserId(Long userid, String avatar, String phone, String address, Double account) {
         UserDetailEntity userDetail = userDetailRepository.findById(userid);
         if(avatar != null)
             userDetail.setAvatar(avatar);
@@ -58,7 +58,7 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
         if(phone != null)
             userDetail.setAddress(address);
         if(account != null)
-            userDetail.setAccount(Double.parseDouble(account));
+            userDetail.setAccount(account);
         return userDetailRepository.save(userDetail);
     }
 

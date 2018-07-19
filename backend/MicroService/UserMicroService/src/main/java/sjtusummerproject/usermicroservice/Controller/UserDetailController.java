@@ -34,6 +34,7 @@ public class UserDetailController {
     @ResponseBody
     public UserDetailEntity updateByUserid(HttpServletRequest request,
                                            @RequestParam(name = "avatar", required = false) MultipartFile frontAvatar,
+                                           @RequestParam(name = "account", required = false) Double account,
                                            HttpServletResponse response){
         String token = request.getParameter("token");
         UserEntity userEntity = callAuthService(token);
@@ -44,7 +45,6 @@ public class UserDetailController {
         String avatar = manageUserDetailService.saveAvatar(frontAvatar);
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
-        String account = request.getParameter("account").trim();
 
         return manageUserDetailService.updateByUserId(userid,avatar,phone,address,account);
     }
