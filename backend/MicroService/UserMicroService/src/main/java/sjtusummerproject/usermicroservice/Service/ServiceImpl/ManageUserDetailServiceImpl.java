@@ -26,8 +26,6 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
     @Autowired
     UserDetailRepository userDetailRepository;
     @Autowired
-    ImgRepository imgRepository;
-    @Autowired
     RestTemplate restTemplate;
 
     @Value("${imgservice.url}")
@@ -38,8 +36,8 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
         UserEntity user = manageUserService.QueryUserByIdOption(userid);
         UserDetailEntity userDetail = new UserDetailEntity();
 
-        partUserDetail.setUsername(user.getUsername());
-        partUserDetail.setEmail(user.getEmail());
+    //    partUserDetail.setUsername(user.getUsername());
+     //   partUserDetail.setEmail(user.getEmail());
 
         return userDetailRepository.save(partUserDetail);
     }
