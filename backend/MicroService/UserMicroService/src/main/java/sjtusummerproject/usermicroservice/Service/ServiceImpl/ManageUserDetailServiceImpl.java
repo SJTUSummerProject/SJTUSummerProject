@@ -42,7 +42,6 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
     @Override
     public UserDetailEntity saveByUserId(Long userid,UserDetailEntity partUserDetail) {
         UserEntity user = manageUserService.QueryUserByIdOption(userid);
-        UserDetailEntity userDetail = new UserDetailEntity();
 
     //    partUserDetail.setUsername(user.getUsername());
      //   partUserDetail.setEmail(user.getEmail());

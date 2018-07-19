@@ -4,7 +4,9 @@ import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sjtusummerproject.usermicroservice.DataModel.Dao.UserRepository;
+import sjtusummerproject.usermicroservice.DataModel.Domain.UserDetailEntity;
 import sjtusummerproject.usermicroservice.DataModel.Domain.UserEntity;
+import sjtusummerproject.usermicroservice.Service.ManageUserDetailService;
 import sjtusummerproject.usermicroservice.Service.ManageUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
     @Autowired
     ManageUserService manageUserService;
+    @Autowired
+    ManageUserDetailService manageUserDetailService;
 
     @GetMapping(value="/Query")
     @ResponseBody
@@ -35,8 +39,19 @@ public class UserController {
     @PostMapping(value = "/Add")
     @ResponseBody
     public String AddUser(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("status")String status, String authority ,HttpServletRequest request, HttpServletResponse response){
-        //System.out.println("in add user controller");
-        return manageUserService.AddUserOption(username,password,email,status);
+        /*
+        * 在add一个新的user的时候
+        * 创建一个对应的userDetailEntity
+        * 此时新的userDetaiEntity 只有 id username email
+        * */
+        String res = manageUserService.AddUserOption(username,password,email,status);
+
+        UserEntity userEntity = manageUserService.QueryUserOption(username);
+        UserDetailEntity partUserDetail = new UserDetailEntity();
+        partUserDetail.setId(userEntity.getId());
+        manageUserDetailService.saveByUserId(userEntity.getId(),partUserDetail);
+
+        return res;
     }
 
     @GetMapping(value="/Delete")
