@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 
+import javax.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class CartServiceImpl implements CartService {
     CartPageRepository cartPageRepository;
 
     @Override
-    public String saveInDetailPageByMultiInfo(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, int number) {
+    public String saveInDetailPageByMultiInfo(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, Long number) {
 
         CartEntity cartEntity = new CartEntity();
 
@@ -54,59 +55,34 @@ public class CartServiceImpl implements CartService {
         return "ok";
     }
 
-    @Override
-    public String numberPlusOneInCartById(Long id) {
-        CartEntity cartEntity = cartRepository.findById(id);
-        cartEntity.setNumber(cartEntity.getNumber()+1);
-        cartRepository.save(cartEntity);
-        return "ok";
-    }
 
     @Override
-    public String numberMinusOneInCartById(Long id) {
+    public String numberEditInCartById(Long id, Long number) {
+        if(number < 0) return "false";
         CartEntity cartEntity = cartRepository.findById(id);
-
-        if(cartEntity.getNumber() == 0){
-            return "已经是0 不能再减了";
-        }
-
-        cartEntity.setNumber(cartEntity.getNumber()-1);
-        cartRepository.save(cartEntity);
-        return "ok";
-    }
-
-    @Override
-    public String numberEditInCartById(Long id, int number) {
-        CartEntity cartEntity = cartRepository.findById(id);
-
-        if(number < 0)
-            return "number是负数 不能save 成负数";
-
         cartEntity.setNumber(number);
         cartRepository.save(cartEntity);
         return "ok";
     }
 
     @Override
-    public String deleteInCartById(Long id) {
-        cartRepository.deleteById(id);
-        return "ok";
-    }
-
-    @Override
+    @Transactional
     public String deleteBatchInCartByIds(String ids) {
         String[] splitIds = ids.trim().replace("[","").replace("]","").split(",");
 
         for(String eachId : splitIds){
-            cartRepository.deleteById(Long.parseLong(eachId));
+            cartRepository.deleteById(Long.parseLong(eachId.trim()));
         }
         return "ok";
     }
 
-    @Cacheable(value = "10m" ,key = "#id + ':'+#pageable.getPageNumber()")
     @Override
     public Page<CartEntity> findInCartByUserid(Long id, Pageable pageable) {
-        return cartPageRepository.findAllByUserId(id,pageable);
+        long startTime = System.currentTimeMillis();
+        Page<CartEntity> cartEntities = cartPageRepository.findAllByUserId(id,pageable);
+        long endTime = System.currentTimeMillis();
+        System.out.println(endTime - startTime);
+        return  cartEntities;
     }
 
     @Override

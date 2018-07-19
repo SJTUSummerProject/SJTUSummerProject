@@ -41,7 +41,7 @@ public class OrderController {
 
     /* Get Pageable */
     Pageable createPageable(HttpServletRequest request){
-        return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.ASC, "id"));
+        return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.DESC, "id"));
     }
 
     @RequestMapping(value = "/QueryByUserid")
