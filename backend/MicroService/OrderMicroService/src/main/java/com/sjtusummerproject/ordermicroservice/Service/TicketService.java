@@ -7,4 +7,5 @@ import java.util.List;
 public interface TicketService {
     public TicketEntity queryTicketById(Long id);
     public List<TicketEntity> queryTicketByBatchIds(String ids);
+    public Boolean updateStockMinus(Long id, Long toMinus);
 }

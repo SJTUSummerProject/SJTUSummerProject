@@ -2,10 +2,12 @@ package com.sjtusummerproject.ordermicroservice.Service.ServiceImpl;
 
 import com.sjtusummerproject.ordermicroservice.DataModel.Domain.TicketEntity;
 import com.sjtusummerproject.ordermicroservice.Service.TicketService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -15,7 +17,8 @@ public class TicketServiceImpl implements TicketService{
         return new RestTemplate();
     }
 
-    String baseUrl="http://ticket-microservice:8080";
+    @Value("${ticketservice.url}")
+    String baseUrl;
 
     @Override
     public TicketEntity queryTicketById(Long id) {
@@ -35,5 +38,14 @@ public class TicketServiceImpl implements TicketService{
         RestTemplate template = new RestTemplate();
         List<TicketEntity> result = template.getForObject(url,List.class);
         return result;
+    }
+
+    /*return "fail" or "success"*/
+    @Override
+    public String updateStockMinus(Long id, Long toMinus){
+        String url = baseUrl+"/Ticket/MinusStock?"+"ticketid="+id+"&minus="+toMinus;
+        RestTemplate template = new RestTemplate();
+        String res = template.getForObject(url,String.class);
+        return res;
     }
 }

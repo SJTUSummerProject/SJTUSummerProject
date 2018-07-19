@@ -82,10 +82,15 @@ public class InputDataServiceImpl{
         return "ok";
     }
 
+<<<<<<< HEAD
+    public String parsejson(String string,String cityName){
+        System.out.println("head is? "+string);
+=======
     public String parsejson(String string,String cityName,String type){
         String sql = "INSERT INTO ticket(id,city,dates,end_date,highprice,image,intro,lowprice,start_date,stock,time,title,type,venue)" +
                 " VALUES(:id,:city,:dates,:endDate,:highprice,:image,:intro,:lowprice,:startDate,:stock,:time,:title,:type,:venue)"
                 ;
+>>>>>>> xtq
         JSONObject jsonObject= JSONObject.fromObject(string);
 //        System.out.println(jsonObject);
         Map<String,String> tmp = new HashMap<>();

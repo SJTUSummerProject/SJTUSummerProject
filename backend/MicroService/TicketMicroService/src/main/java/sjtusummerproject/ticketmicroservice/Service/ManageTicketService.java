@@ -67,12 +67,11 @@ public interface ManageTicketService {
     public String UpdateTicketIntroOptionByIdFromEntity(Long Id,TicketEntity ticketEntity);
     public String UpdateTicketIntroOptionByIdFromTitle(Long Id,String intro);
 
-    public String UpdateTicketStockOptionByIdFromEntity(Long Id,TicketEntity ticketEntity);
-    public String UpdateTicketStockOptionByIdFromTitle(Long Id,Long stock);
-
     public String UpdateTicketLowPriceOptionByIdFromEntity(Long Id,TicketEntity ticketEntity);
     public String UpdateTicketLowPriceOptionByIdFromTitle(Long Id,int lowprice);
 
     public String UpdateTicketHighPriceOptionByIdFromEntity(Long Id,TicketEntity ticketEntity);
     public String UpdateTicketHighPriceOptionByIdFromTitle(Long Id,int highprice);
+
+    public Boolean updateStockMinusById(Long id, Long toMinus);
 }
