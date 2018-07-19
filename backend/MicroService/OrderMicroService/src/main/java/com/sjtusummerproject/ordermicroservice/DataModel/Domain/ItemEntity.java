@@ -14,11 +14,11 @@ public class ItemEntity  {
     Long ticketId;
     /* 具体的price */
     double price;
-    int number;
-    String image;
-    String title;
+    Long number;
     /* 具体的日期 */
     String date;
+    String image;
+    String title;
     String venue;
     String city;
     /*
@@ -59,11 +59,11 @@ public class ItemEntity  {
         this.price = price;
     }
 
-    public int getNumber() {
+    public Long getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Long number) {
         this.number = number;
     }
 

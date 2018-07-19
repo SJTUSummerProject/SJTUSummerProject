@@ -6,6 +6,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import sjtusummerproject.ticketmicroservice.DataModel.Dao.TicketPageRepository;
 import sjtusummerproject.ticketmicroservice.DataModel.Dao.TicketRepository;
 import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
@@ -337,16 +340,6 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     }
 
     @Override
-    public String UpdateTicketStockOptionByIdFromEntity(Long Id, TicketEntity ticketEntity) {
-        return null;
-    }
-
-    @Override
-    public String UpdateTicketStockOptionByIdFromTitle(Long Id, Long stock) {
-        return null;
-    }
-
-    @Override
     public String UpdateTicketLowPriceOptionByIdFromEntity(Long Id, TicketEntity ticketEntity) {
         return null;
     }
@@ -364,6 +357,17 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     @Override
     public String UpdateTicketHighPriceOptionByIdFromTitle(Long Id, int highprice) {
         return null;
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public Boolean updateStockMinusById(Long id, Long toMinus) {
+        TicketEntity ticket = ticketRepository.findById(id);
+        Long stock = ticket.getStock();
+        if(stock < toMinus)
+            return false;
+        ticket.setStock(stock-toMinus);
+        return true;
     }
 
     /********************************************************************************/

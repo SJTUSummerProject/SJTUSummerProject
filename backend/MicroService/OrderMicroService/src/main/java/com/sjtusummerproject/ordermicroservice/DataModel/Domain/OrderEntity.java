@@ -12,14 +12,16 @@ public class OrderEntity implements Serializable{
     private Long orderId;
 
     private Long userId;
-
+    private String receiver;
+    private String phone;
+    private String address;
     /*
     * 退款审核
     * 已退款
     * 待付款
     * 已过期
     * 已删除
-    * 待发货
+    * 待发货 - attention：没有 "已付款" 这个状态，付款之后就直接变成待发货的状态
     * 已签收
     * */
     private String status;
@@ -33,6 +35,8 @@ public class OrderEntity implements Serializable{
     private Set<ItemEntity> items = new HashSet<>();
     //拥有mappedBy注解的实体类为关系被维护端
 
+    /*************************/
+    /* getter and setter */
     public OrderEntity() {
     }
     //mappedBy="orderEntity"中的orderEntity是ItemEntity中的OrderEntity属性
@@ -86,4 +90,27 @@ public class OrderEntity implements Serializable{
         this.orderId = orderid;
     }
 
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

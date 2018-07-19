@@ -6,6 +6,7 @@ import com.sjtusummerproject.ordermicroservice.DataModel.Dao.OrderRepository;
 import com.sjtusummerproject.ordermicroservice.DataModel.Domain.*;
 import com.sjtusummerproject.ordermicroservice.Service.OrderService;
 import com.sjtusummerproject.ordermicroservice.Service.TicketService;
+import com.sjtusummerproject.ordermicroservice.Service.UserDetailService;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,8 @@ public class OrderServiceImpl implements OrderService {
     ItemRepository itemRepository;
     @Autowired
     TicketService ticketService;
+    @Autowired
+    UserDetailService userDetailService;
 
     @Value("${order.dayInMillisec}")
     Long dayInMillisec;
@@ -35,90 +38,84 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderEntity saveInDetailPage(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, int number) {
-        OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setOrderid(0L);
-        orderEntity.setUserId(userEntity.getId());
-        orderEntity.setStatus("待付款");
-        orderEntity.setOrderTime(new Date());
-
-        //orderEntity = orderRepository.findByOrderId(orderEntity.getOrderId());
+    public OrderEntity saveInDetailPage(OrderEntity partOrderEntity, ItemEntity itemEntity) {
         /*如果是 one to many
         * one 插了 many 就不用再插入了
         * 但是各自都要set对方
         * */
         Set<ItemEntity> set = new HashSet<>();
-
-        ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemId(0L);
-        itemEntity.setOrderEntity(orderEntity);
-        itemEntity.setNumber(number);
-        itemEntity.setImage(ticketEntity.getImage());
-        itemEntity.setDate(date);
-        itemEntity.setCity(ticketEntity.getCity());
-        itemEntity.setVenue(ticketEntity.getVenue());
-        itemEntity.setPrice(price);
-        itemEntity.setTicketId(ticketEntity.getId());
-        itemEntity.setTitle(ticketEntity.getTitle());
-        itemEntity.setStatus("未操作");
         set.add(itemEntity);
 
-        orderEntity.setItems(set);
-        return orderRepository.save(orderEntity);
+        partOrderEntity.setItems(set);
+        return orderRepository.save(partOrderEntity);
     }
 
     @Override
-    public OrderEntity saveBatchInCart(UserEntity userEntity, List<CartEntity> cartEntityList) {
-        OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setOrderid(0L);
-        orderEntity.setUserId(userEntity.getId());
-        orderEntity.setStatus("待付款");
-        orderEntity.setOrderTime(new Date());
-
+    public OrderEntity saveBatchInCart(OrderEntity partOrder, UserEntity userEntity, List<CartEntity> cartEntityList) {
         Set<ItemEntity> set = new HashSet();
 
         for(CartEntity eachCart : cartEntityList){
-            ItemEntity itemEntity = new ItemEntity();
-            itemEntity.setItemId(0L);
-            itemEntity.setOrderEntity(orderEntity);
-            itemEntity.setNumber(eachCart.getNumber());
-            itemEntity.setImage(eachCart.getImage());
-            itemEntity.setDate(eachCart.getDate());
-            itemEntity.setCity(eachCart.getCity());
-            itemEntity.setVenue(eachCart.getVenue());
-            itemEntity.setPrice(eachCart.getPrice());
-            itemEntity.setTicketId(eachCart.getTicketId());
-            itemEntity.setTitle(eachCart.getTitle());
-            itemEntity.setStatus("未操作");
+            ItemEntity itemEntity = createFullItemFromCartAndOrder(eachCart,partOrder);
             set.add(itemEntity);
         }
-        orderEntity.setItems(set);
-        return orderRepository.save(orderEntity);
+
+        partOrder.setItems(set);
+        return orderRepository.save(partOrder);
     }
 
     @Override
-    public String buy(Long orderid) {
+    public HashMap<String,Object> buy(Long orderid) {
         OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
         Date now = new Date();
+        HashMap<String,Object> res = new HashMap<>();
         /* 订单未支付超过24小时 */
         if((now.getTime() - orderEntity.getOrderTime().getTime())>dayInMillisec)
         {
             orderEntity.setStatus("已过期");
             setItemsStatus(orderEntity,"失败");
             orderRepository.save(orderEntity);
-            return "expired";
+            res.put("message","expired");
+            return res;
         }
+
+        double totalPrice = 0L;
+        for(ItemEntity eachitem : orderEntity.getItems()){
+            totalPrice += eachitem.getPrice()*eachitem.getNumber();
+        }
+
         /* 用户余额不足 */
-        // Add your code here
+        UserDetailEntity userDetail = userDetailService.queryUserDetailById(orderEntity.getUserId());
+        if(userDetail.getAccount()<totalPrice){
+            res.put("message","Insufficient balance");
+            return res;
+        }
 
+        double succPrice = 0L;
         /* 票品数量不足 */
-
+        Set<ItemEntity> items = orderEntity.getItems();
+        List<ItemEntity> failItems = new LinkedList<>();
+        for(ItemEntity eachItem : items){
+            /*
+            * 如果库存够 会减去getNumber
+            * 如果不够 就不会做任何事情
+            *false 表示失败
+            * */
+            if(!ticketService.updateStockMinus(eachItem.getTicketId(),eachItem.getNumber())){
+                eachItem.setStatus("失败");
+                failItems.add(eachItem);
+                continue;
+            }
+            succPrice += eachItem.getPrice()*eachItem.getNumber();
+            eachItem.setStatus("成功");
+        }
 
         /* 订单支付成功 */
         orderEntity.setStatus("待发货");
-        setItemsStatus(orderEntity,"成功");
         orderRepository.save(orderEntity);
-        return "ok";
+        res.put("message","success");
+        res.put("Inventory shortage",failItems);
+        userDetailService.updateAccount(orderEntity.getUserId(),userDetail.getAccount()-succPrice);
+        return res;
 
     }
     @Override
@@ -142,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
     /******************************************************************/
     /** for test **/
     @Override
-    public OrderEntity test(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, int number) {
+    public OrderEntity test(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, Long number) {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setOrderid(0L);
         orderEntity.setUserId(userEntity.getId());
@@ -231,6 +228,86 @@ public class OrderServiceImpl implements OrderService {
         return "ok";
     }
 
+
+    /*
+    * 只包含order的基本信息
+    * orderid status ordertime
+    * */
+    @Override
+    public OrderEntity createBasicOrder() {
+        OrderEntity partOrder = new OrderEntity();
+        partOrder.setOrderid(0L);
+        partOrder.setStatus("待付款");
+        partOrder.setOrderTime(new Date());
+        return partOrder;
+    }
+
+    /*填入order 进阶信息 即userid receiver phone address*/
+    public OrderEntity createAdditionOrderEntity(OrderEntity orderEntity, UserEntity userEntity, UserDetailEntity userDetailEntity,String receiver,String phone,String address ){
+        orderEntity.setUserId(userEntity.getId());
+
+        if(receiver==null||receiver.trim().equals(""))
+            orderEntity.setReceiver(userEntity.getUsername());
+        else
+            orderEntity.setReceiver(receiver);
+
+        if(phone==null||phone.trim().equals(""))
+            orderEntity.setPhone(userDetailEntity.getPhone());
+        else
+            orderEntity.setPhone(phone);
+
+        if(address==null||address.trim().equals(""))
+            orderEntity.setAddress(userDetailEntity.getAddress());
+        else
+            orderEntity.setAddress(address);
+        return orderEntity;
+    }
+
+    /*
+    * 创建了一个完整的item entity
+    * 并 填入了order entity
+    * */
+    @Override
+    public ItemEntity createFullItemFromOrder(OrderEntity orderEntity, TicketEntity ticketEntity,double price, String date, Long number){
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setItemId(0L);
+        itemEntity.setStatus("未操作");
+
+        itemEntity.setImage(ticketEntity.getImage());
+        itemEntity.setCity(ticketEntity.getCity());
+        itemEntity.setVenue(ticketEntity.getVenue());
+        itemEntity.setTicketId(ticketEntity.getId());
+        itemEntity.setTitle(ticketEntity.getTitle());
+
+        itemEntity.setOrderEntity(orderEntity);
+
+        itemEntity.setPrice(price);
+        itemEntity.setDate(date);
+        itemEntity.setNumber(number);
+
+        return itemEntity;
+    }
+
+    @Override
+    public ItemEntity createFullItemFromCartAndOrder(CartEntity cartEntity, OrderEntity orderEntity) {
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setItemId(0L);
+        itemEntity.setStatus("未操作");
+
+        itemEntity.setNumber(cartEntity.getNumber());
+        itemEntity.setImage(cartEntity.getImage());
+        itemEntity.setDate(cartEntity.getDate());
+        itemEntity.setCity(cartEntity.getCity());
+        itemEntity.setVenue(cartEntity.getVenue());
+        itemEntity.setPrice(cartEntity.getPrice());
+        itemEntity.setTicketId(cartEntity.getTicketId());
+        itemEntity.setTitle(cartEntity.getTitle());
+
+        itemEntity.setOrderEntity(orderEntity);
+
+        return itemEntity;
+    }
+
     /***************************************/
     /* 自定义函数 */
     public String setItemsStatus(OrderEntity order,String newStatus){
@@ -240,5 +317,7 @@ public class OrderServiceImpl implements OrderService {
         order.setItems(items);
         return "ok";
     }
+
+
     /***************************************/
 }
