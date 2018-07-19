@@ -70,6 +70,15 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
         return true;
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
+    public Boolean updateAccountPlusById(Long userid, double toPlus) {
+        UserDetailEntity userDetail = userDetailRepository.findById(userid);
+        userDetail.setAccount(userDetail.getAccount()+toPlus);
+        userDetailRepository.save(userDetail);
+        return true;
+    }
+
     @Override
     public String saveAvatar(MultipartFile avatar){
         try {

@@ -71,5 +71,13 @@ public class UserDetailController {
 
         return manageUserDetailService.updateAccountMinusById(userid,toMinus);
     }
+    @RequestMapping(value = "/PlusAccount")
+    @ResponseBody
+    public Boolean plusAccount(HttpServletRequest request, HttpServletResponse response){
+        Long userid = Long.parseLong(request.getParameter("userid").trim());
+        double toPlus = Double.parseDouble(request.getParameter("plus").trim());
+
+        return manageUserDetailService.updateAccountPlusById(userid,toPlus);
+    }
 
 }
