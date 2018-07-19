@@ -1,5 +1,6 @@
 package sjtusummerproject.usermicroservice.Service;
 
+import org.springframework.web.multipart.MultipartFile;
 import sjtusummerproject.usermicroservice.DataModel.Domain.UserDetailEntity;
 
 public interface ManageUserDetailService {
@@ -7,4 +8,5 @@ public interface ManageUserDetailService {
     public UserDetailEntity updateByUserId(Long userid,String avatar,String phone,String address,String account);
     public UserDetailEntity queryByUserId(Long userid);
     public Boolean updateAccountMinusById(Long userid, double toMinus);
+    public String saveAvatar(MultipartFile avatar);
 }

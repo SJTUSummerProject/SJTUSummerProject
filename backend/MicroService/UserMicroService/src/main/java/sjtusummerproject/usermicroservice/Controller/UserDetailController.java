@@ -1,14 +1,19 @@
 package sjtusummerproject.usermicroservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import sjtusummerproject.usermicroservice.DataModel.Domain.UserDetailEntity;
 import sjtusummerproject.usermicroservice.Service.ManageUserDetailService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/UserDetail")
@@ -18,9 +23,11 @@ public class UserDetailController {
 
     @RequestMapping(value = "/SaveByUserid")
     @ResponseBody
-    public UserDetailEntity saveByUserid(HttpServletRequest request, HttpServletResponse response){
+    public UserDetailEntity saveByUserid(HttpServletRequest request,
+                                         @RequestParam(name = "avatar", required = false) MultipartFile frontAvatar,
+                                         HttpServletResponse response){
         Long userid = Long.parseLong(request.getParameter("userid").trim());
-        String avatar = request.getParameter("avatar"); //头像
+        String avatar = manageUserDetailService.saveAvatar(frontAvatar); //头像
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         double account = Double.parseDouble(request.getParameter("account").trim());
@@ -37,9 +44,11 @@ public class UserDetailController {
 
     @RequestMapping(value = "/UpdateByUserid")
     @ResponseBody
-    public UserDetailEntity updateByUserid(HttpServletRequest request, HttpServletResponse response){
+    public UserDetailEntity updateByUserid(HttpServletRequest request,
+                                           @RequestParam(name = "avatar") MultipartFile frontAvatar,
+                                           HttpServletResponse response){
         Long userid = Long.parseLong(request.getParameter("userid").trim());
-        String avatar = request.getParameter("avatar");
+        String avatar = manageUserDetailService.saveAvatar(frontAvatar);
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         String account = request.getParameter("account").trim();
@@ -62,4 +71,5 @@ public class UserDetailController {
 
         return manageUserDetailService.updateAccountMinusById(userid,toMinus);
     }
+
 }
