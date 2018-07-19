@@ -14,7 +14,7 @@ public class ManagePictureServiceImpl implements ManagePictureService {
     PictureRepository pictureRepository;
 
     @Override
-    public PictureEntity save(UUID uuid, byte[] picture) {
+    public PictureEntity save(String uuid, byte[] picture) {
         PictureEntity pictureEntity = new PictureEntity();
         pictureEntity.setUuid(uuid);
         pictureEntity.setBase64(picture);
@@ -23,7 +23,7 @@ public class ManagePictureServiceImpl implements ManagePictureService {
     }
 
     @Override
-    public PictureEntity query(UUID uuid) {
+    public PictureEntity query(String uuid) {
         return pictureRepository.findByUuid(uuid);
     }
 }

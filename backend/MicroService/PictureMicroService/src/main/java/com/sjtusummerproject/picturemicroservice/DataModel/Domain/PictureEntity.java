@@ -8,14 +8,14 @@ import java.util.UUID;
 @Document(collection="Picture")
 public class PictureEntity {
     @Id
-    UUID uuid;
+    String uuid;
     byte[] base64;
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 

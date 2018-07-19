@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.UUID;
 
-public interface PictureRepository extends MongoRepository<PictureEntity,UUID> {
-    public PictureEntity findByUuid(UUID uuid);
+public interface PictureRepository extends MongoRepository<PictureEntity,String> {
+    public PictureEntity findByUuid(String uuid);
 }
