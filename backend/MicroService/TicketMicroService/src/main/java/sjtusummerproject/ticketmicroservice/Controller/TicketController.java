@@ -13,6 +13,7 @@ import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.peer.LabelPeer;
 import java.util.List;
 
 @RestController
@@ -185,5 +186,12 @@ public class TicketController {
         return manageTicketService.QueryTicketOptionByBatchIds(ids);
     }
 
+    @RequestMapping(value = "/MinusStock")
+    @ResponseBody
+    public Boolean minusStock(HttpServletRequest request, HttpServletResponse response){
+        Long ticketid = Long.parseLong(request.getParameter("ticketid").trim());
+        Long toMinus = Long.parseLong(request.getParameter("minus").trim());
 
+        return manageTicketService.updateStockMinusById(ticketid,toMinus);
+    }
 }

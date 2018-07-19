@@ -1,14 +1,8 @@
 package com.sjtusummerproject.ordermicroservice.Controller;
 
 import com.sjtusummerproject.ordermicroservice.DataModel.Dao.OrderRepository;
-import com.sjtusummerproject.ordermicroservice.DataModel.Domain.CartEntity;
-import com.sjtusummerproject.ordermicroservice.DataModel.Domain.OrderEntity;
-import com.sjtusummerproject.ordermicroservice.DataModel.Domain.TicketEntity;
-import com.sjtusummerproject.ordermicroservice.DataModel.Domain.UserEntity;
-import com.sjtusummerproject.ordermicroservice.Service.CartService;
-import com.sjtusummerproject.ordermicroservice.Service.OrderService;
-import com.sjtusummerproject.ordermicroservice.Service.TicketService;
-import com.sjtusummerproject.ordermicroservice.Service.UserService;
+import com.sjtusummerproject.ordermicroservice.DataModel.Domain.*;
+import com.sjtusummerproject.ordermicroservice.Service.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -36,7 +31,8 @@ public class OrderController {
     UserService userService;
     @Autowired
     CartService cartService;
-
+    @Autowired
+    UserDetailService userDetailService;
 
     @Value("${cart.page.size}")
     private int PageSize;
@@ -64,17 +60,28 @@ public class OrderController {
         Long ticketid = Long.parseLong(request.getParameter("ticketid"));
         double price = Double.parseDouble(request.getParameter("price"));
         String date = request.getParameter("date");
-        int number = Integer.parseInt(request.getParameter("number"));
+        Long number = Long.parseLong(request.getParameter("number"));
+        String receiver = request.getParameter("receiver");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
 
         TicketEntity ticketEntity = ticketService.queryTicketById(ticketid);
         UserEntity userEntity = userService.queryById(userid);
-        return orderService.saveInDetailPage(userEntity,ticketEntity,price,date,number);
+        UserDetailEntity userDetailEntity = userDetailService.queryUserDetailById(userid);
+
+        /*此partOrder只含有orderid status("待支付") time三个基本属性*/
+        OrderEntity partOrder = orderService.createBasicOrder();
+        /*继续填入进阶信息 即userid receiver phone address*/
+        /*最后还差 items*/
+        partOrder = orderService.createAdditionOrderEntity(partOrder,userEntity,userDetailEntity,receiver,phone,address);
+        ItemEntity itemEntity = orderService.createFullItemFromOrder(partOrder, ticketEntity, price, date, number);
+        return orderService.saveInDetailPage(partOrder,itemEntity);
     }
 
-    /* 在详细页面/购物车/订单页面 点击购买 并且成功 */
-    @RequestMapping(value = "/BuySuccessInDetailPage")
+    /* 在详细页面/购物车/订单页面 点击购买 */
+    @RequestMapping(value = "/Buy")
     @ResponseBody
-    public String buyOrder(HttpServletRequest request, HttpServletResponse response){
+    public HashMap<String,Object> buyOrder(HttpServletRequest request, HttpServletResponse response){
         Long orderid = Long.parseLong(request.getParameter("orderid"));
         return orderService.buy(orderid);
     }
@@ -89,10 +96,18 @@ public class OrderController {
         String cartids = request.getParameter("cartids");
         Long userid = Long.parseLong(request.getParameter("userid"));
 
+        String receiver = request.getParameter("receiver");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+
         List<CartEntity> carts = cartService.queryByBatchIds(cartids);
         UserEntity userEntity = userService.queryById(userid);
+        UserDetailEntity userDetailEntity = userDetailService.queryUserDetailById(userid);
+        /*经过一下两步 partorder 只差items列表了，需要从carts中拿到items*/
+        OrderEntity partOrder = orderService.createBasicOrder();
+        partOrder = orderService.createAdditionOrderEntity(partOrder,userEntity,userDetailEntity,receiver,phone,address);
 
-        return orderService.saveBatchInCart(userEntity,carts);
+        return orderService.saveBatchInCart(partOrder,userEntity,carts);
     }
 
     /*
@@ -148,7 +163,7 @@ public class OrderController {
 
         double price = 580;
         String date = "2018-07-17 21:00";
-        int number = 5;
+        Long number = 5l;
 
         OrderEntity res = orderService.test(userEntity,ticketEntity,price,date,number);
         return res;

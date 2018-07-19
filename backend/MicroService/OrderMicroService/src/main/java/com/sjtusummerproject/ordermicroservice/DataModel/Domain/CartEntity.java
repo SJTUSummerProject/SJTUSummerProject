@@ -10,7 +10,7 @@ public class CartEntity {
     Long userId;
     Long ticketId;
     double price;
-    int number;
+    Long number;
     String image;
     String title;
     String date;
@@ -65,11 +65,11 @@ public class CartEntity {
         this.price = price;
     }
 
-    public int getNumber() {
+    public Long getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Long number) {
         this.number = number;
     }
 
