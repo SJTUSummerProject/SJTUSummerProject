@@ -12,9 +12,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,52 +32,39 @@ public class CartController {
     UserService userService;
     @Autowired
     CartService cartService;
+    @Autowired
+    RestTemplate restTemplate;
 
     @Value("${cart.page.size}")
     private int PageSize;
     @Value("${cart.page.offset}")
     private int PageOffset;
 
+    @Value("${authservice.url}")
+    private String url;
+
     /* Get Pageable */
     Pageable createPageable(HttpServletRequest request){
-        return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.ASC, "id"));
+        return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.DESC, "id"));
     }
 
     /* "/SaveInDetailPage" 包括了更新与插入 */
     @RequestMapping(value = "/SaveInDetailPage")
     @ResponseBody
     public String saveInDetailPage(HttpServletRequest request, HttpServletResponse response){
-        /* parameters */
+        String token = request.getParameter("token");
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+        /*parameters*/
         Long ticketId = Long.parseLong(request.getParameter("ticketid"));
-        Long userId = Long.parseLong(request.getParameter("userid"));
         double price = Double.parseDouble(request.getParameter("price"));
         String date = request.getParameter("date");
-        int number = Integer.parseInt(request.getParameter("number"));
+        Long number = Long.parseLong(request.getParameter("number"));
 
         TicketEntity ticketEntity = ticketService.queryTicketById(ticketId);
-        UserEntity userEntity = userService.queryById(userId);
         cartService.saveInDetailPageByMultiInfo(userEntity,ticketEntity,price,date,number);
-        return "ok";
-    }
-
-    /* 在购物车点击 + 按钮，点一次触发一次 */
-    @RequestMapping(value = "/NumberPlusOneInCart")
-    @ResponseBody
-    public String numberPlusOneInCart(HttpServletRequest request, HttpServletResponse response){
-        /* parameters */
-        Long entryId = Long.parseLong(request.getParameter("entryid"));
-        cartService.numberPlusOneInCartById(entryId);
-        return "ok";
-    }
-
-    /* 在购物车点击 - 按钮，点一次触发一次 */
-    @RequestMapping(value = "/NumberMinusOneInCart")
-    @ResponseBody
-    public String numberMinusOneInCart(HttpServletRequest request,HttpServletResponse response){
-        /* parameters */
-        Long entryId = Long.parseLong(request.getParameter("entryid"));
-
-        cartService.numberMinusOneInCartById(entryId);
         return "ok";
     }
 
@@ -82,57 +72,68 @@ public class CartController {
     @RequestMapping(value = "/NumberEditInCart")
     @ResponseBody
     public String numberPlusSomeInCart(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter("token");
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
         /* parameters */
         Long entryId = Long.parseLong(request.getParameter("entryid"));
-        int number = Integer.parseInt(request.getParameter("number"));
 
+        Long number = Long.parseLong(request.getParameter("number"));
         cartService.numberEditInCartById(entryId,number);
-        return "ok";
-    }
-
-    /* 在购物车 "删除 <物品>"，点击删除触发 */
-    @RequestMapping(value = "/DeleteInCart")
-    @ResponseBody
-    public String deleteIncart(HttpServletRequest request, HttpServletResponse response){
-        /* parameters */
-        Long entryId = Long.parseLong(request.getParameter("entryid"));
-
-        cartService.deleteInCartById(entryId);
         return "ok";
     }
 
     @RequestMapping(value = "/DeleteBatchInCart")
     @ResponseBody
     public String deleteBatchInCart(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter("token");
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
         /* parameters */
         String entryIds = request.getParameter("batchentryid");
-
         cartService.deleteBatchInCartByIds(entryIds);
         return "ok";
     }
 
     /* 访问购物车界面 即触发 */
     /* 有page! */
-    @RequestMapping(value = "/QueryByUserid")
+    @RequestMapping(value = "/QueryByUserId")
     @ResponseBody
     public Page<CartEntity> queryByUserid(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter("token");
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+
         /* parameters */
-        Long userId = Long.parseLong(request.getParameter("userid"));
-
+        Long userId = userEntity.getId();
         return cartService.findInCartByUserid(userId,createPageable(request));
-    }
-
-    @RequestMapping(value = "/QueryById")
-    @ResponseBody
-    public CartEntity queryById(HttpServletRequest request, HttpServletResponse response){
-        Long cartid = Long.parseLong(request.getParameter("cartid"));
-        return cartService.queryById(cartid);
     }
 
     @RequestMapping(value = "/QueryBatchByIds")
     @ResponseBody
     public List<CartEntity> queryBatchByIds(HttpServletRequest request, HttpServletResponse response){
+        /* parameters*/
         String ids = request.getParameter("batchid");
         return cartService.queryByBatchId(ids);
+    }
+
+    private UserEntity callAuthService(String token){
+        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
+        multiValueMap.add("token", token);
+        return restTemplate.postForObject(url, multiValueMap, UserEntity.class);
+    }
+
+    private int authUser(UserEntity userEntity){
+
+        if (userEntity == null) return 1;
+        else if (!userEntity.getAuthority().equals("Customer")) return 2;
+        else if (userEntity.getStatus().equals("Frozen")) return 3;
+        else return 0;
     }
 }
