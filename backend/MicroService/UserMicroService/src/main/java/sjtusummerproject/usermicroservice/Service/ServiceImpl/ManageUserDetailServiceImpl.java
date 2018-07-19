@@ -2,11 +2,14 @@ package sjtusummerproject.usermicroservice.Service.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import sjtusummerproject.usermicroservice.DataModel.Dao.UserDetailRepository;
 import sjtusummerproject.usermicroservice.DataModel.Domain.UserDetailEntity;
 import sjtusummerproject.usermicroservice.DataModel.Domain.UserEntity;
 import sjtusummerproject.usermicroservice.Service.ManageUserDetailService;
 import sjtusummerproject.usermicroservice.Service.ManageUserService;
+
 
 @Service
 public class ManageUserDetailServiceImpl implements ManageUserDetailService {
@@ -44,5 +47,14 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
     @Override
     public UserDetailEntity queryByUserId(Long userid) {
         return userDetailRepository.findById(userid);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
+    public Boolean updateAccountMinusById(Long userid, double toMinus) {
+        UserDetailEntity userDetail = userDetailRepository.findById(userid);
+        userDetail.setAccount(userDetail.getAccount()-toMinus);
+        userDetailRepository.save(userDetail);
+        return true;
     }
 }
