@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import sjtusummerproject.usermicroservice.DataModel.Domain.UserDetailEntity;
 import sjtusummerproject.usermicroservice.Service.ManageUserDetailService;
@@ -24,10 +25,11 @@ public class UserDetailController {
     @RequestMapping(value = "/SaveByUserid")
     @ResponseBody
     public UserDetailEntity saveByUserid(HttpServletRequest request,
-                                         @RequestParam(name = "avatar", required = false) MultipartFile frontAvatar,
+                                         @RequestParam(value="frontAvatar", required = false) MultipartFile frontAvatar,
                                          HttpServletResponse response){
         Long userid = Long.parseLong(request.getParameter("userid").trim());
         String avatar = manageUserDetailService.saveAvatar(frontAvatar); //头像
+        //System.out.println(avatar);
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         double account = Double.parseDouble(request.getParameter("account").trim());
@@ -45,7 +47,7 @@ public class UserDetailController {
     @RequestMapping(value = "/UpdateByUserid")
     @ResponseBody
     public UserDetailEntity updateByUserid(HttpServletRequest request,
-                                           @RequestParam(name = "avatar") MultipartFile frontAvatar,
+                                           @RequestParam(name = "avatar", required = false) MultipartFile frontAvatar,
                                            HttpServletResponse response){
         Long userid = Long.parseLong(request.getParameter("userid").trim());
         String avatar = manageUserDetailService.saveAvatar(frontAvatar);
