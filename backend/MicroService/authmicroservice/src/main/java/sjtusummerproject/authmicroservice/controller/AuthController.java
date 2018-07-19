@@ -19,9 +19,12 @@ public class AuthController {
     public UserEntity authUser(HttpServletRequest request, HttpServletResponse response){
         String token = request.getParameter("token");
         String userString = (String)redisTemplate.opsForValue().get(token);
-        JSONObject jsonObject = JSONObject.fromObject(userString);
-        UserEntity result = (UserEntity)JSONObject.toBean(jsonObject, UserEntity.class);
-        System.out.println(result.getUsername());
-        return result;
+        if (userString == null) return null;
+        else {
+            JSONObject jsonObject = JSONObject.fromObject(userString);
+            UserEntity result = (UserEntity)JSONObject.toBean(jsonObject, UserEntity.class);
+            //System.out.println(result.getUsername());
+            return result;
+        }
     }
 }
