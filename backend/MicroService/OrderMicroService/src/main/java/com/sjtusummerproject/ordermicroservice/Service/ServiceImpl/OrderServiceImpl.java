@@ -1,5 +1,6 @@
 package com.sjtusummerproject.ordermicroservice.Service.ServiceImpl;
 
+import com.sjtusummerproject.ordermicroservice.Config.RabbitMQConfig;
 import com.sjtusummerproject.ordermicroservice.DataModel.Dao.ItemRepository;
 import com.sjtusummerproject.ordermicroservice.DataModel.Dao.OrderPageRepository;
 import com.sjtusummerproject.ordermicroservice.DataModel.Dao.OrderRepository;
@@ -8,11 +9,14 @@ import com.sjtusummerproject.ordermicroservice.Service.OrderService;
 import com.sjtusummerproject.ordermicroservice.Service.TicketService;
 import com.sjtusummerproject.ordermicroservice.Service.UserDetailService;
 import org.aspectj.weaver.ast.Or;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -29,12 +33,19 @@ public class OrderServiceImpl implements OrderService {
     TicketService ticketService;
     @Autowired
     UserDetailService userDetailService;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Value("${order.dayInMillisec}")
     Long dayInMillisec;
     @Override
     public Page<OrderEntity> queryByUserid(Long userid, Pageable pageable) {
         return orderPageRepository.findAllByUserId(userid,pageable);
+    }
+
+    @Override
+    public OrderEntity queryByOrderid(Long orderid) {
+        return orderRepository.findByOrderId(orderid);
     }
 
     @Override
@@ -114,10 +125,48 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orderEntity);
         res.put("message","success");
         res.put("Inventory shortage",failItems);
-        userDetailService.updateAccount(orderEntity.getUserId(),userDetail.getAccount()-succPrice);
+        /*减去succPrice*/
+        userDetailService.updateAccountMinus(orderEntity.getUserId(),succPrice);
         return res;
-
     }
+
+    @Override
+    public String cancel(Long orderid) {
+        OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
+        double totalPrice = 0l;
+        Set<ItemEntity> items = orderEntity.getItems();
+        for(ItemEntity eachitem : items){
+            if(eachitem.getStatus().equals("成功")){
+                totalPrice += eachitem.getPrice()*eachitem.getNumber();
+                eachitem.setStatus("失败");
+                ticketService.updateStockPlus(eachitem.getTicketId(),eachitem.getNumber());
+            }
+        }
+        userDetailService.updateAccountPlus(orderEntity.getUserId(),totalPrice);
+
+        orderEntity.setStatus("已取消");
+        orderRepository.save(orderEntity);
+        return "ok";
+    }
+
+    /*发送 申请退款 的消息*/
+    @Override
+    public String addWithdrawRabbit(OrderEntity orderEntity) {
+        Date now = new Date();
+
+        if((now.getTime() - orderEntity.getOrderTime().getTime()>7*dayInMillisec))
+        {
+            return "已超过7天 不能退款";
+        }
+
+        orderEntity.setStatus("退款中");
+        orderRepository.save(orderEntity);
+        MultiValueMap<String,Long> message = new LinkedMultiValueMap<>();
+        message.add("orderid",orderEntity.getOrderId());
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
+        return "ok";
+    }
+
     @Override
     public String deleteOne(Long orderid) {
         OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
@@ -227,7 +276,6 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orderEntity);
         return "ok";
     }
-
 
     /*
     * 只包含order的基本信息

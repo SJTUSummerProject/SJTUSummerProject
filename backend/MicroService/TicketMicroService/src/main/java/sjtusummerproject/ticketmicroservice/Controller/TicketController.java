@@ -194,4 +194,13 @@ public class TicketController {
 
         return manageTicketService.updateStockMinusById(ticketid,toMinus);
     }
+
+    @RequestMapping(value = "/PlusStock")
+    @ResponseBody
+    public Boolean plusStock(HttpServletRequest request, HttpServletResponse response){
+        Long ticketid = Long.parseLong(request.getParameter("ticketid").trim());
+        Long toPlus = Long.parseLong(request.getParameter("plus").trim());
+
+        return manageTicketService.updateStockPlusById(ticketid,toPlus);
+    }
 }

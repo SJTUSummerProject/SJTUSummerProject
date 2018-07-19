@@ -40,12 +40,21 @@ public class TicketServiceImpl implements TicketService{
         return result;
     }
 
-    /*return "fail" or "success"*/
+    /*return "true" or "false"*/
     @Override
-    public String updateStockMinus(Long id, Long toMinus){
+    public Boolean updateStockMinus(Long id, Long toMinus){
         String url = baseUrl+"/Ticket/MinusStock?"+"ticketid="+id+"&minus="+toMinus;
         RestTemplate template = new RestTemplate();
-        String res = template.getForObject(url,String.class);
+        Boolean res = template.getForObject(url,Boolean.class);
+        return res;
+    }
+
+    /*return "true" or "false"*/
+    @Override
+    public Boolean updateStockPlus(Long id, Long toPlus){
+        String url = baseUrl+"/Ticket/PlusStock?"+"ticketid="+id+"&minus="+toPlus;
+        RestTemplate template = new RestTemplate();
+        Boolean res = template.getForObject(url,Boolean.class);
         return res;
     }
 }

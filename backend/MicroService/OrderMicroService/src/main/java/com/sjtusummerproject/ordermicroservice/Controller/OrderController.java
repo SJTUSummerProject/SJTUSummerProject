@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,7 +42,7 @@ public class OrderController {
 
     /* Get Pageable */
     Pageable createPageable(HttpServletRequest request){
-        return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.ASC, "id"));
+        return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.DESC, "id"));
     }
 
     @RequestMapping(value = "/QueryByUserid")
@@ -84,6 +85,27 @@ public class OrderController {
     public HashMap<String,Object> buyOrder(HttpServletRequest request, HttpServletResponse response){
         Long orderid = Long.parseLong(request.getParameter("orderid"));
         return orderService.buy(orderid);
+    }
+
+    /* 在订单页面 点击取消订单
+     * 此时订单的状态一定为待发货
+     * */
+    @RequestMapping(value = "/Cancel")
+    @ResponseBody
+    public String cancelOrder(HttpServletRequest request, HttpServletResponse response){
+        Long orderid = Long.parseLong(request.getParameter("orderid"));
+        return orderService.cancel(orderid);
+    }
+
+    /*
+    * 在订单页面 点击申请退款
+    * 此时订单的状态一定为已发货／已签收
+    * */
+    @RequestMapping(value = "Withdraw")
+    @ResponseBody
+    public String withdrawOrder(@RequestParam(value = "orderid") Long orderid){
+         OrderEntity orderEntity = orderService.queryByOrderid(orderid);
+         return orderService.addWithdrawRabbit(orderEntity);
     }
 
     /*
