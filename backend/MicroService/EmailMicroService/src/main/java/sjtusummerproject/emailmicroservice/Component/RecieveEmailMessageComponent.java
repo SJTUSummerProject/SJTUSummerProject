@@ -21,7 +21,7 @@ public class RecieveEmailMessageComponent {
     SendEmailService sendEmailService;
 
 	@Autowired
-            @Qualifier("redisTemplate")
+    @Qualifier("redisTemplate")
     RedisTemplate redisTemplate;
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
