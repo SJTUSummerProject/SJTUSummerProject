@@ -6,5 +6,6 @@ import sjtusummerproject.usermicroservice.DataModel.Domain.UserEntity;
 public interface UserRepository extends CrudRepository<UserEntity,Long> {
     UserEntity findFirstByUsername(String username);
     UserEntity findByUsername(String username);
+    UserEntity findById(Long id);
     void deleteByUsername(String username);
 }
