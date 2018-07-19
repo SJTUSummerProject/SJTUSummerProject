@@ -363,9 +363,10 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Boolean updateStockMinusById(Long id, Long toMinus) {
         TicketEntity ticket = ticketRepository.findById(id);
-        if(ticket.getStock() < toMinus)
+        Long stock = ticket.getStock();
+        if(stock < toMinus)
             return false;
-        ticket.setStock(ticket.getStock()-toMinus);
+        ticket.setStock(stock-toMinus);
         return true;
     }
 
