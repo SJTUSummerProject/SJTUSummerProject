@@ -36,9 +36,11 @@ public class RecieveWithdrawRabbit {
             if(eachitem.getStatus().equals("成功")){
                 totalPrice += eachitem.getPrice()*eachitem.getNumber();
                 eachitem.setStatus("失败");
+                /*重新给ticket加上库存*/
                 ticketService.updateStockPlus(eachitem.getTicketId(),eachitem.getNumber());
             }
         }
+        /*退款给用户*/
         userDetailService.updateAccountPlus(orderEntity.getUserId(),totalPrice);
 
         orderEntity.setStatus("已退款");
