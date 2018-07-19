@@ -18,7 +18,7 @@ public class ManageUserServiceImpl implements ManageUserService {
 
     @Override
     public UserEntity QueryUserByIdOption(Long id) {
-        return null;
+        return userRepository.findById(id);
     }
 
     /* 此处有硬编码！-将authority设置为customer */

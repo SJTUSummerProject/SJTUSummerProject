@@ -28,14 +28,6 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value = "/QueryById")
-    @ResponseBody
-    public UserEntity QueryUserById(HttpServletRequest request, HttpServletResponse response){
-        Long id = Long.parseLong(request.getParameter("userid"));
-        UserEntity user = manageUserService.QueryUserByIdOption(id);
-        return user;
-    }
-
     @PostMapping(value = "/Add")
     @ResponseBody
     public String AddUser(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("status")String status, String authority ,HttpServletRequest request, HttpServletResponse response){
@@ -49,7 +41,7 @@ public class UserController {
         UserEntity userEntity = manageUserService.QueryUserOption(username);
         UserDetailEntity partUserDetail = new UserDetailEntity();
         partUserDetail.setId(userEntity.getId());
-        manageUserDetailService.saveByUserId(userEntity.getId(),partUserDetail);
+        manageUserDetailService.saveByUserId(userEntity,partUserDetail);
 
         return res;
     }
@@ -75,11 +67,6 @@ public class UserController {
         manageUserService.UpdateUserPasswordOption(username,password);
     }
 
-    @PostMapping(value="/UpdateEmail")
-    @ResponseBody
-    public void UpdateUserEmail(@RequestParam(name="username")String username,@RequestParam(name="email") String email,HttpServletRequest request, HttpServletResponse response){
-        manageUserService.UpdateUserEmailOption(username,email);
-    }
 
     @PostMapping(value="/UpdateAuthority")
     @ResponseBody

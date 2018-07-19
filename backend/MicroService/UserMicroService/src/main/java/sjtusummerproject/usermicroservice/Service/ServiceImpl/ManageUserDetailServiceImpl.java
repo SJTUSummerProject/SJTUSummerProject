@@ -40,14 +40,13 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
     String imgServiceUrl;
 
     @Override
-    public UserDetailEntity saveByUserId(Long userid,UserDetailEntity partUserDetail) {
-        UserEntity user = manageUserService.QueryUserByIdOption(userid);
-
-    //    partUserDetail.setUsername(user.getUsername());
-     //   partUserDetail.setEmail(user.getEmail());
-
+    public UserDetailEntity saveByUserId(UserEntity user,UserDetailEntity partUserDetail) {
+        partUserDetail.setUsername(user.getUsername());
+        partUserDetail.setEmail(user.getEmail());
         return userDetailRepository.save(partUserDetail);
     }
+
+
 
     @Override
     public UserDetailEntity updateByUserId(Long userid, String avatar, String phone, String address, String account) {

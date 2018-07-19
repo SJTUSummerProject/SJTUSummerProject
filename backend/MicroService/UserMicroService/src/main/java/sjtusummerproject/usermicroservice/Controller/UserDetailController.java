@@ -2,6 +2,8 @@ package sjtusummerproject.usermicroservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import sjtusummerproject.usermicroservice.DataModel.Domain.UserDetailEntity;
+import sjtusummerproject.usermicroservice.DataModel.Domain.UserEntity;
 import sjtusummerproject.usermicroservice.Service.ManageUserDetailService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,34 +25,22 @@ public class UserDetailController {
     @Autowired
     ManageUserDetailService manageUserDetailService;
 
-    @RequestMapping(value = "/SaveByUserid")
-    @ResponseBody
-    public UserDetailEntity saveByUserid(HttpServletRequest request,
-                                         @RequestParam(value="frontAvatar", required = false) MultipartFile frontAvatar,
-                                         HttpServletResponse response){
-        Long userid = Long.parseLong(request.getParameter("userid").trim());
-        String avatar = manageUserDetailService.saveAvatar(frontAvatar); //头像
-        //System.out.println(avatar);
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        double account = Double.parseDouble(request.getParameter("account").trim());
+    RestTemplate restTemplate = new RestTemplate();
 
-        UserDetailEntity partUserDetail = new UserDetailEntity();
-        partUserDetail.setId(userid);
-        partUserDetail.setAvatar(avatar);
-        partUserDetail.setPhone(phone);
-        partUserDetail.setAddress(address);
-        partUserDetail.setAccount(account);
-
-        return manageUserDetailService.saveByUserId(userid,partUserDetail);
-    }
+    @Value("${authservice.url}")
+    private String url;
 
     @RequestMapping(value = "/UpdateByUserid")
     @ResponseBody
     public UserDetailEntity updateByUserid(HttpServletRequest request,
                                            @RequestParam(name = "avatar", required = false) MultipartFile frontAvatar,
                                            HttpServletResponse response){
-        Long userid = Long.parseLong(request.getParameter("userid").trim());
+        String token = request.getParameter("token");
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+        Long userid = userEntity.getId();
         String avatar = manageUserDetailService.saveAvatar(frontAvatar);
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
@@ -61,7 +52,12 @@ public class UserDetailController {
     @RequestMapping(value = "/QueryByUserid")
     @ResponseBody
     public UserDetailEntity queryByUserid(HttpServletRequest request, HttpServletResponse response){
-        Long userid = Long.parseLong(request.getParameter("userid").trim());
+        String token = request.getParameter("token");
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+        Long userid = userEntity.getId();
         return manageUserDetailService.queryByUserId(userid);
     }
 
@@ -80,6 +76,19 @@ public class UserDetailController {
         double toPlus = Double.parseDouble(request.getParameter("plus").trim());
 
         return manageUserDetailService.updateAccountPlusById(userid,toPlus);
+    }
+    private UserEntity callAuthService(String token){
+        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
+        multiValueMap.add("token", token);
+        return restTemplate.postForObject(url, multiValueMap, UserEntity.class);
+    }
+
+    private int authUser(UserEntity userEntity){
+
+        if (userEntity == null) return 1;
+        else if (!userEntity.getAuthority().equals("Customer")) return 2;
+        else if (userEntity.getStatus().equals("Frozen")) return 3;
+        else return 0;
     }
 
 }
