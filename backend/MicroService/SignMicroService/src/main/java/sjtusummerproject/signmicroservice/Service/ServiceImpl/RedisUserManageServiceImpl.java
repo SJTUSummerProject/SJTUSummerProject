@@ -34,13 +34,23 @@ public class RedisUserManageServiceImpl implements RedisUserManageService {
     public void AddTokenUserRedis(String token, UserEntity user){
         JSONObject jsonObject = JSONObject.fromObject(user);
         String userString = jsonObject.toString();
-        System.out.println("userJson: "+userString);
+        //System.out.println("userJson: "+userString);
         redisTemplate.opsForValue().set(token, userString, 24, TimeUnit.HOURS);
+        String oldToken = (String)redisTemplate.opsForValue().get(user.getId());
+        if (oldToken != null){
+            redisTemplate.delete(oldToken);
+        }
+        redisTemplate.opsForValue().set(user.getId(), token, 24, TimeUnit.HOURS);
     }
 
 
     @Override
-    public void DeleteTokenRedis(String token){
+    public void DeleteTokenRedis(String token) {
+        String userString = (String)redisTemplate.opsForValue().get(token);
+        if (userString == null) return;
+        JSONObject userJson = JSONObject.fromObject(userString);
+        UserEntity userEntity = (UserEntity) JSONObject.toBean(userJson, UserEntity.class);
+        redisTemplate.delete(userEntity.getId());
         redisTemplate.delete(token);
     }
 }

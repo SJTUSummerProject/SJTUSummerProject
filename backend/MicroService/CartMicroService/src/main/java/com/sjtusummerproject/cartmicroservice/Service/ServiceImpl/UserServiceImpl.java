@@ -3,6 +3,7 @@ package com.sjtusummerproject.cartmicroservice.Service.ServiceImpl;
 import com.sjtusummerproject.cartmicroservice.DataModel.Domain.TicketEntity;
 import com.sjtusummerproject.cartmicroservice.DataModel.Domain.UserEntity;
 import com.sjtusummerproject.cartmicroservice.Service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +15,7 @@ public class UserServiceImpl implements UserService{
         return new RestTemplate();
     }
 
+    @Value("${userservice.url}")
     String baseUrl="http://user-microservice:8080";
 
     @Override
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService{
         RestTemplate template = new RestTemplate();
         UserEntity result = template.getForObject(url, UserEntity.class);
 
-        System.out.println("the result in query user " + result);
+        //System.out.println("the result in query user " + result);
         return result;
     }
 

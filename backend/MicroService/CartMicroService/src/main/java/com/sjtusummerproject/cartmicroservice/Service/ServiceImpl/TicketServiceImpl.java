@@ -2,6 +2,7 @@ package com.sjtusummerproject.cartmicroservice.Service.ServiceImpl;
 
 import com.sjtusummerproject.cartmicroservice.DataModel.Domain.TicketEntity;
 import com.sjtusummerproject.cartmicroservice.Service.TicketService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -15,7 +16,8 @@ public class TicketServiceImpl implements TicketService{
         return new RestTemplate();
     }
 
-    String baseUrl="http://ticket-microservice:8080";
+    @Value("${ticketservice.url}")
+    String baseUrl;
 
     @Override
     public TicketEntity queryTicketById(Long id) {
@@ -25,7 +27,7 @@ public class TicketServiceImpl implements TicketService{
         RestTemplate template = new RestTemplate();
         TicketEntity result = template.getForObject(url, TicketEntity.class);
 
-        System.out.println("the result in query ticket "+result);
+        //System.out.println("the result in query ticket "+result);
         return result;
     }
 }
