@@ -367,6 +367,16 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         if(stock < toMinus)
             return false;
         ticket.setStock(stock-toMinus);
+        ticketRepository.save(ticket);
+        return true;
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public Boolean updateStockPlusById(Long id, Long toPlus) {
+        TicketEntity ticket = ticketRepository.findById(id);
+        ticket.setStock(ticket.getStock()+toPlus);
+        ticketRepository.save(ticket);
         return true;
     }
 

@@ -45,4 +45,12 @@ public class UserDetailServiceImpl implements UserDetailService {
         Boolean res = template.getForObject(url,Boolean.class);
         return res;
     }
+
+    @Override
+    public Boolean updateAccountPlus(Long userid, double toPlus) {
+        String url = baseUrl+"/UserDetail/PlusAccount?"+"userid="+userid+"&plus="+toPlus;
+        RestTemplate template = new RestTemplate();
+        Boolean res = template.getForObject(url,Boolean.class);
+        return res;
+    }
 }

@@ -26,8 +26,6 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
     @Autowired
     UserDetailRepository userDetailRepository;
     @Autowired
-    ImgRepository imgRepository;
-    @Autowired
     RestTemplate restTemplate;
 
     @Value("${imgservice.url}")
@@ -68,6 +66,15 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
     public Boolean updateAccountMinusById(Long userid, double toMinus) {
         UserDetailEntity userDetail = userDetailRepository.findById(userid);
         userDetail.setAccount(userDetail.getAccount()-toMinus);
+        userDetailRepository.save(userDetail);
+        return true;
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
+    public Boolean updateAccountPlusById(Long userid, double toPlus) {
+        UserDetailEntity userDetail = userDetailRepository.findById(userid);
+        userDetail.setAccount(userDetail.getAccount()+toPlus);
         userDetailRepository.save(userDetail);
         return true;
     }

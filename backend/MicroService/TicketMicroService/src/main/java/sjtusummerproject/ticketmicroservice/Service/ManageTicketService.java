@@ -74,4 +74,5 @@ public interface ManageTicketService {
     public String UpdateTicketHighPriceOptionByIdFromTitle(Long Id,int highprice);
 
     public Boolean updateStockMinusById(Long id, Long toMinus);
+    public Boolean updateStockPlusById(Long id, Long toPlus);
 }

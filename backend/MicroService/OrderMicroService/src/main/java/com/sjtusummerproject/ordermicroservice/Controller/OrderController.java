@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -91,9 +92,20 @@ public class OrderController {
      * */
     @RequestMapping(value = "/Cancel")
     @ResponseBody
-    public HashMap<String,Object> cancelOrder(HttpServletRequest request, HttpServletResponse response){
+    public String cancelOrder(HttpServletRequest request, HttpServletResponse response){
         Long orderid = Long.parseLong(request.getParameter("orderid"));
         return orderService.cancel(orderid);
+    }
+
+    /*
+    * 在订单页面 点击申请退款
+    * 此时订单的状态一定为已发货／已签收
+    * */
+    @RequestMapping(value = "Withdraw")
+    @ResponseBody
+    public String withdrawOrder(@RequestParam(value = "orderid") Long orderid){
+         OrderEntity orderEntity = orderService.queryByOrderid(orderid);
+         return orderService.addWithdrawRabbit(orderEntity);
     }
 
     /*
