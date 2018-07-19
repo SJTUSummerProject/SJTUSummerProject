@@ -12,6 +12,7 @@ public interface OrderService {
     public OrderEntity saveInDetailPage(OrderEntity partOrderEntity, ItemEntity itemEntity);
     public OrderEntity saveBatchInCart(OrderEntity partOrder,UserEntity userEntity, List<CartEntity> cartEntityList);
     public HashMap buy(Long orderid);
+    public String cancel(Long orderid);
     public String deleteOne(Long orderid);
     public String deleteSome(String ids);
 

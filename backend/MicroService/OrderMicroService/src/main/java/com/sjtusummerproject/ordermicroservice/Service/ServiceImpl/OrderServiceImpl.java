@@ -117,8 +117,23 @@ public class OrderServiceImpl implements OrderService {
         /*减去succPrice*/
         userDetailService.updateAccountMinus(orderEntity.getUserId(),succPrice);
         return res;
-
     }
+
+    @Override
+    public String cancel(Long orderid) {
+        OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
+        double totalPrice = 0l;
+        Set<ItemEntity> items = orderEntity.getItems();
+        for(ItemEntity eachitem : items){
+            if(eachitem.getStatus().equals("成功")){
+                totalPrice += eachitem.getPrice()*eachitem.getNumber();
+                eachitem.setStatus("失败");
+
+            }
+        }
+        return null;
+    }
+
     @Override
     public String deleteOne(Long orderid) {
         OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
@@ -228,7 +243,6 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orderEntity);
         return "ok";
     }
-
 
     /*
     * 只包含order的基本信息

@@ -16,12 +16,16 @@ public class OrderEntity implements Serializable{
     private String phone;
     private String address;
     /*
-    * 退款审核
+    * 取消中
+    * 已取消
+    * 退款中
     * 已退款
     * 待付款
+    * 待发货 - attention：没有 "已付款" 这个状态，付款之后就直接变成待发货的状态
+    * 已发货
     * 已过期
     * 已删除
-    * 待发货 - attention：没有 "已付款" 这个状态，付款之后就直接变成待发货的状态
+    * 已发货
     * 已签收
     * */
     private String status;

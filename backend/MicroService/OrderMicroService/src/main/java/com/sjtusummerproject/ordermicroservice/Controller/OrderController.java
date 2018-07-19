@@ -86,6 +86,16 @@ public class OrderController {
         return orderService.buy(orderid);
     }
 
+    /* 在订单页面 点击取消订单
+     * 此时订单的状态一定为待发货
+     * */
+    @RequestMapping(value = "/Cancel")
+    @ResponseBody
+    public HashMap<String,Object> cancelOrder(HttpServletRequest request, HttpServletResponse response){
+        Long orderid = Long.parseLong(request.getParameter("orderid"));
+        return orderService.cancel(orderid);
+    }
+
     /*
     * 在购物车页面里生成订单 这个时候应该有很多票品
     * 我们的票品信息应该从 CartEntity 获得 而不是TicketEntity
