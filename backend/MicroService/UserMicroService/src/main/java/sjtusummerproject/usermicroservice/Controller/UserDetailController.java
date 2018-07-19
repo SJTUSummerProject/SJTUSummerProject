@@ -53,4 +53,13 @@ public class UserDetailController {
         Long userid = Long.parseLong(request.getParameter("userid").trim());
         return manageUserDetailService.queryByUserId(userid);
     }
+
+    @RequestMapping(value = "/MinusAccount")
+    @ResponseBody
+    public Boolean minusAccount(HttpServletRequest request, HttpServletResponse response){
+        Long userid = Long.parseLong(request.getParameter("userid").trim());
+        double toMinus = Double.parseDouble(request.getParameter("minus").trim());
+
+        return manageUserDetailService.updateAccountMinusById(userid,toMinus);
+    }
 }
