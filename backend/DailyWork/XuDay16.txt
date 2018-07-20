@@ -1,0 +1,4 @@
+1.add rabbitmq to comment service
+2.finish comment service
+3.add auth service to comment service
+
