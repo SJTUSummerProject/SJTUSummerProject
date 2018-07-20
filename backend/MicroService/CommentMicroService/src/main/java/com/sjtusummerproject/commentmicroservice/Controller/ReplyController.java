@@ -59,7 +59,7 @@ public class ReplyController {
         response.addIntHeader("errorNum", result);
         if (result != 0) return null;
 
-        if(content == null)
+        if(content == null||content.trim().equals(""))
             return "the content is empty";
         replyService.addToComment(userEntity.getId(),commentId,content);
         return "ok";
@@ -69,7 +69,6 @@ public class ReplyController {
     @ResponseBody
     public String replyReply(@RequestParam(value = "token") String token,
                              @RequestParam(value = "replyid")Long replyId,
-                             @RequestParam(value = "commentid")Long commentId,
                              @RequestParam(value = "content", required = false) String content,
                              HttpServletResponse response){
         UserEntity userEntity = callAuthService(token);
@@ -79,7 +78,7 @@ public class ReplyController {
 
         if(content == null)
             return "the contetn is empty";
-        replyService.addToReply(userEntity.getId(),replyId,commentId,content);
+        replyService.addToReply(userEntity.getId(),replyId,content);
         return "ok";
     }
 
@@ -87,8 +86,9 @@ public class ReplyController {
     @RequestMapping(value = "/QueryByParentId")
     @ResponseBody
     public Page<ReplyEntity> queryByCommentId(@RequestParam(value = "parentid") Long parentId,
+                                              @RequestParam(value = "type") String type,
                                               HttpServletRequest request){
-        return replyService.queryByParentId(parentId,createPageable(request));
+        return replyService.queryByParentId(parentId,type,createPageable(request));
     }
 
     /* page */

@@ -13,10 +13,10 @@ import java.util.List;
 
 public interface ReplyService {
     public String addToComment(Long userId, Long commentId, String content);
-    public String addToReply(Long userid, Long repliedId, Long commentId, String content);
+    public String addToReply(Long userid, Long repliedId, String content);
     public String deleteById(Long replyId);
     public String deleteByParentId(Long parentId);
-    public Page<ReplyEntity> queryByParentId(Long parentId, Pageable pageable);
+    public Page<ReplyEntity> queryByParentId(Long parentId, String type, Pageable pageable);
     public Page<ReplyEntity> queryByTargetObjectId(Long targetId, Pageable pageable);
     public ReplyEntity queryById(Long replyId);
 }

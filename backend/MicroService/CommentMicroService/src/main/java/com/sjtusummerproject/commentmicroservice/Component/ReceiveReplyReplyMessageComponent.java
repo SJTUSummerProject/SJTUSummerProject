@@ -41,7 +41,6 @@ public class ReceiveReplyReplyMessageComponent {
         System.out.println("in receive reply reply ");
         Long userid = Long.parseLong(message.getFirst("ownerId"));
         Long repliedId = Long.parseLong(message.getFirst("repliedId"));
-        Long commentId = Long.parseLong(message.getFirst("commentId"));
         String content = message.getFirst("content");
 
         UserEntity ownerUser = userService.queryById(userid);
@@ -55,7 +54,7 @@ public class ReceiveReplyReplyMessageComponent {
         replyEntity.setTargetUserId(replied.getOwnerId());
         replyEntity.setTargetUsername(replied.getOwnername());
         replyEntity.setTargetObjectId(replied.getId());
-        replyEntity.setParentId(commentId);
+        replyEntity.setParentId(repliedId);
         replyEntity.setType("toReply");
         replyEntity.setContent(content);
         replyEntity.setCreateTime(new Date());

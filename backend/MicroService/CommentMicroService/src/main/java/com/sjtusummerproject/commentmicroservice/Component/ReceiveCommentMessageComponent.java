@@ -46,7 +46,7 @@ public class ReceiveCommentMessageComponent {
         commentEntity.setCreateTime(new Date());
         commentRepository.save(commentEntity);
         commentEntity = commentRepository.findByOwnerIdAndContentAndCreateTimeAndTargetTicketId(user.getId(),content,createTime,targetTicketId);
-        String replys = commentServiceUrl+"/Reply/QueryByParentId"+"?parentid="+commentEntity.getId()+"&pagenumber=1";
+        String replys = commentServiceUrl+"/Reply/QueryByParentId"+"?parentid="+commentEntity.getId()+"&pagenumber=1"+"&type=toComment";
         commentEntity.setReplys(replys);
         commentRepository.save(commentEntity);
     }

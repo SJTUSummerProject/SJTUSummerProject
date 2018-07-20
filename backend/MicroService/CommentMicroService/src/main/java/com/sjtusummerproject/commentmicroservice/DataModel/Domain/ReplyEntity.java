@@ -21,7 +21,7 @@ public class ReplyEntity {
     Long targetUserId; //
     String targetUsername; //
     Long targetObjectId; // 回复目标id，是commentId or replyId
-    Long parentId;//需要挂在哪个comment之下
+    Long parentId;//comment|reply
     String type; // 回复类型 - "toComment" or "toReply"
     String content; //回复内容
 

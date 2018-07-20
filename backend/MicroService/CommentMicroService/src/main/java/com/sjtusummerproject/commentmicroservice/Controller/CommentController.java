@@ -53,8 +53,10 @@ public class CommentController {
 
     @RequestMapping(value = "/Add")
     @ResponseBody
-    public String add(@RequestParam(value = "token") String token, @RequestParam(value = "ticketid") Long targetTicketId,
-                      @RequestParam(value = "content",defaultValue = "")String content, HttpServletResponse response){
+    public String add(@RequestParam(value = "token") String token,
+                      @RequestParam(value = "ticketid") Long targetTicketId,
+                      @RequestParam(value = "content",defaultValue = "")String content,
+                      HttpServletResponse response){
         UserEntity userEntity = callAuthService(token);
         int result = authUser(userEntity);
         response.addIntHeader("errorNum", result);
@@ -79,27 +81,33 @@ public class CommentController {
 
     @RequestMapping(value = "/QueryByTicketid")
     @ResponseBody
-    public Page<CommentEntity> queryByTicketid(@RequestParam(value = "ticketid") Long ticketid,HttpServletRequest request,HttpServletResponse response){
+    public Page<CommentEntity> queryByTicketid(@RequestParam(value = "ticketid") Long ticketid,
+                                               HttpServletRequest request,HttpServletResponse response){
 
         return commentService.queryByTicketId(ticketid,createPageable(request));
     }
 
     @RequestMapping(value = "/UpdateContentByCommentid")
     @ResponseBody
-    public CommentEntity updateContentByCommentid(@RequestParam(value = "token") String token,@RequestParam(value = "commentid") Long commentId,@RequestParam(value = "content") String content,HttpServletResponse response){
+    public CommentEntity updateContentByCommentid(@RequestParam(value = "token") String token,
+                                                  @RequestParam(value = "commentid") Long commentId,
+                                                  @RequestParam(value = "content") String content,
+                                                  HttpServletResponse response){
         UserEntity userEntity = callAuthService(token);
         int result = authUser(userEntity);
         response.addIntHeader("errorNum", result);
         if (result != 0) return null;
 
-        if(content.trim().equals(""))
+        if(content==null||content.trim().equals(""))
             return null;
         return commentService.updateContentByCommentid(commentId,content);
     }
 
     @RequestMapping(value = "/DeleteByCommentid")
     @ResponseBody
-    public CommentEntity deleteByCommentid(@RequestParam(value = "token") String token,@RequestParam(value = "commentid") Long commentId,@RequestParam(value = "content") String content,HttpServletResponse response){
+    public CommentEntity deleteByCommentid(@RequestParam(value = "token") String token,
+                                           @RequestParam(value = "commentid") Long commentId,
+                                           HttpServletResponse response){
         UserEntity userEntity = callAuthService(token);
         int result = authUser(userEntity);
         response.addIntHeader("errorNum", result);

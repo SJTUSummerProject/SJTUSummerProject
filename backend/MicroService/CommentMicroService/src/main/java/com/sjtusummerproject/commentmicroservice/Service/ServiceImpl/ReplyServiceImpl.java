@@ -1,7 +1,7 @@
 package com.sjtusummerproject.commentmicroservice.Service.ServiceImpl;
 
-//import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyCommentMQConfig;
-//import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyReplyMQConfig;
+import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyCommentMQConfig;
+import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyReplyMQConfig;
 import com.sjtusummerproject.commentmicroservice.DataModel.Dao.ReplyRepository;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.CommentEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.ReplyEntity;
@@ -32,25 +32,24 @@ public class ReplyServiceImpl implements ReplyService {
         message.add("ownerId",ownerId);
         message.add("targetTicketId",commentId);
         message.add("content",content);
-//        rabbitTemplate.convertAndSend(RabbitReplyCommentMQConfig.EXCHANGE_NAME, RabbitReplyCommentMQConfig.ROUTING_KEY, message);
+        rabbitTemplate.convertAndSend(RabbitReplyCommentMQConfig.EXCHANGE_NAME, RabbitReplyCommentMQConfig.ROUTING_KEY, message);
         return "ok";
     }
 
     @Override
-    public String addToReply(Long ownerId, Long repliedId, Long commentId, String content) {
+    public String addToReply(Long ownerId, Long repliedId, String content) {
         System.out.println("in invoke reply reply");
         MultiValueMap<String,Object> message = new LinkedMultiValueMap<>();
         message.add("ownerId",ownerId);
         message.add("repliedId",repliedId);
-        message.add("commentId",commentId);
         message.add("content",content);
-//        rabbitTemplate.convertAndSend(RabbitReplyReplyMQConfig.EXCHANGE_NAME, RabbitReplyReplyMQConfig.ROUTING_KEY, message);
+        rabbitTemplate.convertAndSend(RabbitReplyReplyMQConfig.EXCHANGE_NAME, RabbitReplyReplyMQConfig.ROUTING_KEY, message);
         return "ok";
     }
 
     @Override
-    public Page<ReplyEntity> queryByParentId(Long parentId, Pageable pageable) {
-        return replyRepository.findByParentId(parentId,pageable);
+    public Page<ReplyEntity> queryByParentId(Long parentId, String type, Pageable pageable) {
+        return replyRepository.findByParentIdAndType(parentId,type,pageable);
     }
 
     @Override
