@@ -1,19 +1,15 @@
 package com.sjtusummerproject.commentmicroservice.DataModel.Domain;
 
-import com.sjtusummerproject.commentmicroservice.Annotation.GeneratedValue;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
-@Document(collection = "Comment")
+@Table(name = "Comment")
+@Entity
 public class CommentEntity {
     /*评论entity 只能是评论票品*/
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id
-    @GeneratedValue
-    Long id = 0L;
+    Long id;
 
     Long ownerId; //发表评论的用户id
     String ownername; //发表评论的用户名

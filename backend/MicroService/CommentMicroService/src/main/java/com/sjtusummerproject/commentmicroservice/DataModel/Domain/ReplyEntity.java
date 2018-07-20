@@ -1,20 +1,17 @@
 package com.sjtusummerproject.commentmicroservice.DataModel.Domain;
 
-import com.sjtusummerproject.commentmicroservice.Annotation.GeneratedValue;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
-@Document(collection = "Reply")
+@Table(name = "Reply")
 @Entity
 public class ReplyEntity {
+
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id
-    @GeneratedValue
-    Long id = 0L;
+    Long id;
+
     Long ownerId; //回复"评论"or回复"回复"的用户id
     String ownername; //回复 的 用户username
 

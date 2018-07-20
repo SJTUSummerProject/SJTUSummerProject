@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+
 import java.util.Date;
 import java.util.List;
 
@@ -29,10 +30,10 @@ public class CommentServiceImpl implements CommentService {
     String commentServiceUrl;
 
     @Override
-    public String save(Long ownerId, Long targetTicketId, String content) {
+    public String save(String token, Long targetTicketId, String content) {
         System.out.println("in invoke comment");
-        MultiValueMap<String,Object> message = new LinkedMultiValueMap<>();
-        message.add("ownerId",ownerId);
+        MultiValueMap<String,Object> message = new LinkedMultiValueMap<String, Object>();
+        message.add("token",token);
         message.add("targetTicketId",targetTicketId);
         message.add("content",content);
         rabbitTemplate.convertAndSend(RabbitCommentMQConfig.EXCHANGE_NAME, RabbitCommentMQConfig.ROUTING_KEY, message);

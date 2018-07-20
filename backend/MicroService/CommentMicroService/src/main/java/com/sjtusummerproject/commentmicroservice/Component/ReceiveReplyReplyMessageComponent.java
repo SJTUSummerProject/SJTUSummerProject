@@ -6,6 +6,7 @@ import com.sjtusummerproject.commentmicroservice.DataModel.Dao.ReplyRepository;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.CommentEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.ReplyEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.UserEntity;
+import com.sjtusummerproject.commentmicroservice.Service.AuthService;
 import com.sjtusummerproject.commentmicroservice.Service.CommentService;
 import com.sjtusummerproject.commentmicroservice.Service.ReplyService;
 import com.sjtusummerproject.commentmicroservice.Service.UserService;
@@ -35,19 +36,22 @@ public class ReceiveReplyReplyMessageComponent {
     ReplyRepository replyRepository;
     @Autowired
     ReplyService replyService;
+    @Autowired
+    AuthService authService;
 
     @RabbitListener(queues = RabbitReplyReplyMQConfig.QUEUE_NAME)
-    public void consumeMessage(MultiValueMap<String, String> message) {
+    public void consumeMessage(MultiValueMap<String, Object> message) {
         System.out.println("in receive reply reply ");
-        Long userid = Long.parseLong(message.getFirst("ownerId"));
-        Long repliedId = Long.parseLong(message.getFirst("repliedId"));
-        String content = message.getFirst("content");
+        String token = (String)message.getFirst("token");
+        Long repliedId = (Long)message.getFirst("repliedId");
+        String content = (String)message.getFirst("content");
 
-        UserEntity ownerUser = userService.queryById(userid);
+        UserEntity ownerUser = authService.callAuthService(token);
         ReplyEntity replied = replyService.queryById(repliedId);
 
         ReplyEntity replyEntity = new ReplyEntity();
 
+        replyEntity.setId(0L);
         replyEntity.setOwnerId(ownerUser.getId());
         replyEntity.setOwnername(ownerUser.getUsername());
 

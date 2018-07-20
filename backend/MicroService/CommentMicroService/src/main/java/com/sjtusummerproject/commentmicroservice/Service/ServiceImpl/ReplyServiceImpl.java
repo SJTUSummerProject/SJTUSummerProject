@@ -26,10 +26,10 @@ public class ReplyServiceImpl implements ReplyService {
     private RabbitTemplate rabbitTemplate;
 
     @Override
-    public String addToComment(Long ownerId, Long commentId, String content) {
+    public String addToComment(String token, Long commentId, String content) {
         System.out.println("in invoke reply comment");
-        MultiValueMap<String,Object> message = new LinkedMultiValueMap<>();
-        message.add("ownerId",ownerId);
+        MultiValueMap<String,Object> message = new LinkedMultiValueMap<String, Object>();
+        message.add("token",token);
         message.add("targetTicketId",commentId);
         message.add("content",content);
         rabbitTemplate.convertAndSend(RabbitReplyCommentMQConfig.EXCHANGE_NAME, RabbitReplyCommentMQConfig.ROUTING_KEY, message);
@@ -37,10 +37,10 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public String addToReply(Long ownerId, Long repliedId, String content) {
+    public String addToReply(String token, Long repliedId, String content) {
         System.out.println("in invoke reply reply");
-        MultiValueMap<String,Object> message = new LinkedMultiValueMap<>();
-        message.add("ownerId",ownerId);
+        MultiValueMap<String,Object> message = new LinkedMultiValueMap<String, Object>();
+        message.add("token",token);
         message.add("repliedId",repliedId);
         message.add("content",content);
         rabbitTemplate.convertAndSend(RabbitReplyReplyMQConfig.EXCHANGE_NAME, RabbitReplyReplyMQConfig.ROUTING_KEY, message);

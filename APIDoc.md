@@ -290,3 +290,4 @@
         token|String|
         replyid|Long|要删除的回复的id
         #### 返回参数 String=“ok“
+* ## AuthMicroservice port: 30006

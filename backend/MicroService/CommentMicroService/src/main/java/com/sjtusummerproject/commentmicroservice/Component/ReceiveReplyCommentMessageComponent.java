@@ -6,6 +6,7 @@ import com.sjtusummerproject.commentmicroservice.DataModel.Dao.ReplyRepository;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.CommentEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.ReplyEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.UserEntity;
+import com.sjtusummerproject.commentmicroservice.Service.AuthService;
 import com.sjtusummerproject.commentmicroservice.Service.CommentService;
 import com.sjtusummerproject.commentmicroservice.Service.UserService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -32,18 +33,21 @@ public class ReceiveReplyCommentMessageComponent {
     CommentRepository commentRepository;
     @Autowired
     ReplyRepository replyRepository;
+    @Autowired
+    AuthService authService;
 
     @RabbitListener(queues = RabbitReplyCommentMQConfig.QUEUE_NAME)
-    public void consumeMessage(MultiValueMap<String, String> message) {
+    public void consumeMessage(MultiValueMap<String, Object> message) {
         System.out.println("in receive reply comment ");
-        Long userid = Long.parseLong(message.getFirst("ownerId"));
-        Long targetTicketId = Long.parseLong(message.getFirst("targetTicketId"));
-        String content = message.getFirst("content");
+        String token = (String)message.getFirst("token");
+        Long targetTicketId = (Long)message.getFirst("targetTicketId");
+        String content = (String)message.getFirst("content");
 
-        UserEntity userEntity = userService.queryById(userid);
+        UserEntity userEntity = authService.callAuthService(token);
         CommentEntity commentEntity = commentService.queryByCommentId(targetTicketId);
 
         ReplyEntity replyEntity = new ReplyEntity();
+        replyEntity.setId(0L);
         replyEntity.setOwnerId(userEntity.getId());
         replyEntity.setOwnername(userEntity.getUsername());
 
