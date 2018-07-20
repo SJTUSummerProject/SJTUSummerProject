@@ -1,15 +1,20 @@
 package com.sjtusummerproject.commentmicroservice.Service.ServiceImpl;
 
+import com.sjtusummerproject.commentmicroservice.Config.RabbitCommentMQConfig;
+import com.sjtusummerproject.commentmicroservice.Config.RabbitCommentMQConfig;
 import com.sjtusummerproject.commentmicroservice.DataModel.Dao.CommentRepository;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.CommentEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.ReplyEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.UserEntity;
 import com.sjtusummerproject.commentmicroservice.Service.CommentService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.Date;
 import java.util.List;
@@ -18,23 +23,21 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Value("${commentservice.url}")
     String commentServiceUrl;
+
     @Override
-    public CommentEntity save(UserEntity user, Long targetTicketId, String content) {
-        Date createTime = new Date();
-        CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setOwnerId(user.getId());
-        commentEntity.setOwnername(user.getUsername());
-        commentEntity.setTargetTicketId(targetTicketId);
-        commentEntity.setContent(content);
-        commentEntity.setCreateTime(new Date());
-        commentRepository.save(commentEntity);
-        commentEntity = commentRepository.findByOwnerIdAndContentAndCreateTimeAndTargetTicketId(user.getId(),content,createTime,targetTicketId);
-        String replys = commentServiceUrl+"/Reply/QueryByParentId"+"?parentid="+commentEntity.getId()+"&pagenumber=1";
-        commentEntity.setReplys(replys);
-        return commentRepository.save(commentEntity);
+    public String save(Long ownerId, Long targetTicketId, String content) {
+        System.out.println("in invoke comment");
+        MultiValueMap<String,Object> message = new LinkedMultiValueMap<>();
+        message.add("ownerId",ownerId);
+        message.add("targetTicketId",targetTicketId);
+        message.add("content",content);
+        rabbitTemplate.convertAndSend(RabbitCommentMQConfig.EXCHANGE_NAME, RabbitCommentMQConfig.ROUTING_KEY, message);
+        return "ok";
     }
 
     @Override

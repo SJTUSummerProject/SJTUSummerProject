@@ -1,14 +1,19 @@
 package com.sjtusummerproject.commentmicroservice.Service.ServiceImpl;
 
+import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyCommentMQConfig;
+import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyReplyMQConfig;
 import com.sjtusummerproject.commentmicroservice.DataModel.Dao.ReplyRepository;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.CommentEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.ReplyEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.UserEntity;
 import com.sjtusummerproject.commentmicroservice.Service.ReplyService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.Date;
 import java.util.List;
@@ -17,38 +22,30 @@ import java.util.List;
 public class ReplyServiceImpl implements ReplyService {
     @Autowired
     ReplyRepository replyRepository;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
-    public ReplyEntity addToComment(UserEntity userEntity, CommentEntity commentEntity, String content) {
-
-        ReplyEntity replyEntity = new ReplyEntity();
-        replyEntity.setOwnerId(userEntity.getId());
-        replyEntity.setOwnername(userEntity.getUsername());
-
-        replyEntity.setTargetUserId(commentEntity.getOwnerId());
-        replyEntity.setTargetUsername(commentEntity.getOwnername());
-        replyEntity.setTargetObjectId(commentEntity.getId());
-        replyEntity.setParentId(commentEntity.getId());
-        replyEntity.setType("toComment");
-        replyEntity.setContent(content);
-        return replyRepository.save(replyEntity);
+    public String addToComment(Long ownerId, Long commentId, String content) {
+        System.out.println("in invoke reply comment");
+        MultiValueMap<String,Object> message = new LinkedMultiValueMap<>();
+        message.add("ownerId",ownerId);
+        message.add("targetTicketId",commentId);
+        message.add("content",content);
+        rabbitTemplate.convertAndSend(RabbitReplyCommentMQConfig.EXCHANGE_NAME, RabbitReplyCommentMQConfig.ROUTING_KEY, message);
+        return "ok";
     }
 
     @Override
-    public ReplyEntity addToReply(UserEntity ownerUser, ReplyEntity replied, Long commentId, String content) {
-        ReplyEntity replyEntity = new ReplyEntity();
-
-        replyEntity.setOwnerId(ownerUser.getId());
-        replyEntity.setOwnername(ownerUser.getUsername());
-
-        replyEntity.setTargetUserId(replied.getOwnerId());
-        replyEntity.setTargetUsername(replied.getOwnername());
-        replyEntity.setTargetObjectId(replied.getId());
-        replyEntity.setParentId(commentId);
-        replyEntity.setType("toReply");
-        replyEntity.setContent(content);
-        replyEntity.setCreateTime(new Date());
-        return replyRepository.save(replyEntity);
+    public String addToReply(Long ownerId, Long repliedId, Long commentId, String content) {
+        System.out.println("in invoke reply reply");
+        MultiValueMap<String,Object> message = new LinkedMultiValueMap<>();
+        message.add("ownerId",ownerId);
+        message.add("repliedId",repliedId);
+        message.add("commentId",commentId);
+        message.add("content",content);
+        rabbitTemplate.convertAndSend(RabbitReplyReplyMQConfig.EXCHANGE_NAME, RabbitReplyReplyMQConfig.ROUTING_KEY, message);
+        return "ok";
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface CommentService {
-    public CommentEntity save(UserEntity owner, Long targetTicketId, String content);
+    public String save(Long ownerId, Long targetTicketId, String content);
     public Page<CommentEntity> queryByOwnerId(Long ownerid, Pageable pageable);
     public Page<CommentEntity> queryByTicketId(Long ticketid, Pageable pageable);
     public CommentEntity queryByCommentId(Long commentId);

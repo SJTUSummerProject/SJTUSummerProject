@@ -50,7 +50,7 @@ public class CommentController {
         if(content.trim().equals(""))
             return "the content is null";
         UserEntity userEntity = userService.queryById(ownerId);
-        commentService.save(userEntity,targetTicketId,content);
+        commentService.save(ownerId,targetTicketId,content);
         return "ok";
     }
 

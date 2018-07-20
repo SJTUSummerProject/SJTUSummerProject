@@ -47,9 +47,7 @@ public class ReplyController {
                                @RequestParam(value = "content",required = false) String content){
         if(content == null)
             return "the content is empty";
-        UserEntity userEntity = userService.queryById(ownerId);
-        CommentEntity commentEntity = commentService.queryByCommentId(commentId);
-        replyService.addToComment(userEntity,commentEntity,content);
+        replyService.addToComment(ownerId,commentId,content);
         return "ok";
     }
 
@@ -64,7 +62,7 @@ public class ReplyController {
         UserEntity ownerUser = userService.queryById(ownerId);
         /*被回复的reply*/
         ReplyEntity replied = replyService.queryById(replyId);
-        replyService.addToReply(ownerUser,replied,commentId,content);
+        replyService.addToReply(ownerId,replyId,commentId,content);
         return "ok";
     }
 

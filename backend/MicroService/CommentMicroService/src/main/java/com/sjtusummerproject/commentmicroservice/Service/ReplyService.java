@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 public interface ReplyService {
-    public ReplyEntity addToComment(UserEntity userEntity, CommentEntity commentEntity, String content);
-    public ReplyEntity addToReply(UserEntity ownerUser,ReplyEntity repliedEntity, Long commentId, String content);
+    public String addToComment(Long userId, Long commentId, String content);
+    public String addToReply(Long userid, Long repliedId, Long commentId, String content);
     public String deleteById(Long replyId);
     public String deleteByParentId(Long parentId);
     public Page<ReplyEntity> queryByParentId(Long parentId, Pageable pageable);
