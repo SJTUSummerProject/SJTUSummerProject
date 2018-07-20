@@ -8,13 +8,17 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitCommentMQConfig {
 
-
+    @Value("${rabbitmq.host}")
+    String rabbitmqHost;
+    @Value("${rabbitmq.port}")
+    int rabbitmqPort;
 
     public final static String QUEUE_NAME = "CommentQueue";
     public final static String EXCHANGE_NAME = "CommentExchange";
@@ -40,7 +44,7 @@ public class RabbitCommentMQConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost", 5672);
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(rabbitmqHost, rabbitmqPort);
         connectionFactory.setUsername("guest");
         connectionFactory.setPassword("guest");
         return connectionFactory;

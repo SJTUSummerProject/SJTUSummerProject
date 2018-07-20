@@ -13,12 +13,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RequestMapping(value = "/Comment")
@@ -32,11 +36,15 @@ public class CommentController {
     UserService userService;
     @Autowired
     ReplyService replyService;
+    @Autowired
+    RestTemplate restTemplate;
 
     @Value("${comment.page.size}")
     private int PageSize;
     @Value("${comment.page.offset}")
     private int PageOffset;
+    @Value("${authservice.url}")
+    private String authUrl;
 
     /*按照时间顺序 递减排列*/
     public Pageable createPageable(HttpServletRequest request){
@@ -45,30 +53,45 @@ public class CommentController {
 
     @RequestMapping(value = "/Add")
     @ResponseBody
-    public String add(@RequestParam(value = "userid") Long ownerId,@RequestParam(value = "ticketid") Long targetTicketId,
-                      @RequestParam(value = "content",defaultValue = "")String content){
-        if(content.trim().equals(""))
+    public String add(@RequestParam(value = "token") String token, @RequestParam(value = "ticketid") Long targetTicketId,
+                      @RequestParam(value = "content",defaultValue = "")String content, HttpServletResponse response){
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+
+        if(content == null||content.trim().equals(""))
             return "the content is null";
-        UserEntity userEntity = userService.queryById(ownerId);
-        commentService.save(ownerId,targetTicketId,content);
+        commentService.save(userEntity.getId(),targetTicketId,content);
         return "ok";
     }
 
     @RequestMapping(value = "/QueryByUserid")
     @ResponseBody
-    public Page<CommentEntity> queryByUserid(@RequestParam(value = "userid") Long userid,HttpServletRequest request){
-        return commentService.queryByOwnerId(userid,createPageable(request));
+    public Page<CommentEntity> queryByUserid(@RequestParam(value = "token") String token,HttpServletRequest request,HttpServletResponse response){
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+
+        return commentService.queryByOwnerId(userEntity.getId(),createPageable(request));
     }
 
     @RequestMapping(value = "/QueryByTicketid")
     @ResponseBody
-    public Page<CommentEntity> queryByTicketid(@RequestParam(value = "ticketid") Long ticketid,HttpServletRequest request){
+    public Page<CommentEntity> queryByTicketid(@RequestParam(value = "ticketid") Long ticketid,HttpServletRequest request,HttpServletResponse response){
+
         return commentService.queryByTicketId(ticketid,createPageable(request));
     }
 
     @RequestMapping(value = "/UpdateContentByCommentid")
     @ResponseBody
-    public CommentEntity updateContentByCommentid(@RequestParam(value = "commentid") Long commentId,@RequestParam(value = "content") String content){
+    public CommentEntity updateContentByCommentid(@RequestParam(value = "token") String token,@RequestParam(value = "commentid") Long commentId,@RequestParam(value = "content") String content,HttpServletResponse response){
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+
         if(content.trim().equals(""))
             return null;
         return commentService.updateContentByCommentid(commentId,content);
@@ -76,7 +99,12 @@ public class CommentController {
 
     @RequestMapping(value = "/DeleteByCommentid")
     @ResponseBody
-    public CommentEntity deleteByCommentid(@RequestParam(value = "commentid") Long commentId,@RequestParam(value = "content") String content){
+    public CommentEntity deleteByCommentid(@RequestParam(value = "token") String token,@RequestParam(value = "commentid") Long commentId,@RequestParam(value = "content") String content,HttpServletResponse response){
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+
         replyService.deleteByParentId(commentId);
         return commentService.deleteByCommentid(commentId);
     }
@@ -101,4 +129,18 @@ public class CommentController {
         return "ok";
     }
 
+    private UserEntity callAuthService(String token){
+        System.out.println("the token is : " +token);
+        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
+        multiValueMap.add("token", token);
+        return restTemplate.postForObject(authUrl, multiValueMap, UserEntity.class);
+    }
+
+    private int authUser(UserEntity userEntity){
+
+        if (userEntity == null) return 1;
+        else if (!userEntity.getAuthority().equals("Customer")) return 2;
+        else if (userEntity.getStatus().equals("Frozen")) return 3;
+        else return 0;
+    }
 }
