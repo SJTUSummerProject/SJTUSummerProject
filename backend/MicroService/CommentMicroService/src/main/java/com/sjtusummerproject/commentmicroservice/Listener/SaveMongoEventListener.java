@@ -15,6 +15,7 @@ import org.springframework.util.ReflectionUtils;
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
 
+/* 用于 mongodb自增id 的反射listener*/
 public class SaveMongoEventListener extends AbstractMongoEventListener<Object> {
     @Resource
     private MongoTemplate mongoTemplate;

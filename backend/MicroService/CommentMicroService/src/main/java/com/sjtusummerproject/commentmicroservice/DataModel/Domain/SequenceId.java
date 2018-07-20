@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 
 /*定义一个用于存储每个集合的ID记录，记录每个集合的自增ID到了多少。*/
+/*用于mongodb 自增id*/
 @Document(collection = "sequence")
 public class SequenceId {
     @Id
