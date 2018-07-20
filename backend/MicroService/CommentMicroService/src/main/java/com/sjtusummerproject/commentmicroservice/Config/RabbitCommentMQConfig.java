@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitCommentMQConfig {
 
+
+
     public final static String QUEUE_NAME = "CommentQueue";
     public final static String EXCHANGE_NAME = "CommentExchange";
     public final static String ROUTING_KEY = "CommentKey";
@@ -38,7 +40,7 @@ public class RabbitCommentMQConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("rabbitmq-service", 5672);
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost", 5672);
         connectionFactory.setUsername("guest");
         connectionFactory.setPassword("guest");
         return connectionFactory;

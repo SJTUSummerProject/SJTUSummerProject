@@ -38,7 +38,7 @@ public class RabbitReplyReplyMQConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("rabbitmq-service", 5672);
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost", 5672);
         connectionFactory.setUsername("guest");
         connectionFactory.setPassword("guest");
         return connectionFactory;

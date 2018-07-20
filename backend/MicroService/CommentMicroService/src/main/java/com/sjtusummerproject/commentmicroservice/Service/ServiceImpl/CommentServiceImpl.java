@@ -1,7 +1,7 @@
 package com.sjtusummerproject.commentmicroservice.Service.ServiceImpl;
 
-import com.sjtusummerproject.commentmicroservice.Config.RabbitCommentMQConfig;
-import com.sjtusummerproject.commentmicroservice.Config.RabbitCommentMQConfig;
+//import com.sjtusummerproject.commentmicroservice.Config.RabbitCommentMQConfig;
+//import com.sjtusummerproject.commentmicroservice.Config.RabbitCommentMQConfig;
 import com.sjtusummerproject.commentmicroservice.DataModel.Dao.CommentRepository;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.CommentEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.ReplyEntity;
@@ -36,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
         message.add("ownerId",ownerId);
         message.add("targetTicketId",targetTicketId);
         message.add("content",content);
-        rabbitTemplate.convertAndSend(RabbitCommentMQConfig.EXCHANGE_NAME, RabbitCommentMQConfig.ROUTING_KEY, message);
+//        rabbitTemplate.convertAndSend(RabbitCommentMQConfig.EXCHANGE_NAME, RabbitCommentMQConfig.ROUTING_KEY, message);
         return "ok";
     }
 
