@@ -1,27 +1,17 @@
-package sjtusummerproject.usermicroservice.Service.ServiceImpl;
+package sjtusummerproject.userdetailmicroservice.Service.ServiceImp;
 
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import sjtusummerproject.usermicroservice.DataModel.Dao.PictureRepository;
-import sjtusummerproject.usermicroservice.DataModel.Dao.UserDetailRepository;
-import sjtusummerproject.usermicroservice.DataModel.Domain.PictureEntity;
-import sjtusummerproject.usermicroservice.DataModel.Domain.UserDetailEntity;
-import sjtusummerproject.usermicroservice.DataModel.Domain.UserEntity;
-import sjtusummerproject.usermicroservice.Service.ManageUserDetailService;
-import sjtusummerproject.usermicroservice.Service.ManageUserService;
+import sjtusummerproject.userdetailmicroservice.DataModel.Dao.PictureRepository;
+import sjtusummerproject.userdetailmicroservice.DataModel.Dao.UserDetailRepository;
+import sjtusummerproject.userdetailmicroservice.DataModel.Domain.PictureEntity;
+import sjtusummerproject.userdetailmicroservice.DataModel.Domain.UserDetailEntity;
+import sjtusummerproject.userdetailmicroservice.DataModel.Domain.UserEntity;
+import sjtusummerproject.userdetailmicroservice.Service.ManageUserDetailService;
 
 import java.util.UUID;
 
@@ -29,8 +19,6 @@ import java.util.UUID;
 @Service
 public class ManageUserDetailServiceImpl implements ManageUserDetailService {
 
-    @Autowired
-    ManageUserService manageUserService;
     @Autowired
     UserDetailRepository userDetailRepository;
     @Autowired
@@ -40,7 +28,9 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
     String imgServiceUrl;
 
     @Override
-    public UserDetailEntity saveByUserId(UserEntity user,UserDetailEntity partUserDetail) {
+    public UserDetailEntity saveByUserId(UserEntity user) {
+        UserDetailEntity partUserDetail = new UserDetailEntity();
+        partUserDetail.setId(user.getId());
         partUserDetail.setUsername(user.getUsername());
         partUserDetail.setEmail(user.getEmail());
         return userDetailRepository.save(partUserDetail);
@@ -49,7 +39,7 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
 
 
     @Override
-    public UserDetailEntity updateByUserId(Long userid, String avatar, String phone, String address, Double account) {
+    public UserDetailEntity updateByUserId(Long userid, String avatar, String phone, String address, Double account, String nickName) {
         UserDetailEntity userDetail = userDetailRepository.findById(userid);
         if(avatar != null)
             userDetail.setAvatar(avatar);
@@ -59,6 +49,8 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
             userDetail.setAddress(address);
         if(account != null)
             userDetail.setAccount(account);
+        if(nickName != null)
+            userDetail.setNickName(nickName);
         return userDetailRepository.save(userDetail);
     }
 

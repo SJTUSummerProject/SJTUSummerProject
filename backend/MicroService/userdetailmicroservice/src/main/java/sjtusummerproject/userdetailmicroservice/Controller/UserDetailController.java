@@ -1,4 +1,4 @@
-package sjtusummerproject.usermicroservice.Controller;
+package sjtusummerproject.userdetailmicroservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import sjtusummerproject.usermicroservice.DataModel.Domain.UserDetailEntity;
-import sjtusummerproject.usermicroservice.DataModel.Domain.UserEntity;
-import sjtusummerproject.usermicroservice.Service.ManageUserDetailService;
+import sjtusummerproject.userdetailmicroservice.DataModel.Domain.UserDetailEntity;
+import sjtusummerproject.userdetailmicroservice.DataModel.Domain.UserEntity;
+import sjtusummerproject.userdetailmicroservice.Service.ManageUserDetailService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/UserDetail")
@@ -29,6 +27,14 @@ public class UserDetailController {
 
     @Value("${authservice.url}")
     private String url;
+    @Value("${userservice.url}")
+    private String userUrl;
+
+    @RequestMapping(value = "/InitialSave")
+    public String initialSave(HttpServletRequest request, HttpServletResponse response, @RequestParam(name="user") UserEntity userEntity){
+        if (manageUserDetailService.saveByUserId(userEntity) == null) return null;
+        return "success";
+    }
 
     @RequestMapping(value = "/UpdateByUserid")
     @ResponseBody
@@ -45,8 +51,24 @@ public class UserDetailController {
         String avatar = manageUserDetailService.saveAvatar(frontAvatar);
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
+        String nickName = request.getParameter("nickname");
 
-        return manageUserDetailService.updateByUserId(userid,avatar,phone,address,account);
+        return manageUserDetailService.updateByUserId(userid,avatar,phone,address,account,nickName);
+    }
+
+    @RequestMapping(value = "/UpdateOldPassword")
+    public boolean modifhOldPassword(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter("token");
+        UserEntity userEntity = callAuthService(token);
+        int result = authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return false;
+        Long userid = userEntity.getId();
+        MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
+        multiValueMap.add("id", userid);
+        multiValueMap.add("oldpassword", request.getParameter("oldpassword"));
+        multiValueMap.add("newpassword", request.getParameter("newpassword"));
+        return restTemplate.postForObject(userUrl, multiValueMap, boolean.class);
     }
 
     @RequestMapping(value = "/QueryByUserid")

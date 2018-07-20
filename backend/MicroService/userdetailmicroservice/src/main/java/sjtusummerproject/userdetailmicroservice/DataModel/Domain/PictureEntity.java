@@ -1,4 +1,4 @@
-package sjtusummerproject.usermicroservice.DataModel.Domain;
+package sjtusummerproject.userdetailmicroservice.DataModel.Domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

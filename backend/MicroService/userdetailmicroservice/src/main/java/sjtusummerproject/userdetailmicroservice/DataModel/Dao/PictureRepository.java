@@ -1,7 +1,7 @@
-package sjtusummerproject.usermicroservice.DataModel.Dao;
+package sjtusummerproject.userdetailmicroservice.DataModel.Dao;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import sjtusummerproject.usermicroservice.DataModel.Domain.PictureEntity;
+import sjtusummerproject.userdetailmicroservice.DataModel.Domain.PictureEntity;
 
 public interface PictureRepository extends MongoRepository<PictureEntity,String> {
     public PictureEntity findByUuid(String uuid);

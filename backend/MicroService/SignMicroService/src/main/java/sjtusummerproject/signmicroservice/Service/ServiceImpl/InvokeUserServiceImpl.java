@@ -1,6 +1,7 @@
 package sjtusummerproject.signmicroservice.Service.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
@@ -19,13 +20,16 @@ public class InvokeUserServiceImpl implements InvokeUserService {
         return new RestTemplate();
     }
 
-    String baseUrl="http://user-microservice:8080";
+    @Value("${userservice.url}")
+    String userServiceUrl;
+    @Value("${userdetailservice.url}")
+    String userDetailServiceUrl;
 
     @Override
     public String AddUserMicroService(UserEntity user) {
 
         /* 发送给 UserMicroService */
-        String url=baseUrl+"/User/Add";
+        String url=userServiceUrl+"/User/Add";
         /* 注意：必须 http、https……开头，不然报错，浏览器地址栏不加 http 之类不出错是因为浏览器自动帮你补全了 */
         //System.out.println("即将发请求");
         RestTemplate template = new RestTemplate();
@@ -35,20 +39,16 @@ public class InvokeUserServiceImpl implements InvokeUserService {
         postbody.add("password",user.getPassword());
         postbody.add("email",user.getEmail());
         postbody.add("status",user.getStatus());
-
-        // 1、使用postForObject请求接口
-        String result = template.postForObject(url, postbody, String.class);
-
-        //System.out.println("the result "+result);
-        return result;
+        UserEntity userEntity = template.postForObject(url, postbody, UserEntity.class);
+        return "success";
     }
 
     @Override
     public UserEntity QueryUserMicroService(String userName) {
         /* 发送给 UserMicroService */
-        String url=baseUrl+"/User/Query?"+"username="+userName;
+        String url=userServiceUrl+"/User/Query?"+"username="+userName;
         /* 注意：必须 http、https……开头，不然报错，浏览器地址栏不加 http 之类不出错是因为浏览器自动帮你补全了 */
-        System.out.println("即将发请求2");
+        //System.out.println("即将发请求2");
         RestTemplate template = new RestTemplate();
         UserEntity result = template.getForObject(url, UserEntity.class);
 

@@ -23,8 +23,7 @@ public class ManageUserServiceImpl implements ManageUserService {
 
     /* 此处有硬编码！-将authority设置为customer */
     @Override
-    public String AddUserOption(String username, String password, String email, String status) {
-        System.out.println("in add user");
+    public UserEntity AddUserOption(String username, String password, String email, String status) {
         UserEntity userToAdd = new UserEntity();
         userToAdd.setId(0L);
         userToAdd.setUsername(username);
@@ -34,11 +33,10 @@ public class ManageUserServiceImpl implements ManageUserService {
         userToAdd.setAuthority("Customer");/* 硬编码！ */
         /* username is unique */
         try {
-            userRepository.save(userToAdd);
-            return "ok";
+            return userRepository.save(userToAdd);
         }
         catch (Exception e){
-            return "error";
+            return null;
         }
     }
 
@@ -50,11 +48,23 @@ public class ManageUserServiceImpl implements ManageUserService {
     @Override
     public void UpdateUserStatusOption(String username, String status) {
         UserEntity userToUpdateStatus = userRepository.findByUsername(username.trim());
-        System.out.println("the username id 3 "+username.trim());
-        System.out.println("the username id 1 "+userToUpdateStatus.getId());
+        //System.out.println("the username id 3 "+username.trim());
+        //System.out.println("the username id 1 "+userToUpdateStatus.getId());
         userToUpdateStatus.setStatus(status);
-        System.out.println("the username id 2 "+userToUpdateStatus.getId());
+        //System.out.println("the username id 2 "+userToUpdateStatus.getId());
         userRepository.save(userToUpdateStatus);
+    }
+
+    @Override
+    public boolean UpdateUserOldPassword(Long id, String oldPassword, String newPassword){
+        UserEntity userEntity = userRepository.findById(id);
+        if (userEntity == null) return false;
+        else if (!userEntity.getPassword().equals(oldPassword)) return false;
+        else {
+            userEntity.setPassword(newPassword);
+            userRepository.save(userEntity);
+            return true;
+        }
     }
 
     @Override

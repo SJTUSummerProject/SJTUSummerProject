@@ -1,4 +1,4 @@
-package sjtusummerproject.usermicroservice.DataModel.Domain;
+package sjtusummerproject.userdetailmicroservice.DataModel.Domain;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,7 +13,16 @@ public class UserDetailEntity {
     private String avatar;
     private String phone;
     private String address;
+    private String nickName;
     private double account;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     public Long getId() {
         return id;
