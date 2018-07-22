@@ -1,25 +1,21 @@
 package com.sjtusummerproject.commentmicroservice.DataModel.Domain;
 
-import com.sjtusummerproject.commentmicroservice.Annotation.GeneratedValue;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
-@Document(collection = "Comment")
+@Table(name = "Comment")
+@Entity
 public class CommentEntity {
+    /*评论entity 只能是评论票品*/
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id
-    @GeneratedValue
-    Long id = 0L;
+    Long id;
 
     Long ownerId; //发表评论的用户id
-    String type;  //评论的种类： 评论票品("toTicket") or 评论别人的评论("toComment")
-    Long targetTicketId; //如果的票品的id
-    Long targetCommentId; //如果是评论别人的评论，这是那个评论的id; 如果不是 则为null
+    String ownername; //发表评论的用户名
+    Long targetTicketId; //评论的票品的id
     String content; //评论内容
-
+    String replys;
     @Temporal(TemporalType.DATE)
     Date createTime; //创建时间
 
@@ -39,28 +35,12 @@ public class CommentEntity {
         this.ownerId = ownerId;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public Long getTargetTicketId() {
         return targetTicketId;
     }
 
     public void setTargetTicketId(Long targetTicketId) {
         this.targetTicketId = targetTicketId;
-    }
-
-    public Long getTargetCommentId() {
-        return targetCommentId;
-    }
-
-    public void setTargetCommentId(Long targetCommentId) {
-        this.targetCommentId = targetCommentId;
     }
 
     public String getContent() {
@@ -77,5 +57,25 @@ public class CommentEntity {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getReplys() {
+        return replys;
+    }
+
+    public void setReplys(String replys) {
+        this.replys = replys;
+    }
+
+    public String getOwnername() {
+        return ownername;
+    }
+
+    public void setOwnername(String ownername) {
+        this.ownername = ownername;
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 public class SignmicroserviceApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(SignmicroserviceApplication.class, args);
 	}
