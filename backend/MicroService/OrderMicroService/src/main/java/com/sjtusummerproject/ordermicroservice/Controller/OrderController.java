@@ -34,6 +34,8 @@ public class OrderController {
     CartService cartService;
     @Autowired
     UserDetailService userDetailService;
+    @Autowired
+    AuthService authService;
 
     @Value("${cart.page.size}")
     private int PageSize;
@@ -48,9 +50,13 @@ public class OrderController {
     @RequestMapping(value = "/QueryByUserid")
     @ResponseBody
     public Page<OrderEntity> queryByUserid(HttpServletRequest request, HttpServletResponse response){
-        Long userid = Long.parseLong(request.getParameter("userid"));
+        String token = request.getParameter("token");
+        UserEntity userEntity = authService.callAuthService(token);
+        int result = authService.authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
 
-        return orderService.queryByUserid(userid,createPageable(request));
+        return orderService.queryByUserid(userEntity.getId(),createPageable(request));
     }
 
     /*在详细页面里生成订单 这个时候应该只有一个票品*/
@@ -66,15 +72,19 @@ public class OrderController {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
 
+        String token = request.getParameter("token");
+        UserEntity userEntity = authService.callAuthService(token);
+        int result = authService.authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+
         TicketEntity ticketEntity = ticketService.queryTicketById(ticketid);
-        UserEntity userEntity = userService.queryById(userid);
-        UserDetailEntity userDetailEntity = userDetailService.queryUserDetailById(userid);
 
         /*此partOrder只含有orderid status("待支付") time三个基本属性*/
         OrderEntity partOrder = orderService.createBasicOrder();
         /*继续填入进阶信息 即userid receiver phone address*/
         /*最后还差 items*/
-        partOrder = orderService.createAdditionOrderEntity(partOrder,userEntity,userDetailEntity,receiver,phone,address);
+        partOrder = orderService.createAdditionOrderEntity(partOrder,userEntity,receiver,phone,address);
         ItemEntity itemEntity = orderService.createFullItemFromOrder(partOrder, ticketEntity, price, date, number);
         return orderService.saveInDetailPage(partOrder,itemEntity);
     }
@@ -122,12 +132,15 @@ public class OrderController {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
 
+        String token = request.getParameter("token");
+        UserEntity userEntity = authService.callAuthService(token);
+        int result = authService.authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+
         List<CartEntity> carts = cartService.queryByBatchIds(cartids);
-        UserEntity userEntity = userService.queryById(userid);
-        UserDetailEntity userDetailEntity = userDetailService.queryUserDetailById(userid);
-        /*经过一下两步 partorder 只差items列表了，需要从carts中拿到items*/
         OrderEntity partOrder = orderService.createBasicOrder();
-        partOrder = orderService.createAdditionOrderEntity(partOrder,userEntity,userDetailEntity,receiver,phone,address);
+        partOrder = orderService.createAdditionOrderEntity(partOrder,userEntity,receiver,phone,address);
 
         return orderService.saveBatchInCart(partOrder,userEntity,carts);
     }

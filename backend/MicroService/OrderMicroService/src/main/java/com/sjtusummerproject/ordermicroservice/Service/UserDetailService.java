@@ -6,7 +6,6 @@ import org.apache.tomcat.util.buf.UDecoder;
 
 public interface UserDetailService {
     public UserDetailEntity queryUserDetailById(Long userDetailId);
-    public UserDetailEntity updateAccount(Long userid, double account);
     public Boolean updateAccountMinus(Long userid, double toMinus);
     public Boolean updateAccountPlus(Long userid, double toPlus);
 }

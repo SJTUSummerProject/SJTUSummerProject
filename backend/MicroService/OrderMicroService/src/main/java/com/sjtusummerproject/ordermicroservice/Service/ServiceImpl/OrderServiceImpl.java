@@ -291,23 +291,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /*填入order 进阶信息 即userid receiver phone address*/
-    public OrderEntity createAdditionOrderEntity(OrderEntity orderEntity, UserEntity userEntity, UserDetailEntity userDetailEntity,String receiver,String phone,String address ){
+    public OrderEntity createAdditionOrderEntity(OrderEntity orderEntity, UserEntity userEntity,String receiver,String phone,String address ){
         orderEntity.setUserId(userEntity.getId());
-
-        if(receiver==null||receiver.trim().equals(""))
-            orderEntity.setReceiver(userEntity.getUsername());
-        else
-            orderEntity.setReceiver(receiver);
-
-        if(phone==null||phone.trim().equals(""))
-            orderEntity.setPhone(userDetailEntity.getPhone());
-        else
-            orderEntity.setPhone(phone);
-
-        if(address==null||address.trim().equals(""))
-            orderEntity.setAddress(userDetailEntity.getAddress());
-        else
-            orderEntity.setAddress(address);
+        orderEntity.setReceiver(receiver);
+        orderEntity.setPhone(phone);
+        orderEntity.setAddress(address);
         return orderEntity;
     }
 

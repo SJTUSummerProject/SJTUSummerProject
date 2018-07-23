@@ -17,7 +17,7 @@ public class UserDetailServiceImpl implements UserDetailService {
         return new RestTemplate();
     }
 
-    @Value("${userservice.url}")
+    @Value("${userdetailservice.url}")
     String baseUrl;
 
     public UserDetailEntity queryUserDetailById(Long userid) {
