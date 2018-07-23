@@ -4,6 +4,6 @@ metadata:
   name: redis-master-service
 spec:
   selector:
-    name: redis-master
+    app: redis-master-service
   ports:
     - port: 6379

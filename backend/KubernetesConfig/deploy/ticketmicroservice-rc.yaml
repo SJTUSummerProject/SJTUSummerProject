@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: mailmicroservice
+  name: ticket-microservice
 spec:
   replicas: 1
   selector:
-    app: mailmicroservice
+    app: ticket-microservice
   template:
     metadata:
       labels:
-        app: mailmicroservice
+        app: ticket-microservice
     spec:
       containers:
-      - name: mailmicroservice
-        image: 172.18.51.9:5000/emailmicroservice:v3
+      - name: ticket-microservice
+        image: 172.18.51.9:5000/ticketmicroservice
         ports:
         - containerPort: 8080

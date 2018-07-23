@@ -5,8 +5,5 @@ metadata:
 spec:
   selector:
     app: rabbitmq
-  type: NodePort
   ports:
   - port: 5672
-    targetPort: 5672
-    nodePort: 31001
