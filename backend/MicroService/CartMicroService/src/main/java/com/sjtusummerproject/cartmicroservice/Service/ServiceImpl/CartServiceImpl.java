@@ -95,6 +95,7 @@ public class CartServiceImpl implements CartService {
     * */
     @Override
     public List<CartEntity> queryByBatchId(String ids) {
+        if (ids == null) return null;
         String[] idSplit = ids.trim().replace("[","").replace("]","").split(",");
         List<CartEntity> res = new LinkedList<>();
         for(String eachId : idSplit){

@@ -1,12 +1,8 @@
 package sjtusummerproject.usermicroservice.Controller;
 
-import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sjtusummerproject.usermicroservice.DataModel.Dao.UserRepository;
-import sjtusummerproject.usermicroservice.DataModel.Domain.UserDetailEntity;
 import sjtusummerproject.usermicroservice.DataModel.Domain.UserEntity;
-import sjtusummerproject.usermicroservice.Service.ManageUserDetailService;
 import sjtusummerproject.usermicroservice.Service.ManageUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
     @Autowired
     ManageUserService manageUserService;
-    @Autowired
-    ManageUserDetailService manageUserDetailService;
 
     @GetMapping(value="/Query")
     @ResponseBody
@@ -28,29 +22,15 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value = "/QueryById")
-    @ResponseBody
-    public UserEntity QueryUserById(HttpServletRequest request, HttpServletResponse response){
-        Long id = Long.parseLong(request.getParameter("userid"));
-        UserEntity user = manageUserService.QueryUserByIdOption(id);
-        return user;
-    }
-
     @PostMapping(value = "/Add")
     @ResponseBody
-    public String AddUser(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("status")String status, String authority ,HttpServletRequest request, HttpServletResponse response){
+    public UserEntity AddUser(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("status")String status, String authority ,HttpServletRequest request, HttpServletResponse response){
         /*
         * 在add一个新的user的时候
         * 创建一个对应的userDetailEntity
         * 此时新的userDetaiEntity 只有 id username email
         * */
-        String res = manageUserService.AddUserOption(username,password,email,status);
-
-        UserEntity userEntity = manageUserService.QueryUserOption(username);
-        UserDetailEntity partUserDetail = new UserDetailEntity();
-        partUserDetail.setId(userEntity.getId());
-        manageUserDetailService.saveByUserId(userEntity.getId(),partUserDetail);
-
+        UserEntity res = manageUserService.AddUserOption(username,password,email,status);
         return res;
     }
 
@@ -75,11 +55,13 @@ public class UserController {
         manageUserService.UpdateUserPasswordOption(username,password);
     }
 
-    @PostMapping(value="/UpdateEmail")
-    @ResponseBody
-    public void UpdateUserEmail(@RequestParam(name="username")String username,@RequestParam(name="email") String email,HttpServletRequest request, HttpServletResponse response){
-        manageUserService.UpdateUserEmailOption(username,email);
+    @RequestMapping(value="/UpdateOldPassword")
+    public boolean updateOldPassword(@RequestParam(name="id") Long id,
+                                     @RequestParam(name="oldpassword") String oldPassword,
+                                     @RequestParam(name="newpassword") String newPassword){
+        return manageUserService.UpdateUserOldPassword(id, oldPassword, newPassword);
     }
+
 
     @PostMapping(value="/UpdateAuthority")
     @ResponseBody
