@@ -96,6 +96,7 @@
         pagenumber | String |
         city       | String | 所在城市
         * ### URL：GEt /Ticket/QueryByCityAndTypePage
+        说明：若city或type为all，则自动调用对应的api
         #### 传入参数
         变量名|类型|说明
         -|-|-
@@ -345,3 +346,72 @@
         replyid|Long|要删除的回复的id
         #### 返回参数 String=“ok“
 * ## OrderMicroService port:30011
+    说明：在下订单的过程中前端先调用userdetail的api获取收货地址，手机号等默认信息，展现订单生成页面，并允许用户填写自定义信息，然后生成订单并等待用户付款
+    ### response头中errorNum说明
+        数字            说明
+        0               成功
+        1               尚未登录
+        2               身份不对应
+        3               账户被冻结
+    ### 订单信息
+        变量名          说明
+        orderId         订单唯一标识符
+        userId          用户唯一标识符
+        receiver        接收人名称
+        phone           电话
+        address         收货地址
+        status          状态（取消中，已取消，退款中，已退款，代付款，代发货，已发货，已过期，已删除，已发货，已签收）
+        ordertime       下订单时间（超过1天则视为过期）
+        items           下单对应的购买物品
+    ### 物品信息
+        变量名             说明
+        itemId              订单中物品唯一标识符
+        ticketId            票品唯一标识符
+        price               价格
+        number              数量
+        date                日期
+        image               图片url
+        title               标题
+        venue               地址
+        city                城市
+        status              购买操作结果（未操作，成功，失败） 
+    * ### URL: /Order/QueryByUserid
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-    
+        token|String|
+        #### 返回参数(orderEntity)
+    * ### URL：/Order/AddInDetailPage
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-    
+        token|String|
+        ticketid | Long | 票品唯一标识符
+        price | Double | 价格
+        date | String | 日期
+        number | Long | 数字
+        recerver | String | 接收人姓名
+        phone | String | 电话
+        address | String | 收货地址
+        #### 返回参数(orderEntity)
+    * ### URL：/Order/AddBatchInCart
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-    
+        token|String|
+        cartids | cartid数组，格式为[1,2,3] | 购物车中选中的物品
+        receiver | String | 接收人姓名
+        phone | String | 电话
+        address | String | 收货地址
+        #### 返回参数(orderEntity)
+    * ### URL：/Order/Buy
+         #### 传入参数
+        变量名|类型|说明
+        -|-|-    
+        token|String|
+        orderid | Long | 订单唯一标识符
+        #### 返回参数（hashmap）
+        键|说明
+        -|-
+        message | expired代表过期 Insufficient balance代表用户余额不足 success代表成功
+        Iventory shortage | 因缺货而购买失败的物品列表

@@ -65,7 +65,10 @@ public class TicketController {
     public Page<TicketEntity> QueryTicketByCityAndTypePage(HttpServletRequest request, HttpServletResponse response){
         String city = request.getParameter("city");
         String type = request.getParameter("type");
-        return manageTicketService.QueryTicketPageOptionByCityAndType(city, type, CreatePageable(request));
+        if (city.equals("all") && type.equals("all")) return QueryTicketShowPage(request, response);
+        else if (city.equals("all")) return QueryTicketByTypePage(request, response);
+        else if (type.equals("all")) return QueryTicketByCityPage(request, response);
+        else return manageTicketService.QueryTicketPageOptionByCityAndType(city, type, CreatePageable(request));
     }
 
     @GetMapping(value="/QueryByDateRangePage")
