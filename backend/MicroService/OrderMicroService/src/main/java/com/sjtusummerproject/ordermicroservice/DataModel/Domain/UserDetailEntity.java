@@ -7,7 +7,16 @@ public class UserDetailEntity {
     private String avatar;
     private String phone;
     private String address;
+    private String nickname;
     private double account;
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public Long getId() {
         return id;

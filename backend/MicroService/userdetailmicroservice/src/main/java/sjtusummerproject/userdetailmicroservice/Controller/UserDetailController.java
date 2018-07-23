@@ -31,7 +31,9 @@ public class UserDetailController {
     private String userUrl;
 
     @RequestMapping(value = "/InitialSave")
-    public String initialSave(HttpServletRequest request, HttpServletResponse response, @RequestParam(name="user") UserEntity userEntity){
+    public String initialSave(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter("token");
+        UserEntity userEntity = callAuthService(token);
         if (manageUserDetailService.saveByUserId(userEntity) == null) return null;
         return "success";
     }
@@ -99,6 +101,7 @@ public class UserDetailController {
 
         return manageUserDetailService.updateAccountPlusById(userid,toPlus);
     }
+
     private UserEntity callAuthService(String token){
         MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
         multiValueMap.add("token", token);

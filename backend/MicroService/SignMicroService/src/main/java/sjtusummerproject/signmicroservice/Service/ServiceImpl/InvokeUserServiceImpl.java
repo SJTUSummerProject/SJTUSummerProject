@@ -22,8 +22,8 @@ public class InvokeUserServiceImpl implements InvokeUserService {
 
     @Value("${userservice.url}")
     String userServiceUrl;
-    @Value("${userdetailservice.url}")
-    String userDetailServiceUrl;
+    //@Value("${userdetailservice.url}")
+    //String userDetailServiceUrl;
 
     @Override
     public String AddUserMicroService(UserEntity user) {
@@ -52,7 +52,7 @@ public class InvokeUserServiceImpl implements InvokeUserService {
         RestTemplate template = new RestTemplate();
         UserEntity result = template.getForObject(url, UserEntity.class);
 
-        System.out.println("the result in query user "+result);
+        //System.out.println("the result in query user "+result);
         return result;
     }
 

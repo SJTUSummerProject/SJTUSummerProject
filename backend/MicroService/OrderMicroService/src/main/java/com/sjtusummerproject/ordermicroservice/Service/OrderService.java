@@ -19,7 +19,7 @@ public interface OrderService {
     public String addWithdrawRabbit(OrderEntity orderEntity);
 
     public OrderEntity createBasicOrder();
-    public OrderEntity createAdditionOrderEntity(OrderEntity orderEntity, UserEntity userEntity, UserDetailEntity userDetailEntity,String receiver,String phone,String address );
+    public OrderEntity createAdditionOrderEntity(OrderEntity orderEntity, UserEntity userEntity,String receiver,String phone,String address );
     public ItemEntity createFullItemFromOrder(OrderEntity orderEntity, TicketEntity ticketEntity,double price, String date, Long number);
     public ItemEntity createFullItemFromCartAndOrder(CartEntity cartEntity, OrderEntity orderEntity);
     /* test */

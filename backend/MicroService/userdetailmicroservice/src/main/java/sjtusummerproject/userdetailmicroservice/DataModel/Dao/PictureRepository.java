@@ -4,5 +4,4 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import sjtusummerproject.userdetailmicroservice.DataModel.Domain.PictureEntity;
 
 public interface PictureRepository extends MongoRepository<PictureEntity,String> {
-    public PictureEntity findByUuid(String uuid);
 }
