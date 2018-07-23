@@ -95,6 +95,13 @@
         -|-|-
         pagenumber | String |
         city       | String | 所在城市
+        * ### URL：GEt /Ticket/QueryByCityAndTypePage
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-
+        pagenumber | String |
+        city       | String | 所在城市
+        type       | String | 类型
     * ### URL：GET /Ticket/QueryByDateRangePage
         #### 传入参数
         变量名|类型|说明

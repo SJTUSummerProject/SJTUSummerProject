@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
     Long dayInMillisec;
     @Override
     public Page<OrderEntity> queryByUserid(Long userid, Pageable pageable) {
-        return orderPageRepository.findAllByUserId(userid,pageable);
+        return orderPageRepository.findAllByUserIdAndStatusNotLike(userid,"已删除",pageable);
     }
 
     @Override

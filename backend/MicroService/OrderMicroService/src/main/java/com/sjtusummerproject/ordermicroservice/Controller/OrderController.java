@@ -29,8 +29,6 @@ public class OrderController {
     @Autowired
     TicketService ticketService;
     @Autowired
-    UserService userService;
-    @Autowired
     CartService cartService;
     @Autowired
     UserDetailService userDetailService;
@@ -63,7 +61,6 @@ public class OrderController {
     @RequestMapping(value = "/AddInDetailPage")
     @ResponseBody
     public OrderEntity addInDetailPage(HttpServletRequest request, HttpServletResponse response){
-        Long userid = Long.parseLong(request.getParameter("userid"));
         Long ticketid = Long.parseLong(request.getParameter("ticketid"));
         double price = Double.parseDouble(request.getParameter("price"));
         String date = request.getParameter("date");
@@ -89,10 +86,41 @@ public class OrderController {
         return orderService.saveInDetailPage(partOrder,itemEntity);
     }
 
-    /* 在详细页面/购物车/订单页面 点击购买 */
+    /*
+     * 在购物车页面里生成订单 这个时候应该有很多票品
+     * 我们的票品信息应该从 CartEntity 获得 而不是TicketEntity
+     * */
+    @RequestMapping(value = "/AddBatchInCart")
+    @ResponseBody
+    public OrderEntity addBatchInCart(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter("token");
+        UserEntity userEntity = authService.callAuthService(token);
+        int result = authService.authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+
+        String cartids = request.getParameter("cartids");
+        String receiver = request.getParameter("receiver");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+
+        List<CartEntity> carts = cartService.queryByBatchIds(cartids);
+        OrderEntity partOrder = orderService.createBasicOrder();
+        partOrder = orderService.createAdditionOrderEntity(partOrder,userEntity,receiver,phone,address);
+
+        return orderService.saveBatchInCart(partOrder,userEntity,carts);
+    }
+
+    /* 在订单页面 点击购买 */
     @RequestMapping(value = "/Buy")
     @ResponseBody
     public HashMap<String,Object> buyOrder(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter("token");
+        UserEntity userEntity = authService.callAuthService(token);
+        int result = authService.authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
+
         Long orderid = Long.parseLong(request.getParameter("orderid"));
         return orderService.buy(orderid);
     }
@@ -103,6 +131,11 @@ public class OrderController {
     @RequestMapping(value = "/Cancel")
     @ResponseBody
     public String cancelOrder(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter("token");
+        UserEntity userEntity = authService.callAuthService(token);
+        int result = authService.authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
         Long orderid = Long.parseLong(request.getParameter("orderid"));
         return orderService.cancel(orderid);
     }
@@ -113,37 +146,16 @@ public class OrderController {
     * */
     @RequestMapping(value = "Withdraw")
     @ResponseBody
-    public String withdrawOrder(@RequestParam(value = "orderid") Long orderid){
-         OrderEntity orderEntity = orderService.queryByOrderid(orderid);
-         return orderService.addWithdrawRabbit(orderEntity);
-    }
-
-    /*
-    * 在购物车页面里生成订单 这个时候应该有很多票品
-    * 我们的票品信息应该从 CartEntity 获得 而不是TicketEntity
-    * */
-    @RequestMapping(value = "/AddBatchInCart")
-    @ResponseBody
-    public OrderEntity addBatchInCart(HttpServletRequest request, HttpServletResponse response){
-        String cartids = request.getParameter("cartids");
-        Long userid = Long.parseLong(request.getParameter("userid"));
-
-        String receiver = request.getParameter("receiver");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-
+    public String withdrawOrder(@RequestParam(value = "orderid") Long orderid, HttpServletRequest request, HttpServletResponse response){
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
         int result = authService.authUser(userEntity);
         response.addIntHeader("errorNum", result);
         if (result != 0) return null;
-
-        List<CartEntity> carts = cartService.queryByBatchIds(cartids);
-        OrderEntity partOrder = orderService.createBasicOrder();
-        partOrder = orderService.createAdditionOrderEntity(partOrder,userEntity,receiver,phone,address);
-
-        return orderService.saveBatchInCart(partOrder,userEntity,carts);
+         OrderEntity orderEntity = orderService.queryByOrderid(orderid);
+         return orderService.addWithdrawRabbit(orderEntity);
     }
+
 
     /*
     * 点击 删除一个票品
@@ -151,8 +163,13 @@ public class OrderController {
     @RequestMapping(value = "/DeleteOne")
     @ResponseBody
     public String deleteOne(HttpServletRequest request, HttpServletResponse response){
-        Long orderid = Long.parseLong(request.getParameter("orderid"));
+        String token = request.getParameter("token");
+        UserEntity userEntity = authService.callAuthService(token);
+        int result = authService.authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
 
+        Long orderid = Long.parseLong(request.getParameter("orderid"));
         return orderService.deleteOne(orderid);
     }
 
@@ -162,8 +179,13 @@ public class OrderController {
     @RequestMapping(value = "/DeleteBatch")
     @ResponseBody
     public String deleteBatch(HttpServletRequest request, HttpServletResponse response){
-        String ids = request.getParameter("batchid");
+        String token = request.getParameter("token");
+        UserEntity userEntity = authService.callAuthService(token);
+        int result = authService.authUser(userEntity);
+        response.addIntHeader("errorNum", result);
+        if (result != 0) return null;
 
+        String ids = request.getParameter("batchid");
         return orderService.deleteSome(ids);
     }
 

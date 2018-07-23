@@ -41,7 +41,7 @@ public class TicketController {
     @GetMapping(value="/QueryShowPage")
     @ResponseBody
     public Page<TicketEntity> QueryTicketShowPage(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("page:"+request.getParameter("pagenumber"));
+        //System.out.println("page:"+request.getParameter("pagenumber"));
         return manageTicketService.QueryTicketPageOptionShow(CreatePageable(request));
     }
 
@@ -57,6 +57,15 @@ public class TicketController {
     public Page<TicketEntity> QueryTicketByCityPage(HttpServletRequest request, HttpServletResponse response){
         String city = request.getParameter("city");
         return manageTicketService.QueryTicketPageOptionByCity(city,CreatePageable(request));
+    }
+
+
+    @GetMapping(value="/QueryByCityAndTypePage")
+    @ResponseBody
+    public Page<TicketEntity> QueryTicketByCityAndTypePage(HttpServletRequest request, HttpServletResponse response){
+        String city = request.getParameter("city");
+        String type = request.getParameter("type");
+        return manageTicketService.QueryTicketPageOptionByCityAndType(city, type, CreatePageable(request));
     }
 
     @GetMapping(value="/QueryByDateRangePage")

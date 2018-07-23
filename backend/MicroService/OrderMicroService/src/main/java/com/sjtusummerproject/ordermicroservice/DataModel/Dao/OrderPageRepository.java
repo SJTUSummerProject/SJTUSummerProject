@@ -7,4 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface OrderPageRepository extends PagingAndSortingRepository<OrderEntity, Long> {
     public Page<OrderEntity> findAllByUserId(Long userid, Pageable pageable);
+    public Page<OrderEntity> findAllByUserIdAndStatusNotLike(Long userid,String status, Pageable pageable);
 }

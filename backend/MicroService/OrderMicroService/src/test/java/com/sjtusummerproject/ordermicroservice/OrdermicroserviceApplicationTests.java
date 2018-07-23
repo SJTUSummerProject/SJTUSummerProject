@@ -69,7 +69,6 @@ public class OrdermicroserviceApplicationTests {
 		ItemEntity itemEntity = new ItemEntity();
 		itemEntity.setItemId(3L);
 		itemEntity.setOrderEntity(orderEntity);
-		itemEntity.setNumber(number);
 		itemEntity.setImage(ticketEntity.getImage());
 		itemEntity.setDate(date);
 		itemEntity.setCity(ticketEntity.getCity());

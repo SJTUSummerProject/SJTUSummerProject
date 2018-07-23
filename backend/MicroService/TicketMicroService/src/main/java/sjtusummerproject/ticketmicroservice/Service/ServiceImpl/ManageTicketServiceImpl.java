@@ -50,6 +50,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         return ticketPageRepository.findAllByCity(city,pageable);
     }
 
+    @Cacheable(value="10m", key = "#city+#type+':'+#pageable.getPageNumber()")
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByCityAndType(String city, String type, Pageable pageable) {
+        return ticketPageRepository.findAllByCityAndType(city, type, pageable);
+    }
+
+
     @Cacheable(value="10m",key = "#firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByDateRange(String firstDateString, String secondDateString, Pageable pageable) {
@@ -136,42 +143,11 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     /* no page */
     @Override
     public List<TicketEntity> QueryTicketOptionByExactDate(String date) {
-//        List<TicketEntity> list = ticketRepository.findAllByDate(date);
-//        return list;
         return null;
     }
 
     @Override
     public List<TicketEntity> QueryTicketOptionByDateRange(String firstDate, String secondDate) {
-//        HashMap<String,Integer> SmallToCompare = SplitDateString(firstDate);
-//
-//        HashMap<String,Integer> LargeToCompare = SplitDateString(secondDate);
-//
-//        List<TicketEntity> allEntity = ticketRepository.findAll();
-//        List<TicketEntity> filterlist = new LinkedList<>();
-//        for(TicketEntity EachEntity : allEntity){
-//            String EachEntityDate = EachEntity.getDate();
-//            if(EachEntityDate.contains("至")){
-//                String EachEntityDate1 = EachEntityDate.split("至")[0].trim();
-//                String EachEntityDate2 = EachEntityDate.split("至")[1].trim();
-//                HashMap<String,Integer> StartDateMap = SplitDateString(EachEntityDate1);
-//                HashMap<String,Integer> EndDateMap = SplitDateString(EachEntityDate2);
-//                if((CompareDate(SmallToCompare,StartDateMap)==true)&&(CompareDate(StartDateMap,LargeToCompare)==true))
-//                    filterlist.add(EachEntity);
-//                else if((CompareDate(SmallToCompare,EndDateMap)==true)&&(CompareDate(EndDateMap,LargeToCompare)==true))
-//                    filterlist.add(EachEntity);
-//                else
-//                    continue;
-//            }
-//            else{
-//                HashMap<String,Integer> ExactDateMap = SplitDateString(EachEntityDate);
-//                if((CompareDate(SmallToCompare,ExactDateMap)==true)&&(CompareDate(ExactDateMap,LargeToCompare)==true))
-//                    filterlist.add(EachEntity);
-//                else
-//                    continue;
-//            }
-//        }
-//        return filterlist;
         return null;
     }
 
