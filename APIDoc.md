@@ -180,23 +180,70 @@
         token | String
         #### 返回参数（分页了的cart信息，默认一页16个）
 
-* ## UserMicroservice port：30002cca
-    * ### URL：/User/
-
-* ## CommentMicroservice port: 潘子奕记得填！！！！
+* ## UserDetailMicroservice port：30009
+    ### response头中errorNum说明
+        数字            说明
+        0               成功
+        1               尚未登录
+        2               身份不对应
+        3               账户被冻结
+    ### 用户详细信息
+        变量名          说明
+        id              用户唯一标识
+        username        用户名
+        email           邮箱
+        avatar          头像
+        phone           手机号（用于收货）
+        address         地址（用于收货）
+        nickName        昵称
+        account         账户余额
+    * ### URL：/UserDetail/InitialSave
+        说明：在第一次调用QueryByUserid时会后端会返回一个null，此时前端调用该API将用户具体信息初始化
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-  
+        token | String | 用户唯一标识
+        #### 返回参数（UserEntity）
+    * ### URL：/UserDetail/QueryByUserid
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-  
+        token | String | 用户唯一标识
+        #### 返回参数（UserEntity）
+    * ### URL：/UserDetail/UpdateByUserid
+        说明：用于更新用户详细信息，除了token其他所有参数都可以为空，默认不修改
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-  
+        token | String | 用户唯一标识
+        avatar | multipartfile | 头像
+        account | Double | 账户余额
+        phone | String | 电话
+        address | String | 收货地址
+        nickname | String | 昵称
+        #### 返回参数（UserEntity）
+    * ### URL：/UserDetail/UpdateOldPassword
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-  
+        token | String | 用户唯一标识
+        oldpassword | String | 旧密码
+        newpassword | String | 新密码
+        #### 返回参数（UserEntity）
+* ## CommentMicroservice port: 30010
     ### 评论信息 - Comment
         变量名          说明
         id              评论comment唯一标识符
-        ownerId         评论创建者的id
+        ownerId         评论创建者的id
         ownername       评论创建者的名字
-        targetTicketId  评论的票品id
+        targetTicketId  评论的票品id
         content         内容
         replys          是一个url，前端通过这个url向后端索取回复本comment的reply
         createTime      评论创建的时间
     ### 回复信息 - Reply
         变量名          说明
         id              回复reply唯一标识符
-        ownerId         回复创建者的id
+        ownerId         回复创建者的id
         ownername       回复创建者的名字
         targetUserId    （被回复的reply|comment）的创建者id
         targetUsername  （被回复的reply|comment）的创建者姓名
@@ -219,36 +266,36 @@
         ticketid|Long|对此ticketid的票品进行评论
         content|String|评论的内容
         #### 返回参数 String="ok"
-    * ### URL: /Comment/QueryByUserid
+    * ### URL: /Comment/QueryByUserid
         #### 传入参数
         变量名|类型|说明
         -|-|-    
         token|String
         pagenumber|int|用于分页，因为用户可能对很多票品进行评论，所以需要进行评论
-        #### 返回参数 (分了页的comment信息，一次9个)
-    * ### URL: /Comment/QueryByTicketid
+        #### 返回参数 (分了页的comment信息，一次9个)
+    * ### URL: /Comment/QueryByTicketid
         #### 传入参数
         变量名|类型|说明
         -|-|-    
         ticketid|Long|对此票的评论进行搜索
         pagenumber|int|用于分页
-        #### 返回参数 (分了页的comment信息，一次9个)
-    * ### URL: /Comment/UpdateContentByCommentid
+        #### 返回参数 (分了页的comment信息，一次9个)
+    * ### URL: /Comment/UpdateContentByCommentid
         #### 传入参数
         变量名|类型|说明
         -|-|-    
         token|Long|
         commentid|Long|需要修改的comment的id
         content|String|修改的新的内容(不能为空)
-        #### 返回参数 (新的comment信息)
-    * ### URL: /Comment/DeleteByCommentid
+        #### 返回参数 (新的comment信息)
+    * ### URL: /Comment/DeleteByCommentid
         #### 传入参数
         变量名|类型|说明
         -|-|-    
         token|String
-        commentid|Long|需要删除的comment的id
+        commentid|Long|需要删除的comment的id
         #### 返回参数 (删除掉的comment信息)
-    * ### URL: /Reply/AddToComment
+    * ### URL: /Reply/AddToComment
         #### 说明：对评论进行回复（即 reply to comment）
         #### 传入参数
         变量名|类型|说明
@@ -257,7 +304,7 @@
         commentid|Long|要回复的评论的id
         content|String|回复的内容（不能为空）
         #### 返回参数 String=“ok”
-     * ### URL: /Reply/AddToReply
+     * ### URL: /Reply/AddToReply
         #### 说明：对回复进行回复（即 reply to reply1）
         #### 传入参数
         变量名|类型|说明
@@ -266,7 +313,7 @@
         replyid|Long|被回复的回复（即reply1）的id
         content|String|回复的内容
         #### 返回参数 String=“ok”
-    * ### URL: /Reply/QueryByParentId
+    * ### URL: /Reply/QueryByParentId
         #### 说明：由于我们的评论要做成树状，设计为comment->reply，comment为reply的parent
         #### 传入参数
         变量名|类型|说明
@@ -275,7 +322,7 @@
         type|String|"toComment"表示parent是一个comment；“toReply”表示parent是一个reply
         pagenumber|int|进行分页操作（一页4个）
         #### 返回参数 （分好页的reply信息）
-    * ### URL: /Reply/QueryByReplyId
+    * ### URL: /Reply/QueryByReplyId
         #### 说明：对这个reply，搜索回复它的replys
         #### 传入参数
         变量名|类型|说明
@@ -283,11 +330,11 @@
         replyid|Long|此reply的id，用来get回复它的回复
         pagenumber|int|分页pagenumber
         #### 返回参数 （分好页的reply信息）
-    * ### URL: /Reply/Delete
+    * ### URL: /Reply/Delete
         #### 传入参数
         变量名|类型|说明
         -|-|-    
         token|String|
         replyid|Long|要删除的回复的id
         #### 返回参数 String=“ok“
-* ## AuthMicroservice port: 30006
+* ## OrderMicroService port:30011
