@@ -1,0 +1,6 @@
+1. finish the design to 
+	order - page
+	orderconfirm
+	payconfirm
+	afterpay
+2. start to add backend to frontend
