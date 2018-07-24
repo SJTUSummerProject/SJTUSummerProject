@@ -56,8 +56,8 @@ public class ReplyController {
                                @RequestParam(value = "content",required = false) String content,
                                HttpServletResponse response){
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         if(content == null||content.trim().equals(""))
@@ -73,8 +73,8 @@ public class ReplyController {
                              @RequestParam(value = "content", required = false) String content,
                              HttpServletResponse response){
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         if(content == null)
@@ -106,8 +106,8 @@ public class ReplyController {
                              @RequestParam(value = "replyid")Long replyId,
                              HttpServletResponse response){
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         return replyService.deleteById(replyId);

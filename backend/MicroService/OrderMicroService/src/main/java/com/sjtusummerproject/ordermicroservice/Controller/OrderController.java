@@ -50,8 +50,8 @@ public class OrderController {
     public Page<OrderEntity> queryByUserid(HttpServletRequest request, HttpServletResponse response){
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         return orderService.queryByUserid(userEntity.getId(),createPageable(request));
@@ -71,8 +71,8 @@ public class OrderController {
 
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         TicketEntity ticketEntity = ticketService.queryTicketById(ticketid);
@@ -95,8 +95,8 @@ public class OrderController {
     public OrderEntity addBatchInCart(HttpServletRequest request, HttpServletResponse response){
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         String cartids = request.getParameter("cartids");
@@ -117,8 +117,8 @@ public class OrderController {
     public HashMap<String,Object> buyOrder(HttpServletRequest request, HttpServletResponse response){
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         Long orderid = Long.parseLong(request.getParameter("orderid"));
@@ -133,8 +133,8 @@ public class OrderController {
     public String cancelOrder(HttpServletRequest request, HttpServletResponse response){
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
         Long orderid = Long.parseLong(request.getParameter("orderid"));
         return orderService.cancel(orderid);
@@ -149,8 +149,8 @@ public class OrderController {
     public String withdrawOrder(@RequestParam(value = "orderid") Long orderid, HttpServletRequest request, HttpServletResponse response){
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
          OrderEntity orderEntity = orderService.queryByOrderid(orderid);
          return orderService.addWithdrawRabbit(orderEntity);
@@ -165,8 +165,8 @@ public class OrderController {
     public String deleteOne(HttpServletRequest request, HttpServletResponse response){
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         Long orderid = Long.parseLong(request.getParameter("orderid"));
@@ -181,8 +181,8 @@ public class OrderController {
     public String deleteBatch(HttpServletRequest request, HttpServletResponse response){
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         String ids = request.getParameter("batchid");

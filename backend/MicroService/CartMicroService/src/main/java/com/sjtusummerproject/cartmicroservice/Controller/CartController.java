@@ -52,12 +52,12 @@ public class CartController {
     @RequestMapping(value = "/SaveInDetailPage")
     @ResponseBody
     public String saveInDetailPage(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = callAuthService(token);
-        int result = authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authUser(userEntity);
+        response.addHeader("errorNum", ((Integer) result).toString());
         if (result != 0) return null;
-        /*parameters*/
         Long ticketId = Long.parseLong(request.getParameter("ticketid"));
         double price = Double.parseDouble(request.getParameter("price"));
         String date = request.getParameter("date");
@@ -72,10 +72,11 @@ public class CartController {
     @RequestMapping(value = "/NumberEditInCart")
     @ResponseBody
     public String numberPlusSomeInCart(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = callAuthService(token);
-        int result = authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authUser(userEntity);
+        response.addHeader("errorNum", ((Integer) result).toString());
         if (result != 0) return null;
         /* parameters */
         Long entryId = Long.parseLong(request.getParameter("entryid"));
@@ -88,10 +89,11 @@ public class CartController {
     @RequestMapping(value = "/DeleteBatchInCart")
     @ResponseBody
     public String deleteBatchInCart(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = callAuthService(token);
-        int result = authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authUser(userEntity);
+        response.addHeader("errorNum", ((Integer) result).toString());
         if (result != 0) return null;
         /* parameters */
         String entryIds = request.getParameter("batchentryid");
@@ -104,10 +106,11 @@ public class CartController {
     @RequestMapping(value = "/QueryByUserId")
     @ResponseBody
     public Page<CartEntity> queryByUserid(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = callAuthService(token);
-        int result = authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authUser(userEntity);
+        response.addHeader("errorNum", ((Integer) result).toString());
         if (result != 0) return null;
 
         /* parameters */
