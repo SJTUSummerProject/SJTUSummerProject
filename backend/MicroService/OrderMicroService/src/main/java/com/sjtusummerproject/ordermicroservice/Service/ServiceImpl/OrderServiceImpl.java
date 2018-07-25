@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderEntity queryByOrderid(Long orderid) {
-        return orderRepository.findByOrderId(orderid);
+        return orderRepository.findById(orderid);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public HashMap<String,Object> buy(Long orderid) {
-        OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
+        OrderEntity orderEntity = orderRepository.findById(orderid);
         Date now = new Date();
         HashMap<String,Object> res = new HashMap<>();
         /* 订单未支付超过24小时 */
@@ -132,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String cancel(Long orderid) {
-        OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
+        OrderEntity orderEntity = orderRepository.findById(orderid);
         double totalPrice = 0l;
         Set<ItemEntity> items = orderEntity.getItems();
         for(ItemEntity eachitem : items){
@@ -162,14 +162,14 @@ public class OrderServiceImpl implements OrderService {
         orderEntity.setStatus("退款中");
         orderRepository.save(orderEntity);
         MultiValueMap<String,Long> message = new LinkedMultiValueMap<>();
-        message.add("orderid",orderEntity.getOrderId());
+        message.add("orderid",orderEntity.getId());
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
         return "ok";
     }
 
     @Override
     public String deleteOne(Long orderid) {
-        OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
+        OrderEntity orderEntity = orderRepository.findById(orderid);
         orderEntity.setStatus("已删除");
         setItemsStatus(orderEntity,"失败");
         orderRepository.save(orderEntity);
@@ -190,7 +190,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderEntity test(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, Long number) {
         OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setOrderid(0L);
+        orderEntity.setId(0L);
         orderEntity.setUserId(userEntity.getId());
         orderEntity.setStatus("待付款");
         orderEntity.setOrderTime(new Date());
@@ -198,7 +198,7 @@ public class OrderServiceImpl implements OrderService {
 
         //orderRepository.save(orderEntity);
 
-        //orderEntity = orderRepository.findByOrderId(orderEntity.getOrderId());
+        //orderEntity = orderRepository.findById(orderEntity.getId());
         /*如果是 one to many
          * many 插了 one 就不用再插入了
          * */
@@ -284,7 +284,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderEntity createBasicOrder() {
         OrderEntity partOrder = new OrderEntity();
-        partOrder.setOrderid(0L);
+        partOrder.setId(0L);
         partOrder.setStatus("待付款");
         partOrder.setOrderTime(new Date());
         return partOrder;

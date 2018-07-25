@@ -56,7 +56,6 @@ public class OrdermicroserviceApplicationTests {
 
 
 		OrderEntity orderEntity = new OrderEntity();
-		orderEntity.setOrderid(1L);
 		orderEntity.setUserId(userEntity.getId());
 		orderEntity.setStatus("待付款");
 		orderEntity.setOrderTime(new Date());
