@@ -15,10 +15,7 @@ import sjtusummerproject.signmicroservice.Service.InvokeUserService;
 
 @Service
 public class InvokeUserServiceImpl implements InvokeUserService {
-    @Bean
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
+    RestTemplate template = new RestTemplate();
 
     @Value("${userservice.url}")
     String userServiceUrl;
@@ -27,12 +24,11 @@ public class InvokeUserServiceImpl implements InvokeUserService {
 
     @Override
     public String AddUserMicroService(UserEntity user) {
-
+        if (user == null) return "fail";
         /* 发送给 UserMicroService */
         String url=userServiceUrl+"/User/Add";
         /* 注意：必须 http、https……开头，不然报错，浏览器地址栏不加 http 之类不出错是因为浏览器自动帮你补全了 */
         //System.out.println("即将发请求");
-        RestTemplate template = new RestTemplate();
         // 封装参数，千万不要替换为Map与HashMap，否则参数无法传递
         MultiValueMap<String,String> postbody = new LinkedMultiValueMap<>();
         postbody.add("username",user.getUsername());
@@ -49,7 +45,6 @@ public class InvokeUserServiceImpl implements InvokeUserService {
         String url=userServiceUrl+"/User/Query?"+"username="+userName;
         /* 注意：必须 http、https……开头，不然报错，浏览器地址栏不加 http 之类不出错是因为浏览器自动帮你补全了 */
         //System.out.println("即将发请求2");
-        RestTemplate template = new RestTemplate();
         UserEntity result = template.getForObject(url, UserEntity.class);
 
         //System.out.println("the result in query user "+result);
@@ -76,6 +71,10 @@ public class InvokeUserServiceImpl implements InvokeUserService {
         user.setEmail(Email);
         user.setStatus("UnActive");
         return user;
+    }
+
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.template = restTemplate;
     }
 }
 

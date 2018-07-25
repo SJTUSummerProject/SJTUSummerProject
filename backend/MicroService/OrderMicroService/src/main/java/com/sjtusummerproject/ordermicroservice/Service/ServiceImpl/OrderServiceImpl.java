@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public HashMap<String,Object> buy(Long orderid) {
+    public HashMap<String,Object> buy(Long orderid, String token) {
         OrderEntity orderEntity = orderRepository.findById(orderid);
         Date now = new Date();
         HashMap<String,Object> res = new HashMap<>();
@@ -93,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         /* 用户余额不足 */
-        UserDetailEntity userDetail = userDetailService.queryUserDetailById(orderEntity.getUserId());
+        UserDetailEntity userDetail = userDetailService.queryUserDetailById(token);
         if(userDetail.getAccount()<totalPrice){
             res.put("message","Insufficient balance");
             return res;

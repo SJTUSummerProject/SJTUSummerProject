@@ -33,8 +33,7 @@ public class SignController {
     @Autowired
     InvokeCodeService invokeCodeService;
 
-    @Autowired
-    RestTemplate restTemplate;
+    RestTemplate restTemplate = new RestTemplate();
 
     String status = "UnActive";
 

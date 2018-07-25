@@ -17,7 +17,7 @@ public class InvokeEmailMessageServiceImpl implements InvokeEmailMessageService{
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public Object AddEmailServiceRabbit(UserEntity user) {
+    public String AddEmailServiceRabbit(UserEntity user) {
         System.out.println("in add email service");
         MultiValueMap<String,String> message = new LinkedMultiValueMap<>();
         message.add("username",user.getUsername());

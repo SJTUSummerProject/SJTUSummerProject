@@ -45,6 +45,18 @@ public class OrderController {
         return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.DESC, "id"));
     }
 
+    @RequestMapping(value="/QueryByOrderid")
+    public OrderEntity queryByOrderid(HttpServletResponse response, HttpServletRequest request,
+                                      @RequestParam(name = "orderid") Long orderid){
+        String token = request.getParameter("token");
+        UserEntity userEntity = authService.callAuthService(token);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
+        if (result != 0) return null;
+
+        return orderService.queryByOrderid(orderid);
+    }
+
     @RequestMapping(value = "/QueryByUserid")
     @ResponseBody
     public Page<OrderEntity> queryByUserid(HttpServletRequest request, HttpServletResponse response){
@@ -122,7 +134,7 @@ public class OrderController {
         if (result != 0) return null;
 
         Long orderid = Long.parseLong(request.getParameter("orderid"));
-        return orderService.buy(orderid);
+        return orderService.buy(orderid, token);
     }
 
     /* 在订单页面 点击取消订单
