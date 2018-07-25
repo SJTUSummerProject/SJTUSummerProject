@@ -36,10 +36,7 @@ public class PictureController {
     public String save(@RequestParam(value = "img",required = false)String picture){
         try{
             UUID uuid = UUID.randomUUID();
-            JSONObject jsonObject = JSONObject.fromObject(picture);
-            byte[] img = (byte[]) JSONObject.toBean(jsonObject, byte[].class);
-            System.out.print(1);
-            managePictureService.save(uuid.toString(), img);
+            managePictureService.save(uuid.toString(), picture);
             return baseUrl+"/Picture/Query?uuid="+uuid;
         }
         catch (Exception e){
@@ -49,12 +46,7 @@ public class PictureController {
 
     @RequestMapping(value = "/Query")
     @ResponseBody
-    public void query(@RequestParam(value = "uuid",required = false)String uuid, HttpServletResponse response) throws IOException {
-        response.setContentType("image/png");
-        OutputStream os = response.getOutputStream();
-        // os write的为图片的二进制流
-        os.write(managePictureService.query(uuid).getBase64());
-        os.flush();
-        os.close();
+    public String query(@RequestParam(value = "uuid",required = false)String uuid, HttpServletResponse response) throws IOException {
+        return managePictureService.query(uuid).getBase64();
     }
 }
