@@ -32,8 +32,7 @@ public class CartController {
     UserService userService;
     @Autowired
     CartService cartService;
-    @Autowired
-    RestTemplate restTemplate;
+    RestTemplate restTemplate = new RestTemplate();
 
     @Value("${cart.page.size}")
     private int PageSize;

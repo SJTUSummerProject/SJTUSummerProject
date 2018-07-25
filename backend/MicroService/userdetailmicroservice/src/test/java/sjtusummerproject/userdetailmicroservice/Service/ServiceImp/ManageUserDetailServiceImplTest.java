@@ -4,20 +4,30 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.multipart.MultipartFile;
+import sjtusummerproject.userdetailmicroservice.DataModel.Dao.PictureRepository;
 import sjtusummerproject.userdetailmicroservice.DataModel.Dao.UserDetailRepository;
 import sjtusummerproject.userdetailmicroservice.DataModel.Domain.UserDetailEntity;
 import sjtusummerproject.userdetailmicroservice.DataModel.Domain.UserEntity;
 import sjtusummerproject.userdetailmicroservice.UserdetailmicroserviceApplicationTests;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
 import static org.junit.Assert.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ManageUserDetailServiceImplTest extends UserdetailmicroserviceApplicationTests {
-
+    @Value("${imgservice.url}")
+    String url;
     @Autowired
     UserDetailRepository userDetailRepository;
     @Autowired
     ManageUserDetailServiceImpl manageUserDetailService;
+    @Autowired
+    PictureRepository pictureRepository;
 
     @Test
     public void asaveByUserId() {
@@ -68,4 +78,58 @@ public class ManageUserDetailServiceImplTest extends UserdetailmicroserviceAppli
         assertEquals(123.0, userDetailEntity.getAccount(),0.2);
     }
 
+    @Test
+    public void saveAvatarNull(){
+        String result = manageUserDetailService.saveAvatar(null);
+        assertNull(result);
+    }
+
+    @Test
+    public void saveAvatar(){
+        MultipartFile multipartFile = new MultipartFile() {
+            @Override
+            public String getName() {
+                return null;
+            }
+
+            @Override
+            public String getOriginalFilename() {
+                return null;
+            }
+
+            @Override
+            public String getContentType() {
+                return null;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public long getSize() {
+                return 0;
+            }
+
+            @Override
+            public byte[] getBytes() throws IOException {
+                return new byte[2];
+            }
+
+            @Override
+            public InputStream getInputStream() throws IOException {
+                return null;
+            }
+
+            @Override
+            public void transferTo(File file) throws IOException, IllegalStateException {
+
+            }
+        };
+        String result = manageUserDetailService.saveAvatar(multipartFile);
+        String uuid = result.substring(url.length());
+        System.out.println(uuid);
+        assertNotNull(pictureRepository.findByUuid(uuid));
+    }
 }

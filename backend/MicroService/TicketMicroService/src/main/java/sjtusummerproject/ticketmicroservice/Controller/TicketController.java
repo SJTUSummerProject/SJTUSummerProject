@@ -8,12 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
-import sjtusummerproject.ticketmicroservice.Service.FilterTicketService;
 import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.peer.LabelPeer;
 import java.util.List;
 
 @RestController
@@ -26,10 +24,6 @@ public class TicketController {
 
     @Autowired
     ManageTicketService manageTicketService;
-
-    @Autowired
-    FilterTicketService filterTicketService;
-
     /* Get Pageable */
     Pageable CreatePageable(HttpServletRequest request){
         return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.ASC, "id"));

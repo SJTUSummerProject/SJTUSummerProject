@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -31,22 +32,14 @@ public class PictureController {
     @Value("${pictureservice.url}")
     String baseUrl;
 
-    @RequestMapping(value = "/Save")
-    @ResponseBody
-    public String save(@RequestParam(value = "img",required = false)String picture){
-        try{
-            UUID uuid = UUID.randomUUID();
-            managePictureService.save(uuid.toString(), picture);
-            return baseUrl+"/Picture/Query?uuid="+uuid;
-        }
-        catch (Exception e){
-            return null;
-        }
-    }
-
     @RequestMapping(value = "/Query")
     @ResponseBody
-    public String query(@RequestParam(value = "uuid",required = false)String uuid, HttpServletResponse response) throws IOException {
-        return managePictureService.query(uuid).getBase64();
+    public void query(@RequestParam(value = "uuid",required = false)String uuid, HttpServletResponse response) throws IOException {
+        byte[] img = managePictureService.query(uuid).getBase64();
+        response.setHeader("Content-Type","image/jpeg");
+        OutputStream outputStream= response.getOutputStream();
+        outputStream.write(img);
+        outputStream.flush();
+        outputStream.close();
     }
 }

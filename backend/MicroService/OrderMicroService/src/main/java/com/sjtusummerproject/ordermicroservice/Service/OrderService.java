@@ -22,9 +22,4 @@ public interface OrderService {
     public OrderEntity createAdditionOrderEntity(OrderEntity orderEntity, UserEntity userEntity,String receiver,String phone,String address );
     public ItemEntity createFullItemFromOrder(OrderEntity orderEntity, TicketEntity ticketEntity,double price, String date, Long number);
     public ItemEntity createFullItemFromCartAndOrder(CartEntity cartEntity, OrderEntity orderEntity);
-    /* test */
-    public OrderEntity test(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, Long number);
-    public String test1();
-    public String test2();
-    public String test3();
 }

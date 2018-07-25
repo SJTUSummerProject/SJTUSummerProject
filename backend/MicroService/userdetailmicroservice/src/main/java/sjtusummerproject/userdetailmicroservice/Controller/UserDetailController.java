@@ -41,7 +41,7 @@ public class UserDetailController {
     @RequestMapping(value = "/UpdateByUserid")
     @ResponseBody
     public UserDetailEntity updateByUserid(HttpServletRequest request,
-                                           @RequestParam(name = "avatar", required = false) String frontAvatar,
+                                           @RequestParam(name = "avatar", required = false) MultipartFile frontAvatar,
                                            @RequestParam(name = "account", required = false) Double account,
                                            HttpServletResponse response){
         response.addHeader("Access-Control-Expose-Headers", "errorNum");

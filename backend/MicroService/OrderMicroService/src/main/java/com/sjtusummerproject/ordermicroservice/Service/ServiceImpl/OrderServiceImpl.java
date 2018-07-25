@@ -185,7 +185,6 @@ public class OrderServiceImpl implements OrderService {
 
     /******************************************************************/
     /** for test **/
-    @Override
     public OrderEntity test(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, Long number) {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setId(0L);
@@ -251,19 +250,16 @@ public class OrderServiceImpl implements OrderService {
 //        }
     }
 
-    @Override
     public String test1() {
         orderRepository.delete(29L);
         return null;
     }
 
-    @Override
     public String test2() {
         itemRepository.delete(42L);
         return null;
     }
 
-    @Override
     public String test3() {
         OrderEntity orderEntity = orderRepository.findFirstByStatus("待付款");
         Set<ItemEntity> items = orderEntity.getItems();

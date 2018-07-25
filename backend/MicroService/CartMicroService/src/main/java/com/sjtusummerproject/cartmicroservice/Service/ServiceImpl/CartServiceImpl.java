@@ -28,7 +28,7 @@ public class CartServiceImpl implements CartService {
     CartPageRepository cartPageRepository;
 
     @Override
-    public String saveInDetailPageByMultiInfo(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, Long number) {
+    public CartEntity saveInDetailPageByMultiInfo(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, Long number) {
 
         CartEntity cartEntity = new CartEntity();
 
@@ -46,23 +46,21 @@ public class CartServiceImpl implements CartService {
         if(isSavedIndb != null){
             /*在已有的entity数量的基础上加上新的数量*/
             isSavedIndb.setNumber(isSavedIndb.getNumber()+cartEntity.getNumber());
-            cartRepository.save(isSavedIndb);
+            return cartRepository.save(isSavedIndb);
         }
         else{
             cartEntity.setId(0L);
-            cartRepository.save(cartEntity);
+            return cartRepository.save(cartEntity);
         }
-        return "ok";
     }
 
 
     @Override
-    public String numberEditInCartById(Long id, Long number) {
-        if(number < 0) return "false";
+    public CartEntity numberEditInCartById(Long id, Long number) {
+        if(number < 0) return null;
         CartEntity cartEntity = cartRepository.findById(id);
         cartEntity.setNumber(number);
-        cartRepository.save(cartEntity);
-        return "ok";
+        return cartRepository.save(cartEntity);
     }
 
     @Override

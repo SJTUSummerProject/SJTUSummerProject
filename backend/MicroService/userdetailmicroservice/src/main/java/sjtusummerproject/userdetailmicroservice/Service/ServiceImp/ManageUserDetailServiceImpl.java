@@ -79,7 +79,7 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
     }
 
     @Override
-    public String saveAvatar(String avatar){
+    public String saveAvatar(MultipartFile avatar){
         try {
             if (avatar == null) {
                 return null;
@@ -88,7 +88,7 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
             String id = uuid.toString();
             PictureEntity pictureEntity = new PictureEntity();
             pictureEntity.setUuid(id);
-            pictureEntity.setBase64(avatar);
+            pictureEntity.setBase64(avatar.getBytes());
             pictureRepository.save(pictureEntity);
             return imgServiceUrl+uuid;
         }

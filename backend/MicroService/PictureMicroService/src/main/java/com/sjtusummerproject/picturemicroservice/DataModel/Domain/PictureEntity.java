@@ -9,7 +9,7 @@ import java.util.UUID;
 public class PictureEntity {
     @Id
     String uuid;
-    String base64;
+    byte[] base64;
 
     public String getUuid() {
         return uuid;
@@ -19,11 +19,11 @@ public class PictureEntity {
         this.uuid = uuid;
     }
 
-    public String getBase64() {
+    public byte[] getBase64() {
         return base64;
     }
 
-    public void setBase64(String base64) {
+    public void setBase64(byte[] base64) {
         this.base64 = base64;
     }
 }
