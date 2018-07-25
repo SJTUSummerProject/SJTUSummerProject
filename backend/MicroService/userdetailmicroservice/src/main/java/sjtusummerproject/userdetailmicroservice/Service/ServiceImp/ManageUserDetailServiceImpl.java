@@ -41,6 +41,7 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
     @Override
     public UserDetailEntity updateByUserId(Long userid, String avatar, String phone, String address, Double account, String nickName) {
         UserDetailEntity userDetail = userDetailRepository.findById(userid);
+        if (userDetail == null) return null;
         if(avatar != null)
             userDetail.setAvatar(avatar);
         if(phone != null)
