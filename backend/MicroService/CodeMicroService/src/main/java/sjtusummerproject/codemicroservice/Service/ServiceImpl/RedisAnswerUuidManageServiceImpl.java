@@ -20,7 +20,6 @@ public class RedisAnswerUuidManageServiceImpl implements RedisAnswerUuidManageSe
 
     @Override
     public void AddAnswerUuidRedis(String answer, String flag) {
-        System.out.println("The answer is "+answer);
         redisTemplate.opsForValue().set(answer, flag,10l, TimeUnit.MINUTES);
     }
 }

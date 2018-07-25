@@ -1,5 +1,6 @@
 package sjtusummerproject.codemicroservice.Service.ServiceImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sjtusummerproject.codemicroservice.Service.GenerateCodeService;
 
@@ -14,6 +15,7 @@ import java.util.Random;
 
 @Service
 public class GenerateCodeServiceImpl implements GenerateCodeService {
+    Random random = new Random();
     public HashMap<String,Object> GetCode() {
         // 在内存中创建图象
         BufferedImage image = new BufferedImage(imgWidth, imgHeight,
@@ -23,7 +25,7 @@ public class GenerateCodeServiceImpl implements GenerateCodeService {
         Graphics2D g = image.createGraphics();
 
         // 生成随机类
-        Random random = new Random();
+        //Random random = new Random();
 
         // 设定背景色
         g.setColor(Color.WHITE);
@@ -131,7 +133,6 @@ public class GenerateCodeServiceImpl implements GenerateCodeService {
     }
 
     Color getRandColor(int fc, int bc) {// 给定范围获得随机颜色
-        Random random = new Random();
         if (fc > 255)
             fc = 255;
         if (bc > 255)
@@ -142,15 +143,13 @@ public class GenerateCodeServiceImpl implements GenerateCodeService {
         return new Color(r, g, b);
     }
 
-    private char getSingleNumberChar() {
-        Random random = new Random();
+    char getSingleNumberChar() {
         int numberResult = random.nextInt(10);
         int ret = numberResult + 48;
         return (char) ret;
     }
 
-    private char getLowerOrUpperChar(int upper) {
-        Random random = new Random();
+    char getLowerOrUpperChar(int upper) {
         int numberResult = random.nextInt(26);
         int ret = 0;
         if (upper == 0) {// 小写
@@ -160,5 +159,10 @@ public class GenerateCodeServiceImpl implements GenerateCodeService {
         }
         return (char) ret;
     }
-
+    public void setRandom(Random random){
+        this.random = random;
+    }
+    public Random getRandom(){
+        return this.random;
+    }
 }

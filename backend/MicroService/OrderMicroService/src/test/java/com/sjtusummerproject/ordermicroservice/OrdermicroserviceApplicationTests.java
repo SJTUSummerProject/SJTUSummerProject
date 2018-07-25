@@ -6,7 +6,6 @@ import com.sjtusummerproject.ordermicroservice.DataModel.Domain.ItemEntity;
 import com.sjtusummerproject.ordermicroservice.DataModel.Domain.OrderEntity;
 import com.sjtusummerproject.ordermicroservice.DataModel.Domain.TicketEntity;
 import com.sjtusummerproject.ordermicroservice.DataModel.Domain.UserEntity;
-import com.sjtusummerproject.ordermicroservice.Service.ServiceImpl.OrderServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +65,7 @@ public class OrdermicroserviceApplicationTests {
 			System.out.println("1 fail");
 		}
 		ItemEntity itemEntity = new ItemEntity();
-		itemEntity.setItemId(3L);
+		itemEntity.setId(3L);
 		itemEntity.setOrderEntity(orderEntity);
 		itemEntity.setImage(ticketEntity.getImage());
 		itemEntity.setDate(date);

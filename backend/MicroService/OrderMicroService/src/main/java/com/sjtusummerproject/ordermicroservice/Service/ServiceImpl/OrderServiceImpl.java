@@ -8,7 +8,6 @@ import com.sjtusummerproject.ordermicroservice.DataModel.Domain.*;
 import com.sjtusummerproject.ordermicroservice.Service.OrderService;
 import com.sjtusummerproject.ordermicroservice.Service.TicketService;
 import com.sjtusummerproject.ordermicroservice.Service.UserDetailService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import javax.validation.Valid;
 import java.util.*;
 
 @Service
@@ -205,7 +203,7 @@ public class OrderServiceImpl implements OrderService {
         Set<ItemEntity> set = new HashSet<>();
 
         ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemId(0L);
+        itemEntity.setId(0L);
         itemEntity.setOrderEntity(orderEntity);
         itemEntity.setNumber(number);
         itemEntity.setImage(ticketEntity.getImage());
@@ -218,7 +216,7 @@ public class OrderServiceImpl implements OrderService {
         itemEntity.setStatus("未操作");
 
         ItemEntity itemEntity1 = new ItemEntity();
-        itemEntity1.setItemId(0L);
+        itemEntity1.setId(0L);
         itemEntity1.setOrderEntity(orderEntity);
         itemEntity1.setNumber(number+1);
         itemEntity1.setImage(ticketEntity.getImage());
@@ -306,7 +304,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ItemEntity createFullItemFromOrder(OrderEntity orderEntity, TicketEntity ticketEntity,double price, String date, Long number){
         ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemId(0L);
+        itemEntity.setId(0L);
         itemEntity.setStatus("未操作");
 
         itemEntity.setImage(ticketEntity.getImage());
@@ -327,7 +325,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ItemEntity createFullItemFromCartAndOrder(CartEntity cartEntity, OrderEntity orderEntity) {
         ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemId(0L);
+        itemEntity.setId(0L);
         itemEntity.setStatus("未操作");
 
         itemEntity.setNumber(cartEntity.getNumber());
