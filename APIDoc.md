@@ -381,6 +381,13 @@
         -|-|-    
         token|String|
         #### 返回参数(orderEntity)
+    * ### URL：/Order/QueryByOrderid
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-    
+        token|String|
+        orderid|Long|订单唯一标识
+        #### 返回参数(orderEntity)
     * ### URL：/Order/AddInDetailPage
         #### 传入参数
         变量名|类型|说明
