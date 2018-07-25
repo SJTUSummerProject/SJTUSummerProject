@@ -35,9 +35,9 @@ public class OrderController {
     @Autowired
     AuthService authService;
 
-    @Value("${cart.page.size}")
+    @Value("${order.page.size}")
     private int PageSize;
-    @Value("${cart.page.offset}")
+    @Value("${order.page.offset}")
     private int PageOffset;
 
     /* Get Pageable */
@@ -48,6 +48,7 @@ public class OrderController {
     @RequestMapping(value="/QueryByOrderid")
     public OrderEntity queryByOrderid(HttpServletResponse response, HttpServletRequest request,
                                       @RequestParam(name = "orderid") Long orderid){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
@@ -60,6 +61,7 @@ public class OrderController {
     @RequestMapping(value = "/QueryByUserid")
     @ResponseBody
     public Page<OrderEntity> queryByUserid(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
@@ -80,6 +82,7 @@ public class OrderController {
         String receiver = request.getParameter("receiver");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
 
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
@@ -105,6 +108,7 @@ public class OrderController {
     @RequestMapping(value = "/AddBatchInCart")
     @ResponseBody
     public OrderEntity addBatchInCart(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
@@ -127,6 +131,7 @@ public class OrderController {
     @RequestMapping(value = "/Buy")
     @ResponseBody
     public HashMap<String,Object> buyOrder(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
@@ -143,6 +148,7 @@ public class OrderController {
     @RequestMapping(value = "/Cancel")
     @ResponseBody
     public String cancelOrder(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
@@ -159,6 +165,7 @@ public class OrderController {
     @RequestMapping(value = "Withdraw")
     @ResponseBody
     public String withdrawOrder(@RequestParam(value = "orderid") Long orderid, HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
@@ -175,6 +182,7 @@ public class OrderController {
     @RequestMapping(value = "/DeleteOne")
     @ResponseBody
     public String deleteOne(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
@@ -191,6 +199,7 @@ public class OrderController {
     @RequestMapping(value = "/DeleteBatch")
     @ResponseBody
     public String deleteBatch(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
@@ -201,74 +210,4 @@ public class OrderController {
         return orderService.deleteSome(ids);
     }
 
-    /**************************************************************/
-    /** for test **/
-    @RequestMapping(value = "/test")
-    @ResponseBody
-    public OrderEntity test(HttpServletRequest request, HttpServletResponse response){
-        UserEntity userEntity = new UserEntity();
-        userEntity.setAuthority("Admin");
-        userEntity.setEmail("2286455782@qq.com");
-        userEntity.setId(5L);
-        userEntity.setPassword("xtqxtq");
-        userEntity.setUsername("sky");
-        userEntity.setStatus("Active");
-
-        TicketEntity ticketEntity = new TicketEntity();
-        ticketEntity.setCity("上海");
-        ticketEntity.setDates("2018-07-17");
-        ticketEntity.setEndDate(new Date());
-        ticketEntity.setStartDate(new Date());
-        ticketEntity.setHighprice(1000);
-        ticketEntity.setLowprice(300);
-        ticketEntity.setImage("http://image4.xishiqu.cn/upload/activity/118/070/20180705018/v/b/7CF0898C-A18F-C828-661D-86804C7232B4.jpg");
-        ticketEntity.setIntro("7月5日15:17原价预售，数量有限，每个身份证限购1张。");
-        ticketEntity.setStock(1000L);
-        ticketEntity.setId(50L);
-        ticketEntity.setTime("2018-07-17 20:00");
-        ticketEntity.setType("vocal concert");
-        ticketEntity.setTitle("预订 薛之谦演唱会—上海站");
-        ticketEntity.setVenue("上海虹口足球场（上海市东江湾路444号）");
-
-        double price = 580;
-        String date = "2018-07-17 21:00";
-        Long number = 5l;
-
-        OrderEntity res = orderService.test(userEntity,ticketEntity,price,date,number);
-        return res;
-    }
-
-    @RequestMapping(value = "/test1")
-    @ResponseBody
-    public String test1(HttpServletRequest request, HttpServletResponse response){
-        orderService.test1();
-        return "ok";
-    }
-
-    @RequestMapping(value = "/test2")
-    @ResponseBody
-    public String test2(HttpServletRequest request, HttpServletResponse response){
-        orderService.test2();
-        return "ok";
-    }
-
-    @RequestMapping(value = "/test3")
-    @ResponseBody
-    public String test3(HttpServletRequest request, HttpServletResponse response){
-        return orderService.test3();
-    }
-
-    @RequestMapping(value = "/test4")
-    @ResponseBody
-    public String test4(HttpServletRequest request, HttpServletResponse response){
-        String hey = request.getParameter("hey");
-        if(hey == null){
-            System.out.println("hey is null!");
-        }
-        else if(hey.equals("")){
-            System.out.println("hey equals \"\"");
-        }
-        System.out.println("not null");
-        return "ok";
-    }
 }

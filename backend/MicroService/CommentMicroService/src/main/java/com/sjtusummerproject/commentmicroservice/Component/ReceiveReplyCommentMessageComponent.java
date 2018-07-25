@@ -1,6 +1,6 @@
 package com.sjtusummerproject.commentmicroservice.Component;
 
-/*import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyCommentMQConfig;
+import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyCommentMQConfig;
 import com.sjtusummerproject.commentmicroservice.DataModel.Dao.CommentRepository;
 import com.sjtusummerproject.commentmicroservice.DataModel.Dao.ReplyRepository;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.CommentEntity;
@@ -62,4 +62,4 @@ public class ReceiveReplyCommentMessageComponent {
 }
 
 
-*/
+
