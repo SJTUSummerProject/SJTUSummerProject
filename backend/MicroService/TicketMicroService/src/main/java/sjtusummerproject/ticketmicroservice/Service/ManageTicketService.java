@@ -10,6 +10,7 @@ import java.util.List;
 public interface ManageTicketService {
     /* page */
     public Page<TicketEntity> QueryTicketPageOptionShow(Pageable pageable);
+    public Page<TicketEntity> QueryTicketPageOptionByTitle(String title, Pageable pageable);
     public Page<TicketEntity> QueryTicketPageOptionByType(String type, Pageable pageable);
     public Page<TicketEntity> QueryTicketPageOptionByCity(String city, Pageable pageable);
     public Page<TicketEntity> QueryTicketPageOptionByCityAndType(String city, String type, Pageable pageable) ;

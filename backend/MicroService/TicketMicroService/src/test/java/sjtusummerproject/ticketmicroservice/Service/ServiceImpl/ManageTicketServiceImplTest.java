@@ -31,6 +31,17 @@ public class ManageTicketServiceImplTest extends TicketmicroserviceApplicationTe
     }
 
     @Test
+    public void queryTicketPageOptionByTitle(){
+        Page<TicketEntity> ticketEntities = manageTicketService.QueryTicketPageOptionByTitle("",getPagable(1));
+        assertEquals(2, ticketEntities.getNumberOfElements());
+    }
+    @Test
+    public void queryTicketPageOptionByTitleSecond(){
+        Page<TicketEntity> ticketEntities = manageTicketService.QueryTicketPageOptionByTitle("1",getPagable(1));
+        assertEquals(1, ticketEntities.getNumberOfElements());
+    }
+
+    @Test
     public void queryTicketPageOptionByType() {
         Page<TicketEntity> ticketEntities = manageTicketService.QueryTicketPageOptionByType("1",getPagable(1));
         assertEquals(1, ticketEntities.getNumberOfElements());
@@ -56,7 +67,7 @@ public class ManageTicketServiceImplTest extends TicketmicroserviceApplicationTe
     @Test
     public void queryTicketPageOptionByDateRange(){
         Page<TicketEntity> ticketEntities = manageTicketService.QueryTicketPageOptionByDateRange("2016-10-25","2019-03-04",getPagable(1));
-        assertEquals(1, ticketEntities.getNumberOfElements());
+        assertEquals(2, ticketEntities.getNumberOfElements());
     }
 
     @Test

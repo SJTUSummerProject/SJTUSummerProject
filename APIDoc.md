@@ -95,7 +95,7 @@
         -|-|-
         pagenumber | String |
         city       | String | 所在城市
-        * ### URL：GEt /Ticket/QueryByCityAndTypePage
+    * ### URL：GEt /Ticket/QueryByCityAndTypePage
         说明：若city或type为all，则自动调用对应的api
         #### 传入参数
         变量名|类型|说明
@@ -117,6 +117,12 @@
         pagenumber | String |
         lowprice   | String | 最低价格
         highprice  | String | 最高价格
+    * ### URL：GET /Ticket/QueryByTitle
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-
+        pagenumber | String |
+        title       | String | 
     * ### URL： GET /Ticket/QueryByCityAndDateRangePage
     * ### URL： GET /Ticket/QueryByCityAndPriceRangePage
     * ### URL： GET /Ticket/QueryByCityAndPriceRangeAndDateRangePage

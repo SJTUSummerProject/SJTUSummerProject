@@ -9,6 +9,7 @@ import java.util.Date;
 
 public interface TicketPageRepository extends PagingAndSortingRepository<TicketEntity, Long> {
     public Page<TicketEntity> findAll(Pageable pageable);
+    public Page<TicketEntity> findAllByTitleLike(String title, Pageable pageable);
     public Page<TicketEntity> findAllByType(String type,Pageable pageable);
     public Page<TicketEntity> findAllByCity(String city,Pageable pageable);
     public Page<TicketEntity> findAllByCityAndType(String city, String type, Pageable pageable);

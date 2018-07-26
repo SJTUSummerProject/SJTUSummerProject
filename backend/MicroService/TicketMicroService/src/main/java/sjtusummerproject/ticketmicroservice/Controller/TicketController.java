@@ -38,6 +38,11 @@ public class TicketController {
         //System.out.println("page:"+request.getParameter("pagenumber"));
         return manageTicketService.QueryTicketPageOptionShow(CreatePageable(request));
     }
+    @RequestMapping(value = "/QueryByTitle")
+    public Page<TicketEntity> QueryTicketByTitle(HttpServletRequest request, HttpServletResponse response){
+        String title = request.getParameter("title");
+        return manageTicketService.QueryTicketPageOptionByTitle(title, CreatePageable(request));
+    }
 
     @GetMapping(value="/QueryByTypePage")
     @ResponseBody
