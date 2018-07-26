@@ -64,10 +64,12 @@ public class TicketController {
     public Page<TicketEntity> QueryTicketByCityAndTypePage(HttpServletRequest request, HttpServletResponse response){
         String city = request.getParameter("city");
         String type = request.getParameter("type");
-        if (city.equals("all") && type.equals("all")) return QueryTicketShowPage(request, response);
-        else if (city.equals("all")) return QueryTicketByTypePage(request, response);
-        else if (type.equals("all")) return QueryTicketByCityPage(request, response);
-        else return manageTicketService.QueryTicketPageOptionByCityAndType(city, type, CreatePageable(request));
+        String title = request.getParameter("title");
+        if (city == null || city.equals("all")) city = "%";
+        if (type == null || type.equals("all")) type = "%";
+        if (title == null || title.equals("all")) title = "%";
+        else title = "%"+title.trim()+"%";
+        return manageTicketService.QueryTicketPageOptionByCityAndTypeAndTitle(city, type, title, CreatePageable(request));
     }
 
     @GetMapping(value="/QueryByDateRangePage")

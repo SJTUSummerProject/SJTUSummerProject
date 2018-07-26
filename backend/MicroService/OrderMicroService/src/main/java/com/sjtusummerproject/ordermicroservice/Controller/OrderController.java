@@ -121,6 +121,14 @@ public class OrderController {
         String address = request.getParameter("address");
 
         List<CartEntity> carts = cartService.queryByBatchIds(cartids);
+        try{
+            for (CartEntity cartEntity : carts){
+                System.out.println(cartEntity.getId());
+            }
+        }
+        catch (Exception e){
+            System.out.println("fail");
+        }
         OrderEntity partOrder = orderService.createBasicOrder();
         partOrder = orderService.createAdditionOrderEntity(partOrder,userEntity,receiver,phone,address);
 

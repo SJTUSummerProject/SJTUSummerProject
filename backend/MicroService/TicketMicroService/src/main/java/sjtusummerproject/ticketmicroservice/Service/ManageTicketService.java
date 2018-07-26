@@ -14,6 +14,7 @@ public interface ManageTicketService {
     public Page<TicketEntity> QueryTicketPageOptionByType(String type, Pageable pageable);
     public Page<TicketEntity> QueryTicketPageOptionByCity(String city, Pageable pageable);
     public Page<TicketEntity> QueryTicketPageOptionByCityAndType(String city, String type, Pageable pageable) ;
+    public Page<TicketEntity> QueryTicketPageOptionByCityAndTypeAndTitle(String city, String type, String title, Pageable pageable);
     public Page<TicketEntity> QueryTicketPageOptionByDateRange(String firstDate,String secondDate,Pageable pageable);
     public Page<TicketEntity> QueryTicketPageOptionByPriceRange(double lowPrice, double highPrice,Pageable pageable);
     public Page<TicketEntity> QueryTicketPageOptionByCityAndDateRange(String city, String firstDate, String secondDate, Pageable pageable);

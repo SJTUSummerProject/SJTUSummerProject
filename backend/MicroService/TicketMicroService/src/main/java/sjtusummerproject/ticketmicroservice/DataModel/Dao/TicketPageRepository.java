@@ -13,6 +13,7 @@ public interface TicketPageRepository extends PagingAndSortingRepository<TicketE
     public Page<TicketEntity> findAllByType(String type,Pageable pageable);
     public Page<TicketEntity> findAllByCity(String city,Pageable pageable);
     public Page<TicketEntity> findAllByCityAndType(String city, String type, Pageable pageable);
+    public Page<TicketEntity> findAllByCityLikeAndTypeLikeAndTitleLike(String city, String type, String title, Pageable pageable);
     public Page<TicketEntity> findAllByStartDateBetweenOrEndDateBetween(Date firstDate1, Date secondDate1, Date firstDate2, Date secondDate2, Pageable pageable);
     public Page<TicketEntity> findAllByLowpriceBetweenOrHighpriceBetween(double lowPrice1,double highPrice1, double lowPrice2, double highPrice2, Pageable pageable);
     public Page<TicketEntity> findAllByCityAndStartDateBetweenOrCityAndEndDateBetween(String city1,Date firstDate1,Date secondDate1,String city2,Date firstDate2, Date secondDate2, Pageable pageable);

@@ -38,6 +38,11 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         return ticketPageRepository.findAll(pageable);
     }
 
+    @Override
+    public Page<TicketEntity> QueryTicketPageOptionByCityAndTypeAndTitle(String city, String type, String title, Pageable pageable) {
+        return ticketPageRepository.findAllByCityLikeAndTypeLikeAndTitleLike(city, type, title, pageable);
+    }
+
     @Cacheable(value = "10m", key = "#title+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByTitle(String title, Pageable pageable){

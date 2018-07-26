@@ -5,6 +5,8 @@ import com.sjtusummerproject.ordermicroservice.DataModel.Domain.TicketEntity;
 import com.sjtusummerproject.ordermicroservice.Service.CartService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -15,10 +17,7 @@ import java.util.List;
 @Service
 public class CartServiceImpl implements CartService {
 
-    @Bean
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
+    public RestTemplate restTemplate = new RestTemplate();
 
     @Value("${cartservice.url}")
     String baseUrl;
@@ -38,10 +37,15 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartEntity> queryByBatchIds(String cartids) {
         /* 假设cartids的形式是这样的 : [1, 2, 3, 4]*/
-        String url = baseUrl+"/QueryBatchByIds";
+        String url = baseUrl+"/Cart/QueryBatchByIds";
         MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
         multiValueMap.add("batchid", cartids);
-        RestTemplate template = new RestTemplate();
-        return template.postForObject(url,multiValueMap,List.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(multiValueMap, headers);
+        ParameterizedTypeReference<List<CartEntity>> typeRef = new ParameterizedTypeReference<List<CartEntity>>() {
+        };
+        ResponseEntity<List<CartEntity>> responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, typeRef);
+        return responseEntity.getBody();
     }
 }
