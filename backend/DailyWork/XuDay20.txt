@@ -1,0 +1,4 @@
+1. finish order - front and backend
+2. start to write documents on sprint2
+	2.1 test usecases
+	2.2 test report
