@@ -161,6 +161,10 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     }
 
     @Override
+    public TicketEntity QueryTicketById(Long id){
+        return ticketRepository.findById(id);
+    }
+    @Override
     public List<TicketEntity> QueryTicketOptionByBatchIds(String ids) {
         /*
         * ids in form

@@ -30,6 +30,7 @@ public interface ManageTicketService {
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndPriceRangeAndDateRange(String type, String city,double lowPrice, double highPrice,String firstDate, String secondDate, Pageable pageable);
     /* no page */
 
+    public TicketEntity QueryTicketById(Long id);
     public TicketEntity QueryTicketOptionById(Long id);
     public List<TicketEntity> QueryTicketOptionByBatchIds(String ids);
 

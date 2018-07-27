@@ -52,6 +52,10 @@ public class CommentController {
         return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.DESC, "createTime"));
     }
 
+    @RequestMapping(value = "/QueryByCommentid")
+    public CommentEntity query(@RequestParam(value = "commentid") Long commentid){
+        return commentService.queryByCommentId(commentid);
+    }
     @RequestMapping(value = "/Add")
     @ResponseBody
     public String add(@RequestParam(value = "token") String token,

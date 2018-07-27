@@ -191,6 +191,14 @@ public class TicketController {
         TicketEntity resTicket = manageTicketService.QueryTicketOptionById(TicketId);
         return resTicket;
     }
+    @GetMapping(value="/QueryNoCacheById")
+    @ResponseBody
+    public TicketEntity QueryTicketNoCacheByID(HttpServletRequest request, HttpServletResponse response){
+        Long TicketId = Long.parseLong(request.getParameter("id"));
+        TicketEntity resTicket = manageTicketService.QueryTicketById(TicketId);
+        return resTicket;
+    }
+
 
     @RequestMapping(value = "/QueryByBatchIds")
     @ResponseBody

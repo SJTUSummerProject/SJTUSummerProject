@@ -100,6 +100,11 @@ public class ReplyController {
         return replyService.queryByTargetObjectId(replyId,createPageable(request));
     }
 
+    @RequestMapping(value = "/QueryExactByReplyId")
+    public ReplyEntity queryExactByReplyId(@RequestParam(value = "replyid") Long replyId){
+        return replyService.queryById(replyId);
+    }
+
     @RequestMapping(value = "/Delete")
     @ResponseBody
     public String deleteById(@RequestParam(value = "token") String token,
