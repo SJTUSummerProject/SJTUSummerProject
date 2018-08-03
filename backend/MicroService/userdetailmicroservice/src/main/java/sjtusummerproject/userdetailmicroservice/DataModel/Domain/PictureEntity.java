@@ -2,6 +2,7 @@ package sjtusummerproject.userdetailmicroservice.DataModel.Domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.web.multipart.MultipartFile;
 
 @Document(collection="Picture")
 public class PictureEntity {

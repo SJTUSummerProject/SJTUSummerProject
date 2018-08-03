@@ -28,7 +28,7 @@ public class RecieveWithdrawRabbit {
     public void consumeMessage(MultiValueMap<String,Long> message){
         System.out.println("收到退款请求");
 
-        OrderEntity orderEntity = orderRepository.findByOrderId(message.getFirst("orderid"));
+        OrderEntity orderEntity = orderRepository.findById(message.getFirst("orderid"));
 
         double totalPrice = 0l;
         Set<ItemEntity> items = orderEntity.getItems();

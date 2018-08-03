@@ -46,6 +46,26 @@ public class TicketEntity implements Serializable{
         return startDate;
     }
 
+    public TicketEntity() {
+    }
+
+    public TicketEntity(Long id, String type, String dates, Date startDate, Date endDate, String time, String city, String venue, String title, String image, String intro, Long stock, double lowprice, double highprice) {
+        this.id = id;
+        this.type = type;
+        this.dates = dates;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.time = time;
+        this.city = city;
+        this.venue = venue;
+        this.title = title;
+        this.image = image;
+        this.intro = intro;
+        this.stock = stock;
+        this.lowprice = lowprice;
+        this.highprice = highprice;
+    }
+
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }

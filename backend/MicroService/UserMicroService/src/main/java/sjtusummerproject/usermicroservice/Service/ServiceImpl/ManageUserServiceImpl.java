@@ -32,27 +32,23 @@ public class ManageUserServiceImpl implements ManageUserService {
         userToAdd.setStatus(status);
         userToAdd.setAuthority("Customer");/* 硬编码！ */
         /* username is unique */
-        try {
-            return userRepository.save(userToAdd);
-        }
-        catch (Exception e){
-            return null;
-        }
+        return userRepository.save(userToAdd);
     }
 
     @Override
-    public void DeleteUserOption(String username) {
-        userRepository.deleteByUsername(username);
+    public void DeleteUserOption(Long id) {
+        userRepository.delete(id);
     }
 
     @Override
-    public void UpdateUserStatusOption(String username, String status) {
+    public UserEntity UpdateUserStatusOption(String username, String status) {
         UserEntity userToUpdateStatus = userRepository.findByUsername(username.trim());
+        if (userToUpdateStatus == null) return null;
         //System.out.println("the username id 3 "+username.trim());
         //System.out.println("the username id 1 "+userToUpdateStatus.getId());
         userToUpdateStatus.setStatus(status);
         //System.out.println("the username id 2 "+userToUpdateStatus.getId());
-        userRepository.save(userToUpdateStatus);
+        return userRepository.save(userToUpdateStatus);
     }
 
     @Override
@@ -68,23 +64,18 @@ public class ManageUserServiceImpl implements ManageUserService {
     }
 
     @Override
-    public void UpdateUserPasswordOption(String username, String password) {
+    public UserEntity UpdateUserPasswordOption(String username, String password) {
         UserEntity userToUpdatePassword = userRepository.findFirstByUsername(username);
+        if (userToUpdatePassword == null) return null;
         userToUpdatePassword.setPassword(password);
-        userRepository.save(userToUpdatePassword);
+        return userRepository.save(userToUpdatePassword);
     }
 
     @Override
-    public void UpdateUserEmailOption(String username, String email) {
-        UserEntity userToUpdateEmail = userRepository.findFirstByUsername(username);
-        userToUpdateEmail.setPassword(email);
-        userRepository.save(userToUpdateEmail);
-    }
-
-    @Override
-    public void UpdateUserAuthorityOption(String username, String authority) {
+    public UserEntity UpdateUserAuthorityOption(String username, String authority) {
         UserEntity userToUpdateAuthority = userRepository.findFirstByUsername(username);
-        userToUpdateAuthority.setPassword(authority);
-        userRepository.save(userToUpdateAuthority);
+        if (userToUpdateAuthority == null) return null;
+        userToUpdateAuthority.setAuthority(authority);
+        return userRepository.save(userToUpdateAuthority);
     }
 }

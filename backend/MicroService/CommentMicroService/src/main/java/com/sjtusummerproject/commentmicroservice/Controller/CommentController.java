@@ -52,6 +52,10 @@ public class CommentController {
         return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.DESC, "createTime"));
     }
 
+    @RequestMapping(value = "/QueryByCommentid")
+    public CommentEntity query(@RequestParam(value = "commentid") Long commentid){
+        return commentService.queryByCommentId(commentid);
+    }
     @RequestMapping(value = "/Add")
     @ResponseBody
     public String add(@RequestParam(value = "token") String token,
@@ -59,8 +63,8 @@ public class CommentController {
                       @RequestParam(value = "content",defaultValue = "")String content,
                       HttpServletResponse response){
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         if(content == null||content.trim().equals(""))
@@ -76,8 +80,8 @@ public class CommentController {
                                              HttpServletRequest request,
                                              HttpServletResponse response){
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         return commentService.queryByOwnerId(userEntity.getId(),createPageable(request));
@@ -98,8 +102,8 @@ public class CommentController {
                                                   @RequestParam(value = "content") String content,
                                                   HttpServletResponse response){
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         if(content==null||content.trim().equals(""))
@@ -113,8 +117,8 @@ public class CommentController {
                                            @RequestParam(value = "commentid") Long commentId,
                                            HttpServletResponse response){
         UserEntity userEntity = authService.callAuthService(token);
-        int result = authService.authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authService.authUser(userEntity);
+        response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         replyService.deleteByParentId(commentId);

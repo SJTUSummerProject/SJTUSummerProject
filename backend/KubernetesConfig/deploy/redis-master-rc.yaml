@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: redis-master-service
+spec:
+  replicas: 1
+  selector:
+    app: redis-master-service
+  template:
+    metadata:
+      labels:
+        app: redis-master-service
+    spec:
+      containers:
+      - name: redis-master-service
+        image: redis
+        ports:
+        - containerPort: 6379

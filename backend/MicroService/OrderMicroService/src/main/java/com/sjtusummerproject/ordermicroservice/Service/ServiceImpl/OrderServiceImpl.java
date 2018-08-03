@@ -8,7 +8,6 @@ import com.sjtusummerproject.ordermicroservice.DataModel.Domain.*;
 import com.sjtusummerproject.ordermicroservice.Service.OrderService;
 import com.sjtusummerproject.ordermicroservice.Service.TicketService;
 import com.sjtusummerproject.ordermicroservice.Service.UserDetailService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import javax.validation.Valid;
 import java.util.*;
 
 @Service
@@ -40,12 +38,12 @@ public class OrderServiceImpl implements OrderService {
     Long dayInMillisec;
     @Override
     public Page<OrderEntity> queryByUserid(Long userid, Pageable pageable) {
-        return orderPageRepository.findAllByUserId(userid,pageable);
+        return orderPageRepository.findAllByUserIdAndStatusNotLike(userid,"已删除",pageable);
     }
 
     @Override
     public OrderEntity queryByOrderid(Long orderid) {
-        return orderRepository.findByOrderId(orderid);
+        return orderRepository.findById(orderid);
     }
 
     @Override
@@ -75,8 +73,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public HashMap<String,Object> buy(Long orderid) {
-        OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
+    public HashMap<String,Object> buy(Long orderid, String token) {
+        OrderEntity orderEntity = orderRepository.findById(orderid);
         Date now = new Date();
         HashMap<String,Object> res = new HashMap<>();
         /* 订单未支付超过24小时 */
@@ -95,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         /* 用户余额不足 */
-        UserDetailEntity userDetail = userDetailService.queryUserDetailById(orderEntity.getUserId());
+        UserDetailEntity userDetail = userDetailService.queryUserDetailById(token);
         if(userDetail.getAccount()<totalPrice){
             res.put("message","Insufficient balance");
             return res;
@@ -132,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String cancel(Long orderid) {
-        OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
+        OrderEntity orderEntity = orderRepository.findById(orderid);
         double totalPrice = 0l;
         Set<ItemEntity> items = orderEntity.getItems();
         for(ItemEntity eachitem : items){
@@ -162,14 +160,14 @@ public class OrderServiceImpl implements OrderService {
         orderEntity.setStatus("退款中");
         orderRepository.save(orderEntity);
         MultiValueMap<String,Long> message = new LinkedMultiValueMap<>();
-        message.add("orderid",orderEntity.getOrderId());
+        message.add("orderid",orderEntity.getId());
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY, message);
         return "ok";
     }
 
     @Override
     public String deleteOne(Long orderid) {
-        OrderEntity orderEntity = orderRepository.findByOrderId(orderid);
+        OrderEntity orderEntity = orderRepository.findById(orderid);
         orderEntity.setStatus("已删除");
         setItemsStatus(orderEntity,"失败");
         orderRepository.save(orderEntity);
@@ -187,10 +185,9 @@ public class OrderServiceImpl implements OrderService {
 
     /******************************************************************/
     /** for test **/
-    @Override
     public OrderEntity test(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, Long number) {
         OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setOrderid(0L);
+        orderEntity.setId(0L);
         orderEntity.setUserId(userEntity.getId());
         orderEntity.setStatus("待付款");
         orderEntity.setOrderTime(new Date());
@@ -198,14 +195,14 @@ public class OrderServiceImpl implements OrderService {
 
         //orderRepository.save(orderEntity);
 
-        //orderEntity = orderRepository.findByOrderId(orderEntity.getOrderId());
+        //orderEntity = orderRepository.findById(orderEntity.getId());
         /*如果是 one to many
          * many 插了 one 就不用再插入了
          * */
         Set<ItemEntity> set = new HashSet<>();
 
         ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemId(0L);
+        itemEntity.setId(0L);
         itemEntity.setOrderEntity(orderEntity);
         itemEntity.setNumber(number);
         itemEntity.setImage(ticketEntity.getImage());
@@ -218,7 +215,7 @@ public class OrderServiceImpl implements OrderService {
         itemEntity.setStatus("未操作");
 
         ItemEntity itemEntity1 = new ItemEntity();
-        itemEntity1.setItemId(0L);
+        itemEntity1.setId(0L);
         itemEntity1.setOrderEntity(orderEntity);
         itemEntity1.setNumber(number+1);
         itemEntity1.setImage(ticketEntity.getImage());
@@ -253,19 +250,16 @@ public class OrderServiceImpl implements OrderService {
 //        }
     }
 
-    @Override
     public String test1() {
         orderRepository.delete(29L);
         return null;
     }
 
-    @Override
     public String test2() {
         itemRepository.delete(42L);
         return null;
     }
 
-    @Override
     public String test3() {
         OrderEntity orderEntity = orderRepository.findFirstByStatus("待付款");
         Set<ItemEntity> items = orderEntity.getItems();
@@ -284,7 +278,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderEntity createBasicOrder() {
         OrderEntity partOrder = new OrderEntity();
-        partOrder.setOrderid(0L);
+        partOrder.setId(0L);
         partOrder.setStatus("待付款");
         partOrder.setOrderTime(new Date());
         return partOrder;
@@ -306,7 +300,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ItemEntity createFullItemFromOrder(OrderEntity orderEntity, TicketEntity ticketEntity,double price, String date, Long number){
         ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemId(0L);
+        itemEntity.setId(0L);
         itemEntity.setStatus("未操作");
 
         itemEntity.setImage(ticketEntity.getImage());
@@ -327,7 +321,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ItemEntity createFullItemFromCartAndOrder(CartEntity cartEntity, OrderEntity orderEntity) {
         ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemId(0L);
+        itemEntity.setId(0L);
         itemEntity.setStatus("未操作");
 
         itemEntity.setNumber(cartEntity.getNumber());

@@ -1,0 +1,209 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CartServiceImpl</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.sjtusummerproject.cartmicroservice.Service.ServiceImpl</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CartServiceImpl (com.sjtusummerproject.cartmicroservice.Service.ServiceImpl)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CartServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.2%
+  </span>
+  <span class="absValue">
+    (37/ 45)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CartServiceImpl$$EnhancerBySpringCGLIB$$793705e6</td>
+  </tr>
+  <tr>
+    <td class="name">CartServiceImpl$$EnhancerBySpringCGLIB$$bc83c852</td>
+  </tr>
+  <tr>
+    <td class="name">CartServiceImpl$$EnhancerBySpringCGLIB$$bc83c852$$FastClassBySpringCGLIB$$5b6096d8</td>
+  </tr>
+  <tr>
+    <td class="name">CartServiceImpl$$EnhancerBySpringCGLIB$$de81b9c5</td>
+  </tr>
+  <tr>
+    <td class="name">CartServiceImpl$$FastClassBySpringCGLIB$$ab17b1cf</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.2%
+  </span>
+  <span class="absValue">
+    (37/ 45)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.sjtusummerproject.cartmicroservice.Service.ServiceImpl;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import com.sjtusummerproject.cartmicroservice.DataModel.Dao.CartPageRepository;
+<i>5</i>&nbsp;import com.sjtusummerproject.cartmicroservice.DataModel.Dao.CartRepository;
+<i>6</i>&nbsp;import com.sjtusummerproject.cartmicroservice.DataModel.Domain.CartEntity;
+<i>7</i>&nbsp;import com.sjtusummerproject.cartmicroservice.DataModel.Domain.TicketEntity;
+<i>8</i>&nbsp;import com.sjtusummerproject.cartmicroservice.DataModel.Domain.UserEntity;
+<i>9</i>&nbsp;import com.sjtusummerproject.cartmicroservice.Service.CartService;
+<i>10</i>&nbsp;import net.sf.json.JSON;
+<i>11</i>&nbsp;import net.sf.json.JSONObject;
+<i>12</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>13</i>&nbsp;import org.springframework.cache.annotation.Cacheable;
+<i>14</i>&nbsp;import org.springframework.data.domain.Page;
+<i>15</i>&nbsp;import org.springframework.stereotype.Service;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import org.springframework.data.domain.Pageable;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;import javax.transaction.Transactional;
+<i>20</i>&nbsp;import java.util.LinkedList;
+<i>21</i>&nbsp;import java.util.List;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;@Service
+<b class="fc"><i>24</i>&nbsp;public class CartServiceImpl implements CartService {</b>
+<i>25</i>&nbsp;    @Autowired
+<i>26</i>&nbsp;    CartRepository cartRepository;
+<i>27</i>&nbsp;    @Autowired
+<i>28</i>&nbsp;    CartPageRepository cartPageRepository;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    @Override
+<i>31</i>&nbsp;    public CartEntity saveInDetailPageByMultiInfo(UserEntity userEntity, TicketEntity ticketEntity, double price, String date, Long number) {
+<i>32</i>&nbsp;
+<b class="fc"><i>33</i>&nbsp;        CartEntity cartEntity = new CartEntity();</b>
+<i>34</i>&nbsp;
+<b class="fc"><i>35</i>&nbsp;        cartEntity.setUserId(userEntity.getId());</b>
+<b class="fc"><i>36</i>&nbsp;        cartEntity.setTicketId(ticketEntity.getId());</b>
+<b class="fc"><i>37</i>&nbsp;        cartEntity.setPrice(price);</b>
+<b class="fc"><i>38</i>&nbsp;        cartEntity.setImage(ticketEntity.getImage());</b>
+<b class="fc"><i>39</i>&nbsp;        cartEntity.setNumber(number);</b>
+<b class="fc"><i>40</i>&nbsp;        cartEntity.setTitle(ticketEntity.getTitle());</b>
+<b class="fc"><i>41</i>&nbsp;        cartEntity.setDate(date);</b>
+<b class="fc"><i>42</i>&nbsp;        cartEntity.setVenue(ticketEntity.getVenue());</b>
+<b class="fc"><i>43</i>&nbsp;        cartEntity.setCity(ticketEntity.getCity());</b>
+<i>44</i>&nbsp;
+<b class="fc"><i>45</i>&nbsp;        CartEntity isSavedIndb = cartRepository.findByUserIdAndTicketIdAndDateAndAndPrice(cartEntity.getUserId(),cartEntity.getTicketId(),cartEntity.getDate(),cartEntity.getPrice());</b>
+<b class="fc"><i>46</i>&nbsp;        if(isSavedIndb != null){</b>
+<i>47</i>&nbsp;            /*在已有的entity数量的基础上加上新的数量*/
+<b class="fc"><i>48</i>&nbsp;            isSavedIndb.setNumber(isSavedIndb.getNumber()+cartEntity.getNumber());</b>
+<b class="fc"><i>49</i>&nbsp;            return cartRepository.save(isSavedIndb);</b>
+<i>50</i>&nbsp;        }
+<i>51</i>&nbsp;        else{
+<b class="fc"><i>52</i>&nbsp;            cartEntity.setId(0L);</b>
+<b class="fc"><i>53</i>&nbsp;            return cartRepository.save(cartEntity);</b>
+<i>54</i>&nbsp;        }
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    @Override
+<i>59</i>&nbsp;    public CartEntity numberEditInCartById(Long id, Long number) {
+<b class="fc"><i>60</i>&nbsp;        if(number &lt; 0) return null;</b>
+<b class="fc"><i>61</i>&nbsp;        CartEntity cartEntity = cartRepository.findById(id);</b>
+<b class="fc"><i>62</i>&nbsp;        cartEntity.setNumber(number);</b>
+<b class="fc"><i>63</i>&nbsp;        return cartRepository.save(cartEntity);</b>
+<b class="nc"><i>64</i>&nbsp;    }</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    @Override
+<i>67</i>&nbsp;    @Transactional
+<i>68</i>&nbsp;    public String deleteBatchInCartByIds(String ids) {
+<b class="fc"><i>69</i>&nbsp;        String[] splitIds = ids.trim().replace(&quot;[&quot;,&quot;&quot;).replace(&quot;]&quot;,&quot;&quot;).split(&quot;,&quot;);</b>
+<b class="nc"><i>70</i>&nbsp;</b>
+<b class="fc"><i>71</i>&nbsp;        for(String eachId : splitIds){</b>
+<b class="fc"><i>72</i>&nbsp;            cartRepository.deleteById(Long.parseLong(eachId.trim()));</b>
+<b class="nc"><i>73</i>&nbsp;        }</b>
+<b class="fc"><i>74</i>&nbsp;        return &quot;ok&quot;;</b>
+<b class="nc"><i>75</i>&nbsp;    }</b>
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;    @Override
+<i>78</i>&nbsp;    public Page&lt;CartEntity&gt; findInCartByUserid(Long id, Pageable pageable) {
+<b class="fc"><i>79</i>&nbsp;        long startTime = System.currentTimeMillis();</b>
+<b class="fc"><i>80</i>&nbsp;        Page&lt;CartEntity&gt; cartEntities = cartPageRepository.findAllByUserId(id,pageable);</b>
+<b class="fc"><i>81</i>&nbsp;        long endTime = System.currentTimeMillis();</b>
+<b class="fc"><i>82</i>&nbsp;        System.out.println(endTime - startTime);</b>
+<b class="fc"><i>83</i>&nbsp;        return  cartEntities;</b>
+<b class="nc"><i>84</i>&nbsp;    }</b>
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    @Override
+<i>87</i>&nbsp;    public CartEntity queryById(Long id) {
+<b class="fc"><i>88</i>&nbsp;        return cartRepository.findById(id);</b>
+<b class="nc"><i>89</i>&nbsp;    }</b>
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;    /* 假设ids的格式如下
+<i>92</i>&nbsp;    *  [1,2,3,4,5,6]
+<i>93</i>&nbsp;    * */
+<i>94</i>&nbsp;    @Override
+<i>95</i>&nbsp;    public List&lt;CartEntity&gt; queryByBatchId(String ids) {
+<b class="fc"><i>96</i>&nbsp;        if (ids == null) return null;</b>
+<b class="fc"><i>97</i>&nbsp;        String[] idSplit = ids.trim().replace(&quot;[&quot;,&quot;&quot;).replace(&quot;]&quot;,&quot;&quot;).split(&quot;,&quot;);</b>
+<b class="fc"><i>98</i>&nbsp;        List&lt;CartEntity&gt; res = new LinkedList&lt;&gt;();</b>
+<b class="fc"><i>99</i>&nbsp;        for(String eachId : idSplit){</b>
+<b class="fc"><i>100</i>&nbsp;            res.add(queryById(Long.parseLong(eachId.trim())));</b>
+<b class="nc"><i>101</i>&nbsp;        }</b>
+<b class="fc"><i>102</i>&nbsp;        return res;</b>
+<b class="nc"><i>103</i>&nbsp;    }</b>
+<i>104</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-07-26 00:01</div>
+</div>
+</body>
+</html>

@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class ItemEntity  {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long itemId;
+    Long id;
 
     Long ticketId;
     /* 具体的price */
@@ -35,12 +35,12 @@ public class ItemEntity  {
      @JsonIgnore
      private OrderEntity orderEntity;
 
-    public Long getItemId() {
-        return itemId;
+    public Long getId() {
+        return id;
     }
 
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getTicketId() {

@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: mongodb-service
+spec:
+  replicas: 1
+  selector:
+    app: mongodb-service
+  template:
+    metadata:
+      name: mongodb-service
+      labels:
+        app: mongodb-service
+    spec:
+      containers:
+      - name: mongodb-service
+        image: 172.18.51.9:5000/mongo
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
