@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: comment-microservice
+spec:
+  replicas: 1
+  selector:
+    app: comment-microservice
+  template:
+    metadata:
+      name: comment-microservice
+      labels:
+        app: comment-microservice
+    spec:
+      containers:
+      - image: 172.18.51.9:5000/commentmicroservice
+        ports:
+        - containerPort: 8080
+        name: comment-microservice

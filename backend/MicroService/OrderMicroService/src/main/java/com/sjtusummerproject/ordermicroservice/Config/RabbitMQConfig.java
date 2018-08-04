@@ -8,12 +8,15 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
 
+    @Value("${rabbitmq.url}")
+    String host;
     public final static String QUEUE_NAME = "WithdrawOrderQueue";
     public final static String EXCHANGE_NAME = "WithdrawOrderExchange";
     public final static String ROUTING_KEY = "WithdrawOrderKey";
@@ -38,7 +41,7 @@ public class RabbitMQConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("rabbitmq-service", 5672);
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host, 5672);
         connectionFactory.setUsername("guest");
         connectionFactory.setPassword("guest");
         return connectionFactory;

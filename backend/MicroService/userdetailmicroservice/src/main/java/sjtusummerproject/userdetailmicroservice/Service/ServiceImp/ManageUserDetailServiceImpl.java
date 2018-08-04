@@ -41,6 +41,7 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
     @Override
     public UserDetailEntity updateByUserId(Long userid, String avatar, String phone, String address, Double account, String nickName) {
         UserDetailEntity userDetail = userDetailRepository.findById(userid);
+        if (userDetail == null) return null;
         if(avatar != null)
             userDetail.setAvatar(avatar);
         if(phone != null)
@@ -83,12 +84,11 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
             if (avatar == null) {
                 return null;
             }
-            byte[] img = avatar.getBytes();
             UUID uuid = UUID.randomUUID();
             String id = uuid.toString();
             PictureEntity pictureEntity = new PictureEntity();
             pictureEntity.setUuid(id);
-            pictureEntity.setBase64(img);
+            pictureEntity.setBase64(avatar.getBytes());
             pictureRepository.save(pictureEntity);
             return imgServiceUrl+uuid;
         }

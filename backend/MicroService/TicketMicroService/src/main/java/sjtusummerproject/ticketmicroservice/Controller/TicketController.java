@@ -8,12 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
-import sjtusummerproject.ticketmicroservice.Service.FilterTicketService;
 import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.peer.LabelPeer;
 import java.util.List;
 
 @RestController
@@ -26,10 +24,6 @@ public class TicketController {
 
     @Autowired
     ManageTicketService manageTicketService;
-
-    @Autowired
-    FilterTicketService filterTicketService;
-
     /* Get Pageable */
     Pageable CreatePageable(HttpServletRequest request){
         return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.ASC, "id"));
@@ -41,8 +35,13 @@ public class TicketController {
     @GetMapping(value="/QueryShowPage")
     @ResponseBody
     public Page<TicketEntity> QueryTicketShowPage(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("page:"+request.getParameter("pagenumber"));
+        //System.out.println("page:"+request.getParameter("pagenumber"));
         return manageTicketService.QueryTicketPageOptionShow(CreatePageable(request));
+    }
+    @RequestMapping(value = "/QueryByTitle")
+    public Page<TicketEntity> QueryTicketByTitle(HttpServletRequest request, HttpServletResponse response){
+        String title = request.getParameter("title");
+        return manageTicketService.QueryTicketPageOptionByTitle(title, CreatePageable(request));
     }
 
     @GetMapping(value="/QueryByTypePage")
@@ -57,6 +56,20 @@ public class TicketController {
     public Page<TicketEntity> QueryTicketByCityPage(HttpServletRequest request, HttpServletResponse response){
         String city = request.getParameter("city");
         return manageTicketService.QueryTicketPageOptionByCity(city,CreatePageable(request));
+    }
+
+
+    @GetMapping(value="/QueryByCityAndTypePage")
+    @ResponseBody
+    public Page<TicketEntity> QueryTicketByCityAndTypePage(HttpServletRequest request, HttpServletResponse response){
+        String city = request.getParameter("city");
+        String type = request.getParameter("type");
+        String title = request.getParameter("title");
+        if (city == null || city.equals("all")) city = "%";
+        if (type == null || type.equals("all")) type = "%";
+        if (title == null || title.equals("all")) title = "%";
+        else title = "%"+title.trim()+"%";
+        return manageTicketService.QueryTicketPageOptionByCityAndTypeAndTitle(city, type, title, CreatePageable(request));
     }
 
     @GetMapping(value="/QueryByDateRangePage")
@@ -178,6 +191,14 @@ public class TicketController {
         TicketEntity resTicket = manageTicketService.QueryTicketOptionById(TicketId);
         return resTicket;
     }
+    @GetMapping(value="/QueryNoCacheById")
+    @ResponseBody
+    public TicketEntity QueryTicketNoCacheByID(HttpServletRequest request, HttpServletResponse response){
+        Long TicketId = Long.parseLong(request.getParameter("id"));
+        TicketEntity resTicket = manageTicketService.QueryTicketById(TicketId);
+        return resTicket;
+    }
+
 
     @RequestMapping(value = "/QueryByBatchIds")
     @ResponseBody

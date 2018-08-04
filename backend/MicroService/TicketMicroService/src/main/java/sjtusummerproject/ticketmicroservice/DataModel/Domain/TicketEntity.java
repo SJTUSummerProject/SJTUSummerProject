@@ -23,6 +23,26 @@ public class TicketEntity implements Serializable{
     private Date endDate;
     //时间
     private String time;
+
+    public TicketEntity() {
+    }
+
+    public TicketEntity(String type, String dates, Date startDate, Date endDate, String time, String city, String venue, String title, String image, String intro, Long stock, double lowprice, double highprice) {
+        this.type = type;
+        this.dates = dates;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.time = time;
+        this.city = city;
+        this.venue = venue;
+        this.title = title;
+        this.image = image;
+        this.intro = intro;
+        this.stock = stock;
+        this.lowprice = lowprice;
+        this.highprice = highprice;
+    }
+
     //城市
     private String city;
     //地址-具体地址如某某体育馆

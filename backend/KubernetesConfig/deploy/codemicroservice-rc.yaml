@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: codemicroservice
+spec:
+  replicas: 1
+  selector:
+    app: codemicroservice
+  template:
+    metadata:
+      name: codemicroservice
+      labels:
+        app: codemicroservice
+    spec:
+      containers:
+      - name: codemicroservice
+        image: 172.18.51.9:5000/codemicroservice
+        ports:
+        - containerPort: 8080

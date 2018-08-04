@@ -40,6 +40,5 @@ public class TestOrderService {
         double price = 580;
         String date = "2018-07-17 21:00";
         int number = 5;
-        (new OrderServiceImpl()).saveInDetailPage(userEntity, ticketEntity, price, date, number);
     }
 }

@@ -20,9 +20,9 @@ public class UserDetailServiceImpl implements UserDetailService {
     @Value("${userdetailservice.url}")
     String baseUrl;
 
-    public UserDetailEntity queryUserDetailById(Long userid) {
+    public UserDetailEntity queryUserDetailById(String token) {
         /* 发送给 UserDetailMicroService */
-        String url=baseUrl+"/UserDetail/QueryByUserid?"+"userid="+userid;
+        String url=baseUrl+"/UserDetail/QueryByUserid?"+"token="+token;
         /* 注意：必须 http、https……开头，不然报错，浏览器地址栏不加 http 之类不出错是因为浏览器自动帮你补全了 */
         RestTemplate template = new RestTemplate();
         UserDetailEntity result = template.getForObject(url, UserDetailEntity.class);

@@ -9,7 +9,7 @@ import java.util.*;
 public class OrderEntity implements Serializable{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long orderId;
+    private Long id;
 
     private Long userId;
     private String receiver;
@@ -69,15 +69,6 @@ public class OrderEntity implements Serializable{
         this.items = items;
     }
 
-    public Long getOrderId() {
-
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
     public Long getUserId() {
         return userId;
     }
@@ -86,12 +77,12 @@ public class OrderEntity implements Serializable{
         this.userId = userId;
     }
 
-    public Long getOrderid() {
-        return orderId;
+    public Long getId() {
+        return id;
     }
 
-    public void setOrderid(Long orderid) {
-        this.orderId = orderid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getReceiver() {

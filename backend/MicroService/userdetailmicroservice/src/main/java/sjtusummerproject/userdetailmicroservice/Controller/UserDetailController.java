@@ -44,10 +44,11 @@ public class UserDetailController {
                                            @RequestParam(name = "avatar", required = false) MultipartFile frontAvatar,
                                            @RequestParam(name = "account", required = false) Double account,
                                            HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = callAuthService(token);
-        int result = authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authUser(userEntity);
+        response.addHeader("errorNum", ((Integer) result).toString());
         if (result != 0) return null;
         Long userid = userEntity.getId();
         String avatar = manageUserDetailService.saveAvatar(frontAvatar);
@@ -60,10 +61,11 @@ public class UserDetailController {
 
     @RequestMapping(value = "/UpdateOldPassword")
     public boolean modifhOldPassword(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = callAuthService(token);
-        int result = authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authUser(userEntity);
+        response.addHeader("errorNum", ((Integer) result).toString());
         if (result != 0) return false;
         Long userid = userEntity.getId();
         MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
@@ -76,10 +78,11 @@ public class UserDetailController {
     @RequestMapping(value = "/QueryByUserid")
     @ResponseBody
     public UserDetailEntity queryByUserid(HttpServletRequest request, HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = callAuthService(token);
-        int result = authUser(userEntity);
-        response.addIntHeader("errorNum", result);
+        Integer result = authUser(userEntity);
+        response.addHeader("errorNum", ((Integer) result).toString());
         if (result != 0) return null;
         Long userid = userEntity.getId();
         return manageUserDetailService.queryByUserId(userid);

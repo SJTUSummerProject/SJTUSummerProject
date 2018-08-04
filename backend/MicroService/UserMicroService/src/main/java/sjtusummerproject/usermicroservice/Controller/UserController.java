@@ -36,9 +36,9 @@ public class UserController {
 
     @GetMapping(value="/Delete")
     @ResponseBody
-    public void DeleteUser(HttpServletRequest request, HttpServletResponse response){
-        String username = request.getParameter("username");
-        manageUserService.DeleteUserOption(username);
+    public void DeleteUser(HttpServletRequest request, HttpServletResponse response,
+                           @RequestParam(name = "id") Long id){
+        manageUserService.DeleteUserOption(id);
     }
 
     @PostMapping(value="/UpdateStatus")

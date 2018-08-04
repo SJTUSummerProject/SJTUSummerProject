@@ -27,3 +27,4 @@ public class PictureEntity {
         this.base64 = base64;
     }
 }
+

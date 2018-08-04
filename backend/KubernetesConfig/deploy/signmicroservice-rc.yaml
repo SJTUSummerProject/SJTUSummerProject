@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: sign-microservice
+spec:
+  replicas: 1
+  selector:
+    app: sign-microservice
+  template:
+    metadata:
+      labels:
+        app: sign-microservice
+    spec:
+      containers:
+      - name: sign-microservice
+        image: 172.18.51.9:5000/signmicroservice
+        ports:
+        - containerPort: 8080

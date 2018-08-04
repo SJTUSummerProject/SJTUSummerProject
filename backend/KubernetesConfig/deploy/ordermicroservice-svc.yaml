@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-microservice
+spec:
+  selector:
+    app: order-microservice
+  type: NodePort
+  ports:
+  - port: 8080
+    nodePort: 30011
