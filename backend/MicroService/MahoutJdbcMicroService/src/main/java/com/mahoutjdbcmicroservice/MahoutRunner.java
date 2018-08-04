@@ -1,14 +1,19 @@
 package com.mahoutjdbcmicroservice;
 
-import com.mahoutjdbcmicroservice.Config.RestTemplateConfig;
 import com.mahoutjdbcmicroservice.DataModel.Domain.ItemEntity;
 import com.mahoutjdbcmicroservice.DataModel.Domain.OrderEntity;
+import com.mahoutjdbcmicroservice.DataModel.Domain.UserRecommendEntity;
+import com.mahoutjdbcmicroservice.Service.OrderService;
+import com.mahoutjdbcmicroservice.Service.UserRecommandService;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
-import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
+import org.apache.mahout.cf.taste.impl.neighborhood.NearestNUserNeighborhood;
+import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
 import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
-import org.apache.mahout.cf.taste.impl.similarity.TanimotoCoefficientSimilarity;
+import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -20,39 +25,30 @@ import java.io.IOException;
 import java.util.*;
 
 import org.apache.mahout.cf.taste.common.TasteException;
-import org.apache.mahout.cf.taste.impl.model.jdbc.MySQLJDBCDataModel;
-import org.apache.mahout.cf.taste.impl.model.jdbc.ReloadFromJDBCDataModel;
-import org.apache.mahout.cf.taste.impl.recommender.svd.ALSWRFactorizer;
-import org.apache.mahout.cf.taste.impl.recommender.svd.SVDRecommender;
 import org.apache.mahout.cf.taste.model.DataModel;
-import org.apache.mahout.cf.taste.model.JDBCDataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import org.springframework.web.client.RestTemplate;
 
 import static java.lang.Thread.sleep;
 
 @Component
-public class MahoutJDBC implements ApplicationRunner{
+public class MahoutRunner implements ApplicationRunner{
 
-    static Map<Long, Long> hashMap = new HashMap<Long, Long>();
+    @Autowired
+    OrderService orderService;
+    @Autowired
+    UserRecommandService userRecommandService;
 
-    String orderUrl = "http://order-microservice:8080";
+    @Value("${nearestTicketNumber")
+    int nearestTicketNumber;
 
     @Override
     public void run(ApplicationArguments var) throws Exception{
         System.out.println("MyApplicationRunner class will be execute when the project was started!");
         while(true){
             writeUserTicketFile(getOrders());
+            readUserTicketFileAndCreateRecommanderAndSaveToDataBase();
             sleep(1000*60*15);  //每15分钟更新一次
         }
-    }
-
-    public List<OrderEntity> getOrders(){
-        String url = orderUrl+"/Order/QueryAll";
-        RestTemplate template = new RestTemplate();
-        template.getMessageConverters().add(new RestTemplateConfig());
-        return template.getForObject(url,List.class);
     }
 
     public void writeUserTicketFile(List<OrderEntity> orderList) throws IOException {
@@ -73,24 +69,34 @@ public class MahoutJDBC implements ApplicationRunner{
         out.close(); // 最后记得关闭文件
     }
 
-    public void writeRecommendFile() throws IOException, TasteException {
+    public List<OrderEntity> getOrders(){
+        return orderService.queryOrders();
+    }
+
+    public void readUserTicketFileAndCreateRecommanderAndSaveToDataBase() throws IOException, TasteException {
         DataModel dataModel = new FileDataModel(new File("user_ticket.csv"));
 
-        //ItemSimilarity sim = new LogLikelihoodSimilarity(dm);
         PearsonCorrelationSimilarity pearsonCorrelationSimilarity = new PearsonCorrelationSimilarity(dataModel);
+        UserNeighborhood neighborhood = new NearestNUserNeighborhood(nearestTicketNumber, pearsonCorrelationSimilarity, dataModel);//选择最近的6个ticket
+        Recommender recommender = new GenericUserBasedRecommender(dataModel, neighborhood, pearsonCorrelationSimilarity);
 
-        GenericItemBasedRecommender recommender = new GenericItemBasedRecommender(dataModel, pearsonCorrelationSimilarity);
-
-        int x=1;
-        for(LongPrimitiveIterator items = dataModel.getItemIDs(); items.hasNext();) {
-            long itemId = items.nextLong();
-            List<RecommendedItem>recommendations = recommender.mostSimilarItems(itemId, 5);
-
-            for(RecommendedItem recommendation : recommendations) {
-                System.out.println(itemId + "," + recommendation.getItemID() + "," + recommendation.getValue());
-            }
-            x++;
-            //if(x>10) System.exit(1);
+        for(LongPrimitiveIterator userIds = recommender.getDataModel().getUserIDs(); userIds.hasNext();){
+            writeDatabase(userIds.nextLong(),recommender);
         }
+    }
+
+    public void writeDatabase(Long userId, Recommender recommender) throws TasteException {
+        UserRecommendEntity userRecommendEntity = new UserRecommendEntity();
+        userRecommendEntity.setId(userId);
+
+        LinkedList<Long> ticketRecommands = new LinkedList<>();
+
+        List<RecommendedItem> recommendedItems = recommender.recommend(userId,nearestTicketNumber);
+        // 输出推荐的物品
+        for (RecommendedItem recommendedItem : recommendedItems) {
+            ticketRecommands.add(recommendedItem.getItemID());
+        }
+        userRecommendEntity.setTicketRecommends(ticketRecommands);
+        userRecommandService.save(userRecommendEntity);
     }
 }

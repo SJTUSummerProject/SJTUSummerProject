@@ -1,5 +1,6 @@
 package com.mahoutjdbcmicroservice.DataModel.Domain;
 
+
 import java.io.Serializable;
 import java.util.*;
 
