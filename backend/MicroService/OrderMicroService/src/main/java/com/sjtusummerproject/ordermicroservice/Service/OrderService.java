@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface OrderService {
     public Page<OrderEntity> queryByUserid(Long userid, Pageable pageable);
+    public List<OrderEntity> queryAll();
     public OrderEntity queryByOrderid(Long orderid);
     public OrderEntity saveInDetailPage(OrderEntity partOrderEntity, ItemEntity itemEntity);
     public OrderEntity saveBatchInCart(OrderEntity partOrder,UserEntity userEntity, List<CartEntity> cartEntityList);

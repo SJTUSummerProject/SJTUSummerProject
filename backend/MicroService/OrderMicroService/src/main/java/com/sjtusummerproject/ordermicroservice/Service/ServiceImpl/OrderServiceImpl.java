@@ -44,6 +44,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderEntity> queryAll() {
+        return orderRepository.findAll();
+    }
+
+    @Override
     public OrderEntity queryByOrderid(Long orderid) {
         return orderRepository.findByOrderId(orderid);
     }
