@@ -13,11 +13,6 @@ public class UserRecommendEntity {
     @Id
     private Long id;//就是userid
     private LinkedList<Long> ticketRecommends;
-
-//    /*拥有的推荐项*/
-//    @OneToMany(mappedBy="TicketRecommendEntity",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-//    private Set<TicketRecommendEntity> ticketRecommends = new HashSet<>();
-
     public Long getId() {
         return id;
     }
@@ -33,12 +28,4 @@ public class UserRecommendEntity {
     public void setTicketRecommends(LinkedList<Long> ticketRecommends) {
         this.ticketRecommends = ticketRecommends;
     }
-
-    //    public Set<TicketRecommendEntity> getTicketRecommends() {
-//        return ticketRecommends;
-//    }
-//
-//    public void setTicketRecommends(Set<TicketRecommendEntity> ticketRecommends) {
-//        this.ticketRecommends = ticketRecommends;
-//    }
 }
