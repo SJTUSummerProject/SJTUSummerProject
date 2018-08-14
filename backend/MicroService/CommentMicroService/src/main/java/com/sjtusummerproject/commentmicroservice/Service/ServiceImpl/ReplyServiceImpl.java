@@ -1,11 +1,8 @@
 package com.sjtusummerproject.commentmicroservice.Service.ServiceImpl;
 
-import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyCommentMQConfig;
-import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyReplyMQConfig;
+import com.sjtusummerproject.commentmicroservice.Config.RabbitCommentMQConfig;
 import com.sjtusummerproject.commentmicroservice.DataModel.Dao.ReplyRepository;
-import com.sjtusummerproject.commentmicroservice.DataModel.Domain.CommentEntity;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.ReplyEntity;
-import com.sjtusummerproject.commentmicroservice.DataModel.Domain.UserEntity;
 import com.sjtusummerproject.commentmicroservice.Service.ReplyService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,7 +28,7 @@ public class ReplyServiceImpl implements ReplyService {
         message.add("token",token);
         message.add("targetTicketId",commentId);
         message.add("content",content);
-        rabbitTemplate.convertAndSend(RabbitReplyCommentMQConfig.EXCHANGE_NAME, RabbitReplyCommentMQConfig.ROUTING_KEY, message);
+        rabbitTemplate.convertAndSend(RabbitCommentMQConfig.CommentEXCHANGE_NAME, RabbitCommentMQConfig.ReplyCommentROUTING_KEY, message);
         return "ok";
     }
 
@@ -43,7 +39,7 @@ public class ReplyServiceImpl implements ReplyService {
         message.add("token",token);
         message.add("repliedId",repliedId);
         message.add("content",content);
-        rabbitTemplate.convertAndSend(RabbitReplyReplyMQConfig.EXCHANGE_NAME, RabbitReplyReplyMQConfig.ROUTING_KEY, message);
+        rabbitTemplate.convertAndSend(RabbitCommentMQConfig.CommentEXCHANGE_NAME, RabbitCommentMQConfig.ReplyReplyROUTING_KEY, message);
         return "ok";
     }
 

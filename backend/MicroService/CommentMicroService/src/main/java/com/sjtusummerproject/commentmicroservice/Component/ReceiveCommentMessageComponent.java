@@ -8,15 +8,11 @@ import com.sjtusummerproject.commentmicroservice.Service.AuthService;
 import com.sjtusummerproject.commentmicroservice.Service.UserService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 
 @Component
@@ -31,19 +27,13 @@ public class ReceiveCommentMessageComponent {
     @Autowired
     AuthService authService;
 
-    @RabbitListener(queues = RabbitCommentMQConfig.QUEUE_NAME)
+    @RabbitListener(queues = RabbitCommentMQConfig.CommentQUEUE_NAME)
     public void consumeMessage(MultiValueMap<String, Object> message) {
-        System.out.println("in receive comment ");
         String token = (String) message.getFirst("token");
         Long targetTicketId = (Long) message.getFirst("targetTicketId");
         String content = (String) message.getFirst("content");
-        System.out.println("the ticketid " + targetTicketId);
-        System.out.println("the content " + content);
-        System.out.println("the token is " + token);
         try {
             UserEntity user = authService.callAuthService(token);
-
-
             Date createTime = new Date();
             CommentEntity commentEntity = new CommentEntity();
             commentEntity.setId(0L);
