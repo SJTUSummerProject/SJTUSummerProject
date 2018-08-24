@@ -1,0 +1,8 @@
+1.利用java生成一个验证码图片：
+https://blog.csdn.net/linzhiqiang0316/article/details/51289870
+2.解决zuul中forwarding timeout问题：
+https://blog.csdn.net/rickiyeat/article/details/69944945
+3.解决resttemplate自动注入autowired报错的情况：
+https://blog.csdn.net/u014745069/article/details/78801405
+4.resttemplate的使用方法：
+https://blog.csdn.net/u012702547/article/details/77917939

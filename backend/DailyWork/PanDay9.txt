@@ -1,0 +1,2 @@
+Add a new node to the master, complete the cluster of the k8s
+learn something about the k8s's authection 

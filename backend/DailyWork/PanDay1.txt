@@ -1,0 +1,4 @@
+learn something about the docker container for DevOps.
+learn how to edit the Dockerfile and docker-compose.yml files
+learn how to use the maven plugin -- docker maven to create the image on the host machine and send it to the linux server
+learn how to start all of the microservices by docker-compose 

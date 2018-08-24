@@ -1,0 +1,11 @@
+1.learning tensorflow
+2.optimazer : 
+	momentum
+	adagrad
+	rmsprop
+	adam
+3.visualization:
+	tensorboard
+4.Collaborative filtering algorithm
+	website = https://www.alibabacloud.com/help/zh/doc-detail/67394.htm
+	       	https://blog.csdn.net/u011514514/article/details/72722803

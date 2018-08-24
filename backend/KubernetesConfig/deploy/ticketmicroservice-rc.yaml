@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: ticket-microservice
+spec:
+  replicas: 1
+  selector:
+    app: ticket-microservice
+  template:
+    metadata:
+      labels:
+        app: ticket-microservice
+    spec:
+      containers:
+      - name: ticket-microservice
+        image: 172.18.51.9:5000/ticketmicroservice
+        ports:
+        - containerPort: 8080

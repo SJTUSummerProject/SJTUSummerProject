@@ -1,0 +1,5 @@
+1.create 2 micro-service: CodeMicroService & SignMicroService
+	CodeMicroService: generate Code-picture & ans
+2.learn knowledge about Docker & Eureka
+3.create another email-service: EmailMicroService
+	email: XuIsleSky@163.com

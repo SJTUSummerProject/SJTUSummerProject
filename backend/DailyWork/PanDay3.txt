@@ -1,0 +1,5 @@
+continuesly learn the k8s
+try to run the k8s and make the cluster of the master and the  node
+config the environment 
+finish the microservice architecture of the first dash 
+start the k8s's skydns to discovery the service instead of eureka

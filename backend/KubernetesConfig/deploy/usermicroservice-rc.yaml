@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: user-microservice
+spec:
+  replicas: 1
+  selector:
+    app: user-microservice
+  template:
+    metadata:
+      labels:
+        app: user-microservice
+    spec:
+      containers:
+      - name: user-microservice
+        image: 172.18.51.9:5000/usermicroservice
+        ports:
+        - containerPort: 8080

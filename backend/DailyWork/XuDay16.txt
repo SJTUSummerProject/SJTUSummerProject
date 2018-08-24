@@ -1,0 +1,5 @@
+1.add rabbitmq to comment service
+2.finish comment service
+3.add auth service to comment service
+4.write comment service to apidoc
+5.fix bugs in comment service

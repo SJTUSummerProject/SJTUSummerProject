@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="JSX" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/classes" />
+  </component>
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="dbc3314a-323a-4960-a799-02cc1dac2c22" />
+      <option name="name" value="dbc3314a-323a-4960-a799-02cc1dac2c22" />
+      <option name="url" value="http://maven.aliyun.com/nexus/content/repositories/central/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="ece0b374-31d0-459b-8716-459b872a65e6" />
+      <option name="name" value="ece0b374-31d0-459b-8716-459b872a65e6" />
+      <option name="url" value="http://maven.aliyun.com/nexus/content/groups/public/" />
+    </remote-repository>
+  </component>
+</project>
