@@ -1,6 +1,6 @@
 package com.sjtusummerproject.commentmicroservice.Component;
 
-import com.sjtusummerproject.commentmicroservice.Config.RabbitReplyCommentMQConfig;
+import com.sjtusummerproject.commentmicroservice.Config.RabbitCommentMQConfig;
 import com.sjtusummerproject.commentmicroservice.DataModel.Dao.CommentRepository;
 import com.sjtusummerproject.commentmicroservice.DataModel.Dao.ReplyRepository;
 import com.sjtusummerproject.commentmicroservice.DataModel.Domain.CommentEntity;
@@ -11,16 +11,8 @@ import com.sjtusummerproject.commentmicroservice.Service.CommentService;
 import com.sjtusummerproject.commentmicroservice.Service.UserService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-
-import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 
 @Component
@@ -36,9 +28,8 @@ public class ReceiveReplyCommentMessageComponent {
     @Autowired
     AuthService authService;
 
-    @RabbitListener(queues = RabbitReplyCommentMQConfig.QUEUE_NAME)
+    @RabbitListener(queues = RabbitCommentMQConfig.ReplyCommentQUEUE_NAME)
     public void consumeMessage(MultiValueMap<String, Object> message) {
-        System.out.println("in receive reply comment ");
         String token = (String)message.getFirst("token");
         Long targetTicketId = (Long)message.getFirst("targetTicketId");
         String content = (String)message.getFirst("content");

@@ -362,7 +362,7 @@
         3               账户被冻结
     ### 订单信息
         变量名          说明
-        orderId         订单唯一标识符
+        Id         订单唯一标识符
         userId          用户唯一标识符
         receiver        接收人名称
         phone           电话
@@ -372,7 +372,7 @@
         items           下单对应的购买物品
     ### 物品信息
         变量名             说明
-        itemId              订单中物品唯一标识符
+        Id                  订单中物品唯一标识符
         ticketId            票品唯一标识符
         price               价格
         number              数量
@@ -430,3 +430,45 @@
         -|-
         message | expired代表过期 Insufficient balance代表用户余额不足 success代表成功
         Iventory shortage | 因缺货而购买失败的物品列表
+    * ## CollectionMicroService port:30012
+        ### response头中errorNum说明
+            数字            说明
+            0               成功
+            1               尚未登录
+            2               身份不对应
+            3               账户被冻结
+        ### 收藏信息
+            变量名          说明
+            id              收藏票品唯一标识符
+            userId          收藏票品所属用户
+            ticketId        票品唯一标识符
+            image           图片的url
+            title           主题
+            intro           简要介绍
+        * ### URL：/Collection/Save
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识
+            ticketid | String | 票品标识
+            #### 返回参数（String）
+        * ### URL：/Collection/DeleteBatch
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识
+            batchcollectionid | Array | 要批量删除的收藏票品id（注意不是票品id）
+            #### 返回参数（String）
+        * ### URL：/Collection/QueryByUserId
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识
+            pagenumber | int | 页数
+            #### 返回参数（分页了的收藏）
+        * ### URL：/Collection/Share
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识
+            

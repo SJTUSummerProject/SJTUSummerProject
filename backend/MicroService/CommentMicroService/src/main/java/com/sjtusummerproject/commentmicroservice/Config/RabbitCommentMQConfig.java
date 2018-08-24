@@ -1,6 +1,5 @@
 package com.sjtusummerproject.commentmicroservice.Config;
 
-
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -20,26 +19,53 @@ public class RabbitCommentMQConfig {
     @Value("${rabbitmq.port}")
     int rabbitmqPort;
 
-    public final static String QUEUE_NAME = "CommentQueue";
-    public final static String EXCHANGE_NAME = "CommentExchange";
-    public final static String ROUTING_KEY = "CommentKey";
+    public final static String CommentEXCHANGE_NAME = "CommentExchange";
 
+    public final static String CommentQUEUE_NAME = "CommentQueue";
+    public final static String CommentROUTING_KEY = "Commentkey";
+
+    public final static String ReplyCommentQUEUE_NAME = "ReplyCommentQueue";
+    public final static String ReplyCommentROUTING_KEY = "ReplyCommentKey";
+
+    public final static String ReplyReplyQUEUE_NAME = "ReplyReplyQueue";
+    public final static String ReplyReplyROUTING_KEY = "ReplyReplyKey";
     // 创建队列
     @Bean
-    public Queue queue() {
-        return new Queue(QUEUE_NAME);
+    public Queue commentQueue() {
+        return new Queue(CommentQUEUE_NAME);
+    }
+
+    @Bean
+    public Queue replyCommentQueue() {
+        return new Queue(ReplyCommentQUEUE_NAME);
+    }
+
+    @Bean
+    public Queue replyReplyQueue() {
+        return new Queue(ReplyReplyQUEUE_NAME);
     }
 
     // 创建一个 topic 类型的交换器
     @Bean
     public TopicExchange exchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+        return new TopicExchange(CommentEXCHANGE_NAME);
     }
 
     // 使用路由键（routingKey）把队列（Queue）绑定到交换器（Exchange）
+
     @Bean
-    public Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+    public Binding bindingExchangeCommentQueue(Queue commentQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(commentQueue).to(exchange).with(CommentROUTING_KEY);
+    }
+
+    @Bean
+    public Binding bindingExchangeReplyReplyQueue(Queue replyReplyQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(replyReplyQueue).to(exchange).with(ReplyCommentROUTING_KEY);
+    }
+
+    @Bean
+    public Binding bindingExchangeReplyCommentQueue(Queue replyCommentQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(replyCommentQueue).to(exchange).with(ReplyCommentROUTING_KEY);
     }
 
     @Bean
@@ -56,3 +82,4 @@ public class RabbitCommentMQConfig {
     }
 
 }
+
