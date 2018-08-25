@@ -36,8 +36,6 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
         return userDetailRepository.save(partUserDetail);
     }
 
-
-
     @Override
     public UserDetailEntity updateByUserId(Long userid, String avatar, String phone, String address, Double account, String nickName) {
         UserDetailEntity userDetail = userDetailRepository.findById(userid);
@@ -95,5 +93,10 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
         catch (Exception e){
             return null;
         }
+    }
+
+    @Override
+    public UserDetailEntity deleteUserDetail(Long userid) {
+        return userDetailRepository.deleteById(userid);
     }
 }

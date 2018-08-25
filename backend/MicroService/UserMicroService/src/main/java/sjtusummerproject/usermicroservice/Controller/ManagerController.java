@@ -24,10 +24,10 @@ public class ManagerController {
     @Value("${user.page.offset}")
     private int PageOffset;
 
-    /*按照时间顺序 递减排列*/
-    public Pageable createPageable(HttpServletRequest request){
-        return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.DESC, "id"));
-    }
+//    /*递减排列*/
+//    public Pageable createPageable(HttpServletRequest request){
+//        return new PageRequest(Integer.parseInt(request.getParameter("pagenumber"))-PageOffset, PageSize, new Sort(Sort.Direction.DESC, "id"));
+//    }
 
     @RequestMapping(value="/Delete")
     void deleteUser(@RequestParam(name = "id")Long userid){
@@ -40,8 +40,9 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "/QueryBatch")
-    Page<UserEntity> queryBatchUser(HttpServletRequest request){
-        return manageUserService.QueryBatch(createPageable(request));
+    Page<UserEntity> queryBatchUser(@RequestParam(name = "pagenumber")int pagenumber){
+        Pageable pageable = new PageRequest(pagenumber-PageOffset,PageSize,new Sort(Sort.Direction.DESC, "id");
+        return manageUserService.QueryBatch(pageable);
     }
 
     @RequestMapping(value = "/UpdateStatus")
