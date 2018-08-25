@@ -41,7 +41,7 @@ public class ManagerController {
 
     @RequestMapping(value = "/QueryBatch")
     Page<UserEntity> queryBatchUser(@RequestParam(name = "pagenumber")int pagenumber){
-        Pageable pageable = new PageRequest(pagenumber-PageOffset,PageSize,new Sort(Sort.Direction.DESC, "id");
+        Pageable pageable = new PageRequest(pagenumber-PageOffset,PageSize,new Sort(Sort.Direction.DESC, "id"));
         return manageUserService.QueryBatch(pageable);
     }
 
