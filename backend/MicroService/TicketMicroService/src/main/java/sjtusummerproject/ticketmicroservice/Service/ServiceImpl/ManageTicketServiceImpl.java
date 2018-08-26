@@ -222,6 +222,7 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         ticketToInsert.setStartDate((Date)dateRelateInfo.get("startDate"));
         ticketToInsert.setEndDate((Date)dateRelateInfo.get("endDate"));
 
+        Date now = new Date();
         ticketToInsert.setType(type);
         ticketToInsert.setTime(time);
         ticketToInsert.setCity(city);
@@ -232,6 +233,10 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         ticketToInsert.setLowprice(lowprice);
         ticketToInsert.setHighprice(highprice);
         ticketToInsert.setImage(saveImage(image));
+        if(((Date) dateRelateInfo.get("endDate")).before(now))
+            ticketToInsert.setStatus(1);
+        else
+            ticketToInsert.setStatus(0);
 
         return ticketRepository.save(ticketToInsert);
     }
@@ -245,6 +250,7 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         ticketToUpdate.setStartDate((Date)dateRelateInfo.get("startDate"));
         ticketToUpdate.setEndDate((Date)dateRelateInfo.get("endDate"));
 
+        Date now = new Date();
         ticketToUpdate.setType(type);
         ticketToUpdate.setTime(time);
         ticketToUpdate.setCity(city);
@@ -255,6 +261,10 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         ticketToUpdate.setLowprice(lowprice);
         ticketToUpdate.setHighprice(highprice);
         ticketToUpdate.setImage(saveImage(image));
+        if(((Date) dateRelateInfo.get("endDate")).before(now))
+            ticketToUpdate.setStatus(1);
+        else
+            ticketToUpdate.setStatus(0);
 
         return ticketRepository.save(ticketToUpdate);
     }
