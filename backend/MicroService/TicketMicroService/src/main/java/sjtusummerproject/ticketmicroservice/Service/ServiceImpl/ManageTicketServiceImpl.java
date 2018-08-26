@@ -46,36 +46,36 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     @Cacheable(value="10m", key = "'ShowPage:'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionShow(Pageable pageable) {
-        return ticketPageRepository.findAll(pageable);
+        return ticketPageRepository.findAllAndStatus(0,pageable);
     }
 
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCityAndTypeAndTitle(String city, String type, String title, Pageable pageable) {
-        return ticketPageRepository.findAllByCityLikeAndTypeLikeAndTitleLike(city, type, title, pageable);
+        return ticketPageRepository.findAllByCityLikeAndTypeLikeAndTitleLikeAndStatus(city,type,title,0,pageable);
     }
 
     @Cacheable(value = "10m", key = "#title+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByTitle(String title, Pageable pageable){
         title = '%'+title.trim()+'%';
-        return ticketPageRepository.findAllByTitleLike(title, pageable);
+        return ticketPageRepository.findAllByTitleLikeAndStatus(title, 0,pageable);
     }
     @Cacheable(value="10m",key = "#type+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByType(String type, Pageable pageable) {
-        return ticketPageRepository.findAllByType(type,pageable);
+        return ticketPageRepository.findAllByTypeAndStatus(type,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#city+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCity(String city, Pageable pageable) {
-        return ticketPageRepository.findAllByCity(city,pageable);
+        return ticketPageRepository.findAllByCityAndStatus(city, 0,pageable);
     }
 
     @Cacheable(value="10m", key = "#city+#type+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCityAndType(String city, String type, Pageable pageable) {
-        return ticketPageRepository.findAllByCityAndType(city, type, pageable);
+        return ticketPageRepository.findAllByCityAndTypeAndStatus(city, type, 0,pageable);
     }
 
 
@@ -85,13 +85,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
 
-        return ticketPageRepository.findAllByStartDateBetweenOrEndDateBetween(firstDate,secondDate,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByStartDateBetweenAndStatusOrEndDateBetweenAndStatus(firstDate,secondDate,0,firstDate,secondDate,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#lowPrice + #highPrice+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByPriceRange(double lowPrice, double highPrice, Pageable pageable) {
-        return ticketPageRepository.findAllByLowpriceBetweenOrHighpriceBetween(lowPrice,highPrice,lowPrice,highPrice,pageable);
+        return ticketPageRepository.findAllByLowpriceBetweenAndStatusOrHighpriceBetweenAndStatus(lowPrice,highPrice,0,lowPrice,highPrice,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#city + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
@@ -100,13 +100,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
 
-        return ticketPageRepository.findAllByCityAndStartDateBetweenOrCityAndEndDateBetween(city,firstDate,secondDate,city,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByCityAndStartDateBetweenAndStatusOrCityAndEndDateBetweenAndStatus(city,firstDate,secondDate,0,city,firstDate,secondDate,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#city + #lowPrice + #highPrice+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRange(String city, double lowPrice, double highPrice, Pageable pageable) {
-        return ticketPageRepository.findAllByCityAndLowpriceBetweenOrCityAndHighpriceBetween(city,lowPrice,highPrice,city,lowPrice,highPrice,pageable);
+        return ticketPageRepository.findAllByCityAndLowpriceBetweenAndStatusOrCityAndHighpriceBetweenAndStatus(city,lowPrice,highPrice,0,city,lowPrice,highPrice,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#city + #lowPrice + #highPrice + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
@@ -114,14 +114,14 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRangeAndDateRange(String city, double lowPrice, double highPrice, String firstDateString, String secondDateString, Pageable pageable) {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
-        return ticketPageRepository.findAllByCityAndLowpriceBetweenAndStartDateBetweenOrCityAndLowpriceBetweenAndEndDateBetweenOrCityAndHighpriceBetweenAndStartDateBetweenOrCityAndHighpriceBetweenAndEndDateBetween(city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByCityAndLowpriceBetweenAndStartDateBetweenAndStatusOrCityAndLowpriceBetweenAndEndDateBetweenAndStatusOrCityAndHighpriceBetweenAndStartDateBetweenAndStatusOrCityAndHighpriceBetweenAndEndDateBetweenAndStatus(city,lowPrice,highPrice,firstDate,secondDate,0,city,lowPrice,highPrice,firstDate,secondDate,0,city,lowPrice,highPrice,firstDate,secondDate,0,city,lowPrice,highPrice,firstDate,secondDate,0,pageable);
     }
     /********************************************************************************/
     /** add type **/
     @Cacheable(value="10m",key = "#type + #city+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndCity(String type, String city, Pageable pageable) {
-        return ticketPageRepository.findAllByTypeAndCity(type,city,pageable);
+        return ticketPageRepository.findAllByTypeAndCityAndStatus(type,city,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#type + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
@@ -129,13 +129,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndDateRange(String type, String firstDateString, String secondDateString, Pageable pageable) {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
-        return ticketPageRepository.findAllByTypeAndStartDateBetweenOrTypeAndEndDateBetween(type,firstDate,secondDate,type,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByTypeAndStartDateBetweenAndStatusOrTypeAndEndDateBetweenAndStatus(type,firstDate,secondDate,0,type,firstDate,secondDate,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#type + #lowPrice + #highPrice+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndPriceRange(String type, double lowPrice, double highPrice, Pageable pageable) {
-        return ticketPageRepository.findAllByTypeAndLowpriceBetweenOrTypeAndHighpriceBetween(type,lowPrice,highPrice,type,lowPrice,highPrice,pageable);
+        return ticketPageRepository.findAllByTypeAndLowpriceBetweenAndStatusOrTypeAndHighpriceBetweenAndStatus(type,lowPrice,highPrice,0,type,lowPrice,highPrice,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#type + #city + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
@@ -143,13 +143,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndDateRange(String type, String city, String firstDateString, String secondDateString, Pageable pageable) {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
-        return ticketPageRepository.findAllByTypeAndCityAndStartDateBetweenOrTypeAndCityAndEndDateBetween(type,city,firstDate,secondDate,type,city,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByTypeAndCityAndStartDateBetweenAndStatusOrTypeAndCityAndEndDateBetweenAndStatus(type,city,firstDate,secondDate,0,type,city,firstDate,secondDate,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#type + #city + #lowPrice + #highPrice+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndPriceRange(String type, String city, double lowPrice, double highPrice, Pageable pageable) {
-        return ticketPageRepository.findAllByTypeAndCityAndLowpriceBetweenOrTypeAndCityAndHighpriceBetween(type,city,lowPrice,highPrice,type,city,lowPrice,highPrice,pageable);
+        return ticketPageRepository.findAllByTypeAndCityAndLowpriceBetweenAndStatusOrTypeAndCityAndHighpriceBetweenAndStatus(type,city,lowPrice,highPrice,0,type,city,lowPrice,highPrice,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#type + #city + #lowPrice + #highPrice + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
@@ -158,7 +158,7 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
 
-        return ticketPageRepository.findAllByTypeAndCityAndLowpriceBetweenAndStartDateBetweenOrTypeAndCityAndLowpriceBetweenAndEndDateBetweenOrTypeAndCityAndHighpriceBetweenAndStartDateBetweenOrTypeAndCityAndHighpriceBetweenAndEndDateBetween(type,city,lowPrice,highPrice,firstDate,secondDate,type,city,lowPrice,highPrice,firstDate,secondDate,type,city,lowPrice,highPrice,firstDate,secondDate,type,city,lowPrice,highPrice,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByTypeAndCityAndLowpriceBetweenAndStartDateBetweenAndStatusOrTypeAndCityAndLowpriceBetweenAndEndDateBetweenAndStatusOrTypeAndCityAndHighpriceBetweenAndStartDateBetweenAndStatusOrTypeAndCityAndHighpriceBetweenAndEndDateBetweenAndStatus(type,city,lowPrice,highPrice,firstDate,secondDate,0,type,city,lowPrice,highPrice,firstDate,secondDate,0,type,city,lowPrice,highPrice,firstDate,secondDate,0,type,city,lowPrice,highPrice,firstDate,secondDate,0,pageable);
     }
 
     /********************************************************************************/
