@@ -1,4 +1,4 @@
-package sjtusummerproject.userdetailmicroservice.DataModel.Domain;
+package sjtusummerproject.ticketmicroservice.DataModel.Domain;
 
 public class UserEntity {
     private Long id;

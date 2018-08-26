@@ -2,9 +2,12 @@ package sjtusummerproject.ticketmicroservice.Service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public interface ManageTicketService {
@@ -37,4 +40,12 @@ public interface ManageTicketService {
     public Boolean updateStockMinusById(Long id, Long toMinus);
     public Boolean updateStockPlusById(Long id, Long toPlus);
     public Date ChangeStringToDate(String dateString);
+
+    /* manager */
+    public TicketEntity add(String type, String startDateString, String endDateString, String time, String city,
+                            String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice);
+    public String saveImage(MultipartFile image);
+    public TicketEntity update(Long ticketid, String type, String startDateString, String endDateString, String time, String city,
+                               String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice);
+    public String delete(List<Long> ticketids);
 }

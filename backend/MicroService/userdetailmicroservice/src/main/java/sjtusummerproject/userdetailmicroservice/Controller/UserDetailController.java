@@ -41,9 +41,9 @@ public class UserDetailController {
     @RequestMapping(value = "/UpdateByUserid")
     @ResponseBody
     public UserDetailEntity updateByUserid(HttpServletRequest request,
+                                           HttpServletResponse response,
                                            @RequestParam(name = "avatar", required = false) MultipartFile frontAvatar,
-                                           @RequestParam(name = "account", required = false) Double account,
-                                           HttpServletResponse response){
+                                           @RequestParam(name = "account", required = false) Double account){
         response.addHeader("Access-Control-Expose-Headers", "errorNum");
         String token = request.getParameter("token");
         UserEntity userEntity = callAuthService(token);

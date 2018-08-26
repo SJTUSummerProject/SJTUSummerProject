@@ -1,6 +1,7 @@
 package sjtusummerproject.ticketmicroservice.Service.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -9,16 +10,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import sjtusummerproject.ticketmicroservice.DataModel.Dao.PictureRepository;
 import sjtusummerproject.ticketmicroservice.DataModel.Dao.TicketPageRepository;
 import sjtusummerproject.ticketmicroservice.DataModel.Dao.TicketRepository;
+import sjtusummerproject.ticketmicroservice.DataModel.Domain.PictureEntity;
 import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
+import sjtusummerproject.ticketmicroservice.Utils.ImgUtils;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @CacheConfig(cacheNames = "TicketRedis")
 @Service
@@ -28,6 +33,12 @@ public class ManageTicketServiceImpl implements ManageTicketService {
 
     @Autowired
     TicketPageRepository ticketPageRepository;
+
+    @Autowired
+    PictureRepository pictureRepository;
+
+    @Value("${imgservice.url}")
+    String imgServiceUrl;
 
     /********************************************************************************/
     /* page */
@@ -199,6 +210,55 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         return true;
     }
 
+    /* manager */
+
+    //类型：演唱会 体育赛事等等
+    @Override
+    public TicketEntity add(String type, String startDateString, String endDateString, String time, String city, String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice) {
+        TicketEntity ticketToInsert = new TicketEntity();
+
+        HashMap<String,Object> dateRelateInfo = parseStringtoDateList(startDateString,endDateString);
+        ticketToInsert.setDates((String)dateRelateInfo.get("Dates"));
+        ticketToInsert.setStartDate((Date)dateRelateInfo.get("startDate"));
+        ticketToInsert.setEndDate((Date)dateRelateInfo.get("endDate"));
+
+        ticketToInsert.setType(type);
+        ticketToInsert.setTime(time);
+        ticketToInsert.setCity(city);
+        ticketToInsert.setVenue(venue);
+        ticketToInsert.setTitle(title);
+        ticketToInsert.setIntro(intro);
+        ticketToInsert.setStock(stock);
+        ticketToInsert.setLowprice(lowprice);
+        ticketToInsert.setHighprice(highprice);
+        ticketToInsert.setImage(saveImage(image));
+
+        return ticketRepository.save(ticketToInsert);
+    }
+
+    @Override
+    public TicketEntity update(Long ticketid, String type, String startDateString, String endDateString, String time, String city, String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice) {
+        TicketEntity ticketToUpdate = ticketRepository.findById(ticketid);
+
+        HashMap<String,Object> dateRelateInfo = parseStringtoDateList(startDateString,endDateString);
+        ticketToUpdate.setDates((String)dateRelateInfo.get("Dates"));
+        ticketToUpdate.setStartDate((Date)dateRelateInfo.get("startDate"));
+        ticketToUpdate.setEndDate((Date)dateRelateInfo.get("endDate"));
+
+        ticketToUpdate.setType(type);
+        ticketToUpdate.setTime(time);
+        ticketToUpdate.setCity(city);
+        ticketToUpdate.setVenue(venue);
+        ticketToUpdate.setTitle(title);
+        ticketToUpdate.setIntro(intro);
+        ticketToUpdate.setStock(stock);
+        ticketToUpdate.setLowprice(lowprice);
+        ticketToUpdate.setHighprice(highprice);
+        ticketToUpdate.setImage(saveImage(image));
+
+        return ticketRepository.save(ticketToUpdate);
+    }
+
     /********************************************************************************/
     /** 自定义内部函数 **/
 
@@ -212,6 +272,76 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         }catch (Exception e){
             System.out.println("ChangeStringToDate 崩了");
             return null;
+        }
+    }
+
+    @Override
+    public String saveImage(MultipartFile image){
+        try {
+            if (image == null) {
+                return null;
+            }
+
+            ImgUtils imgUtils = new ImgUtils();
+            MultipartFile afterHandledImage = imgUtils.scale(image);
+
+            UUID uuid = UUID.randomUUID();
+            String id = uuid.toString();
+            PictureEntity pictureEntity = new PictureEntity();
+            pictureEntity.setUuid(id);
+            pictureEntity.setBase64(afterHandledImage.getBytes());
+            pictureRepository.save(pictureEntity);
+            return imgServiceUrl+uuid;
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    public HashMap<String,Object> parseStringtoDateList(String startDateString, String endDateString){
+        //startDateString, endDateString 的格式都是 2018-07-25
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        HashMap<String,Object> res = new HashMap<>();
+        int count = 0;
+
+        Date startDate = new Date();
+        Date endDate = new Date();
+
+        try {
+            startDate = sdf.parse(startDateString);
+            endDate = sdf.parse(endDateString);
+            res.put("startDate",startDate);
+            res.put("endDate",endDate);
+
+            String datesString = "";
+            Date tmpDate = startDate;
+            while(tmpDate.compareTo(endDate)==-1){
+                datesString += sdf.format(tmpDate)+" , ";
+
+                Calendar addDate = Calendar.getInstance();
+                addDate.setTime(tmpDate); //注意在此处将 addDate 的值改为特定日期
+                addDate.add(addDate.DATE, 1); //特定时间的1年后
+                tmpDate = addDate.getTime();
+                count ++;
+                if(count > 3)
+                    break;
+            }
+            datesString += sdf.format(endDate);
+            res.put("Dates",datesString);
+        }catch (Exception e){
+            System.out.println("崩了？");
+        }
+        return res;
+    }
+
+    @Override
+    public String delete(List<Long> ticketids) {
+        try{
+            for (Long ticketid : ticketids)
+                ticketRepository.deleteById(ticketid);
+            return "ok";
+        }catch (Exception e){
+            return "error";
         }
     }
 }

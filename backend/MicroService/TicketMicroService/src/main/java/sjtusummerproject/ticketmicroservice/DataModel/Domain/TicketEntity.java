@@ -24,6 +24,23 @@ public class TicketEntity implements Serializable{
     //时间
     private String time;
 
+    //城市
+    private String city;
+    //地址-具体地址如某某体育馆
+    private String venue;
+    //标题
+    private String title;
+    //图片
+    private String image;
+    //简介
+    private String intro;
+    //库存
+    private Long stock;
+    //底价
+    private double lowprice;
+    //顶价
+    private double highprice;
+
     public TicketEntity() {
     }
 
@@ -42,23 +59,6 @@ public class TicketEntity implements Serializable{
         this.lowprice = lowprice;
         this.highprice = highprice;
     }
-
-    //城市
-    private String city;
-    //地址-具体地址如某某体育馆
-    private String venue;
-    //标题
-    private String title;
-    //图片
-    private String image;
-    //简介
-    private String intro;
-    //库存
-    private Long stock;
-    //底价
-    private double lowprice;
-    //顶价
-    private double highprice;
 
     public String getDates() {
         return dates;
