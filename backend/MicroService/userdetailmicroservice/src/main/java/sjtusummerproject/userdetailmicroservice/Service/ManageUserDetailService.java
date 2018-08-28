@@ -11,4 +11,5 @@ public interface ManageUserDetailService {
     public Boolean updateAccountMinusById(Long userid, double toMinus);
     public Boolean updateAccountPlusById(Long userid, double toPlus);
     public String saveAvatar(MultipartFile avatar);
+    public UserDetailEntity deleteUserDetail(Long userid);
 }

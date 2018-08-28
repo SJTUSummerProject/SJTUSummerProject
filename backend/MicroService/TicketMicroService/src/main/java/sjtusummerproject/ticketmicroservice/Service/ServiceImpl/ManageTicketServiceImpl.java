@@ -1,6 +1,7 @@
 package sjtusummerproject.ticketmicroservice.Service.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -9,16 +10,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import sjtusummerproject.ticketmicroservice.DataModel.Dao.PictureRepository;
 import sjtusummerproject.ticketmicroservice.DataModel.Dao.TicketPageRepository;
 import sjtusummerproject.ticketmicroservice.DataModel.Dao.TicketRepository;
+import sjtusummerproject.ticketmicroservice.DataModel.Domain.PictureEntity;
 import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
+import sjtusummerproject.ticketmicroservice.Utils.ImgUtils;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @CacheConfig(cacheNames = "TicketRedis")
 @Service
@@ -29,42 +34,48 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     @Autowired
     TicketPageRepository ticketPageRepository;
 
+    @Autowired
+    PictureRepository pictureRepository;
+
+    @Value("${imgservice.url}")
+    String imgServiceUrl;
+
     /********************************************************************************/
     /* page */
 
     @Cacheable(value="10m", key = "'ShowPage:'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionShow(Pageable pageable) {
-        return ticketPageRepository.findAll(pageable);
+        return ticketPageRepository.findAllAndStatus(0,pageable);
     }
 
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCityAndTypeAndTitle(String city, String type, String title, Pageable pageable) {
-        return ticketPageRepository.findAllByCityLikeAndTypeLikeAndTitleLike(city, type, title, pageable);
+        return ticketPageRepository.findAllByCityLikeAndTypeLikeAndTitleLikeAndStatus(city,type,title,0,pageable);
     }
 
     @Cacheable(value = "10m", key = "#title+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByTitle(String title, Pageable pageable){
         title = '%'+title.trim()+'%';
-        return ticketPageRepository.findAllByTitleLike(title, pageable);
+        return ticketPageRepository.findAllByTitleLikeAndStatus(title, 0,pageable);
     }
     @Cacheable(value="10m",key = "#type+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByType(String type, Pageable pageable) {
-        return ticketPageRepository.findAllByType(type,pageable);
+        return ticketPageRepository.findAllByTypeAndStatus(type,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#city+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCity(String city, Pageable pageable) {
-        return ticketPageRepository.findAllByCity(city,pageable);
+        return ticketPageRepository.findAllByCityAndStatus(city, 0,pageable);
     }
 
     @Cacheable(value="10m", key = "#city+#type+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCityAndType(String city, String type, Pageable pageable) {
-        return ticketPageRepository.findAllByCityAndType(city, type, pageable);
+        return ticketPageRepository.findAllByCityAndTypeAndStatus(city, type, 0,pageable);
     }
 
 
@@ -74,13 +85,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
 
-        return ticketPageRepository.findAllByStartDateBetweenOrEndDateBetween(firstDate,secondDate,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByStartDateBetweenAndStatusOrEndDateBetweenAndStatus(firstDate,secondDate,0,firstDate,secondDate,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#lowPrice + #highPrice+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByPriceRange(double lowPrice, double highPrice, Pageable pageable) {
-        return ticketPageRepository.findAllByLowpriceBetweenOrHighpriceBetween(lowPrice,highPrice,lowPrice,highPrice,pageable);
+        return ticketPageRepository.findAllByLowpriceBetweenAndStatusOrHighpriceBetweenAndStatus(lowPrice,highPrice,0,lowPrice,highPrice,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#city + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
@@ -89,13 +100,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
 
-        return ticketPageRepository.findAllByCityAndStartDateBetweenOrCityAndEndDateBetween(city,firstDate,secondDate,city,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByCityAndStartDateBetweenAndStatusOrCityAndEndDateBetweenAndStatus(city,firstDate,secondDate,0,city,firstDate,secondDate,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#city + #lowPrice + #highPrice+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRange(String city, double lowPrice, double highPrice, Pageable pageable) {
-        return ticketPageRepository.findAllByCityAndLowpriceBetweenOrCityAndHighpriceBetween(city,lowPrice,highPrice,city,lowPrice,highPrice,pageable);
+        return ticketPageRepository.findAllByCityAndLowpriceBetweenAndStatusOrCityAndHighpriceBetweenAndStatus(city,lowPrice,highPrice,0,city,lowPrice,highPrice,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#city + #lowPrice + #highPrice + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
@@ -103,14 +114,14 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     public Page<TicketEntity> QueryTicketPageOptionByCityAndPriceRangeAndDateRange(String city, double lowPrice, double highPrice, String firstDateString, String secondDateString, Pageable pageable) {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
-        return ticketPageRepository.findAllByCityAndLowpriceBetweenAndStartDateBetweenOrCityAndLowpriceBetweenAndEndDateBetweenOrCityAndHighpriceBetweenAndStartDateBetweenOrCityAndHighpriceBetweenAndEndDateBetween(city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,city,lowPrice,highPrice,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByCityAndLowpriceBetweenAndStartDateBetweenAndStatusOrCityAndLowpriceBetweenAndEndDateBetweenAndStatusOrCityAndHighpriceBetweenAndStartDateBetweenAndStatusOrCityAndHighpriceBetweenAndEndDateBetweenAndStatus(city,lowPrice,highPrice,firstDate,secondDate,0,city,lowPrice,highPrice,firstDate,secondDate,0,city,lowPrice,highPrice,firstDate,secondDate,0,city,lowPrice,highPrice,firstDate,secondDate,0,pageable);
     }
     /********************************************************************************/
     /** add type **/
     @Cacheable(value="10m",key = "#type + #city+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndCity(String type, String city, Pageable pageable) {
-        return ticketPageRepository.findAllByTypeAndCity(type,city,pageable);
+        return ticketPageRepository.findAllByTypeAndCityAndStatus(type,city,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#type + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
@@ -118,13 +129,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndDateRange(String type, String firstDateString, String secondDateString, Pageable pageable) {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
-        return ticketPageRepository.findAllByTypeAndStartDateBetweenOrTypeAndEndDateBetween(type,firstDate,secondDate,type,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByTypeAndStartDateBetweenAndStatusOrTypeAndEndDateBetweenAndStatus(type,firstDate,secondDate,0,type,firstDate,secondDate,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#type + #lowPrice + #highPrice+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndPriceRange(String type, double lowPrice, double highPrice, Pageable pageable) {
-        return ticketPageRepository.findAllByTypeAndLowpriceBetweenOrTypeAndHighpriceBetween(type,lowPrice,highPrice,type,lowPrice,highPrice,pageable);
+        return ticketPageRepository.findAllByTypeAndLowpriceBetweenAndStatusOrTypeAndHighpriceBetweenAndStatus(type,lowPrice,highPrice,0,type,lowPrice,highPrice,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#type + #city + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
@@ -132,13 +143,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndDateRange(String type, String city, String firstDateString, String secondDateString, Pageable pageable) {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
-        return ticketPageRepository.findAllByTypeAndCityAndStartDateBetweenOrTypeAndCityAndEndDateBetween(type,city,firstDate,secondDate,type,city,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByTypeAndCityAndStartDateBetweenAndStatusOrTypeAndCityAndEndDateBetweenAndStatus(type,city,firstDate,secondDate,0,type,city,firstDate,secondDate,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#type + #city + #lowPrice + #highPrice+':'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionByTypeAndCityAndPriceRange(String type, String city, double lowPrice, double highPrice, Pageable pageable) {
-        return ticketPageRepository.findAllByTypeAndCityAndLowpriceBetweenOrTypeAndCityAndHighpriceBetween(type,city,lowPrice,highPrice,type,city,lowPrice,highPrice,pageable);
+        return ticketPageRepository.findAllByTypeAndCityAndLowpriceBetweenAndStatusOrTypeAndCityAndHighpriceBetweenAndStatus(type,city,lowPrice,highPrice,0,type,city,lowPrice,highPrice,0,pageable);
     }
 
     @Cacheable(value="10m",key = "#type + #city + #lowPrice + #highPrice + #firstDateString + #secondDateString+':'+#pageable.getPageNumber()")
@@ -147,7 +158,7 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         Date firstDate = ChangeStringToDate(firstDateString);
         Date secondDate = ChangeStringToDate(secondDateString);
 
-        return ticketPageRepository.findAllByTypeAndCityAndLowpriceBetweenAndStartDateBetweenOrTypeAndCityAndLowpriceBetweenAndEndDateBetweenOrTypeAndCityAndHighpriceBetweenAndStartDateBetweenOrTypeAndCityAndHighpriceBetweenAndEndDateBetween(type,city,lowPrice,highPrice,firstDate,secondDate,type,city,lowPrice,highPrice,firstDate,secondDate,type,city,lowPrice,highPrice,firstDate,secondDate,type,city,lowPrice,highPrice,firstDate,secondDate,pageable);
+        return ticketPageRepository.findAllByTypeAndCityAndLowpriceBetweenAndStartDateBetweenAndStatusOrTypeAndCityAndLowpriceBetweenAndEndDateBetweenAndStatusOrTypeAndCityAndHighpriceBetweenAndStartDateBetweenAndStatusOrTypeAndCityAndHighpriceBetweenAndEndDateBetweenAndStatus(type,city,lowPrice,highPrice,firstDate,secondDate,0,type,city,lowPrice,highPrice,firstDate,secondDate,0,type,city,lowPrice,highPrice,firstDate,secondDate,0,type,city,lowPrice,highPrice,firstDate,secondDate,0,pageable);
     }
 
     /********************************************************************************/
@@ -199,6 +210,65 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         return true;
     }
 
+    /* manager */
+
+    //类型：演唱会 体育赛事等等
+    @Override
+    public TicketEntity add(String type, String startDateString, String endDateString, String time, String city, String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice) {
+        TicketEntity ticketToInsert = new TicketEntity();
+
+        HashMap<String,Object> dateRelateInfo = parseStringtoDateList(startDateString,endDateString);
+        ticketToInsert.setDates((String)dateRelateInfo.get("Dates"));
+        ticketToInsert.setStartDate((Date)dateRelateInfo.get("startDate"));
+        ticketToInsert.setEndDate((Date)dateRelateInfo.get("endDate"));
+
+        Date now = new Date();
+        ticketToInsert.setType(type);
+        ticketToInsert.setTime(time);
+        ticketToInsert.setCity(city);
+        ticketToInsert.setVenue(venue);
+        ticketToInsert.setTitle(title);
+        ticketToInsert.setIntro(intro);
+        ticketToInsert.setStock(stock);
+        ticketToInsert.setLowprice(lowprice);
+        ticketToInsert.setHighprice(highprice);
+        ticketToInsert.setImage(saveImage(image));
+        if(((Date) dateRelateInfo.get("endDate")).before(now))
+            ticketToInsert.setStatus(1);
+        else
+            ticketToInsert.setStatus(0);
+
+        return ticketRepository.save(ticketToInsert);
+    }
+
+    @Override
+    public TicketEntity update(Long ticketid, String type, String startDateString, String endDateString, String time, String city, String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice) {
+        TicketEntity ticketToUpdate = ticketRepository.findById(ticketid);
+
+        HashMap<String,Object> dateRelateInfo = parseStringtoDateList(startDateString,endDateString);
+        ticketToUpdate.setDates((String)dateRelateInfo.get("Dates"));
+        ticketToUpdate.setStartDate((Date)dateRelateInfo.get("startDate"));
+        ticketToUpdate.setEndDate((Date)dateRelateInfo.get("endDate"));
+
+        Date now = new Date();
+        ticketToUpdate.setType(type);
+        ticketToUpdate.setTime(time);
+        ticketToUpdate.setCity(city);
+        ticketToUpdate.setVenue(venue);
+        ticketToUpdate.setTitle(title);
+        ticketToUpdate.setIntro(intro);
+        ticketToUpdate.setStock(stock);
+        ticketToUpdate.setLowprice(lowprice);
+        ticketToUpdate.setHighprice(highprice);
+        ticketToUpdate.setImage(saveImage(image));
+        if(((Date) dateRelateInfo.get("endDate")).before(now))
+            ticketToUpdate.setStatus(1);
+        else
+            ticketToUpdate.setStatus(0);
+
+        return ticketRepository.save(ticketToUpdate);
+    }
+
     /********************************************************************************/
     /** 自定义内部函数 **/
 
@@ -212,6 +282,76 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         }catch (Exception e){
             System.out.println("ChangeStringToDate 崩了");
             return null;
+        }
+    }
+
+    @Override
+    public String saveImage(MultipartFile image){
+        try {
+            if (image == null) {
+                return null;
+            }
+
+            ImgUtils imgUtils = new ImgUtils();
+            MultipartFile afterHandledImage = imgUtils.scale(image);
+
+            UUID uuid = UUID.randomUUID();
+            String id = uuid.toString();
+            PictureEntity pictureEntity = new PictureEntity();
+            pictureEntity.setUuid(id);
+            pictureEntity.setBase64(afterHandledImage.getBytes());
+            pictureRepository.save(pictureEntity);
+            return imgServiceUrl+uuid;
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    public HashMap<String,Object> parseStringtoDateList(String startDateString, String endDateString){
+        //startDateString, endDateString 的格式都是 2018-07-25
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        HashMap<String,Object> res = new HashMap<>();
+        int count = 0;
+
+        Date startDate = new Date();
+        Date endDate = new Date();
+
+        try {
+            startDate = sdf.parse(startDateString);
+            endDate = sdf.parse(endDateString);
+            res.put("startDate",startDate);
+            res.put("endDate",endDate);
+
+            String datesString = "";
+            Date tmpDate = startDate;
+            while(tmpDate.compareTo(endDate)==-1){
+                datesString += sdf.format(tmpDate)+" , ";
+
+                Calendar addDate = Calendar.getInstance();
+                addDate.setTime(tmpDate); //注意在此处将 addDate 的值改为特定日期
+                addDate.add(addDate.DATE, 1); //特定时间的1年后
+                tmpDate = addDate.getTime();
+                count ++;
+                if(count > 3)
+                    break;
+            }
+            datesString += sdf.format(endDate);
+            res.put("Dates",datesString);
+        }catch (Exception e){
+            System.out.println("崩了？");
+        }
+        return res;
+    }
+
+    @Override
+    public String delete(List<Long> ticketids) {
+        try{
+            for (Long ticketid : ticketids)
+                ticketRepository.deleteById(ticketid);
+            return "ok";
+        }catch (Exception e){
+            return "error";
         }
     }
 }

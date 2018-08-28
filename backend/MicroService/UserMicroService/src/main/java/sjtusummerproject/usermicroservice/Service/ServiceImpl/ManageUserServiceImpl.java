@@ -1,6 +1,8 @@
 package sjtusummerproject.usermicroservice.Service.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sjtusummerproject.usermicroservice.DataModel.Dao.UserRepository;
 import sjtusummerproject.usermicroservice.DataModel.Domain.UserEntity;
@@ -44,10 +46,7 @@ public class ManageUserServiceImpl implements ManageUserService {
     public UserEntity UpdateUserStatusOption(String username, String status) {
         UserEntity userToUpdateStatus = userRepository.findByUsername(username.trim());
         if (userToUpdateStatus == null) return null;
-        //System.out.println("the username id 3 "+username.trim());
-        //System.out.println("the username id 1 "+userToUpdateStatus.getId());
         userToUpdateStatus.setStatus(status);
-        //System.out.println("the username id 2 "+userToUpdateStatus.getId());
         return userRepository.save(userToUpdateStatus);
     }
 
@@ -77,5 +76,35 @@ public class ManageUserServiceImpl implements ManageUserService {
         if (userToUpdateAuthority == null) return null;
         userToUpdateAuthority.setAuthority(authority);
         return userRepository.save(userToUpdateAuthority);
+    }
+
+    /* for manager */
+    @Override
+    public UserEntity UpdateUserStatusOptionById(Long id, String status) {
+        UserEntity userToUpdateStatus = userRepository.findById(id);
+        if (userToUpdateStatus == null) return null;
+        userToUpdateStatus.setStatus(status);
+        return userRepository.save(userToUpdateStatus);
+    }
+
+    @Override
+    public UserEntity UpdateUserPasswordOptionById(Long id, String password) {
+        UserEntity userToUpdatePassword = userRepository.findById(id);
+        if (userToUpdatePassword == null) return null;
+        userToUpdatePassword.setPassword(password);
+        return userRepository.save(userToUpdatePassword);
+    }
+
+    @Override
+    public UserEntity UpdateUserAuthorityOptionById(Long id, String authority) {
+        UserEntity userToUpdateAuthority = userRepository.findById(id);
+        if (userToUpdateAuthority == null) return null;
+        userToUpdateAuthority.setAuthority(authority);
+        return userRepository.save(userToUpdateAuthority);
+    }
+
+    @Override
+    public Page<UserEntity> QueryBatch(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

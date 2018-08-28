@@ -7,4 +7,5 @@ import sjtusummerproject.userdetailmicroservice.DataModel.Domain.UserDetailEntit
 @Repository
 public interface UserDetailRepository extends MongoRepository<UserDetailEntity,Long> {
     public UserDetailEntity findById(Long id);
+    public UserDetailEntity deleteById(Long id);
 }

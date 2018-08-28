@@ -42,6 +42,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderEntity> queryAll() {
+        return orderRepository.findAll();
+    }
+
+    @Override
     public OrderEntity queryByOrderid(Long orderid) {
         return orderRepository.findById(orderid);
     }
@@ -107,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
             /*
             * 如果库存够 会减去getNumber
             * 如果不够 就不会做任何事情
-            *false 表示失败
+            * false 表示失败
             * */
             if(!ticketService.updateStockMinus(eachItem.getTicketId(),eachItem.getNumber())){
                 eachItem.setStatus("失败");

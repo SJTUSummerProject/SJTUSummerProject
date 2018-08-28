@@ -9,6 +9,7 @@ public interface TicketRepository extends CrudRepository<TicketEntity,Long>{
     public TicketEntity findById(Long id);
 //    public List<TicketEntity> findAllByDate(String date);
     public List<TicketEntity> findAll();
+    public TicketEntity deleteById(Long ticketid);
     public List<TicketEntity> findAllByCity(String city);
     public List<TicketEntity> findAllByType(String type);
 }

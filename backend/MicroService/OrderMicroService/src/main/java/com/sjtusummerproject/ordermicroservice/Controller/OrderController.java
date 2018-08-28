@@ -71,6 +71,11 @@ public class OrderController {
         return orderService.queryByUserid(userEntity.getId(),createPageable(request));
     }
 
+    @RequestMapping(value = "/QueryAll")
+    public List<OrderEntity> queryAll(){
+        return orderService.queryAll();
+    }
+
     /*在详细页面里生成订单 这个时候应该只有一个票品*/
     @RequestMapping(value = "/AddInDetailPage")
     @ResponseBody

@@ -241,10 +241,47 @@
         #### 传入参数
         变量名|类型|说明
         -|-|-  
-        token | String | 用户唯一标识
+        token | String | 管理员唯一标识
         oldpassword | String | 旧密码
         newpassword | String | 新密码
         #### 返回参数（UserEntity）
+    * ### URL: /Manager/Delete
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-  
+        token | String | 管理员唯一标识
+        id | Long | 要删除的用户id
+        #### 返回参数（boolean）
+    * ### URL: /Manager/QueryById
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-  
+        token | String | 管理员唯一标识
+        id | Long | 要查找的用户id
+        #### 返回参数（UserEntity）
+    * ### URL: /Manager/QueryBatch
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-  
+        token | String | 管理员唯一标识
+        pagenumber | int | 要显示的页数（从1开始计数）
+        #### 返回参数（Page\<UserEntity>）
+    * ### URL: /Manager/UpdateStatus 
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-  
+        token | String | 管理员唯一标识
+        id | Long | 要更改的用户id
+        status | String | 新的status
+        #### 返回参数（String-“OK”or错误信息-null）
+    * ### URL: /Manager/UpdatePassword 
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-  
+        token | String | 管理员唯一标识
+        id | Long | 要更改的用户
+        password | String | 新的password
+        #### 返回参数（String-“OK”or错误信息-null）
 * ## CommentMicroservice port: 30010
     ### 评论信息 - Comment
         变量名          说明

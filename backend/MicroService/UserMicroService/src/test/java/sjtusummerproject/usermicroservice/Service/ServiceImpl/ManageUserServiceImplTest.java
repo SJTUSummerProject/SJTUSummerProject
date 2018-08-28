@@ -29,6 +29,7 @@ public class ManageUserServiceImplTest extends UsermicroserviceApplicationTests 
         UserEntity user = manageUserService.QueryUserOption("pzyyyy");
         assertNull(user);
     }
+
     @Test
     public void queryUserByIdOption() {
         UserEntity user = manageUserService.QueryUserByIdOption(1L);
