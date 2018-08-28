@@ -283,6 +283,7 @@
         password | String | 新的password
         #### 返回参数（String-“OK”or错误信息-null）
 * ## CommentMicroservice port: 30010
+    #### 仅仅对于评论的增删改以及查询某个用户的评论需要鉴权，也即仅传入token的api会进行鉴权并返回对应的errorNum
     ### 评论信息 - Comment
         变量名          说明
         id              评论comment唯一标识符

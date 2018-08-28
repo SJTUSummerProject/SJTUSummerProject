@@ -79,6 +79,7 @@ public class CommentController {
     public Page<CommentEntity> queryByUserid(@RequestParam(value = "token") String token,
                                              HttpServletRequest request,
                                              HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
         response.addHeader("errorNum", result.toString());
@@ -101,6 +102,7 @@ public class CommentController {
                                                   @RequestParam(value = "commentid") Long commentId,
                                                   @RequestParam(value = "content") String content,
                                                   HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
         response.addHeader("errorNum", result.toString());
@@ -116,6 +118,7 @@ public class CommentController {
     public CommentEntity deleteByCommentid(@RequestParam(value = "token") String token,
                                            @RequestParam(value = "commentid") Long commentId,
                                            HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
         response.addHeader("errorNum", result.toString());

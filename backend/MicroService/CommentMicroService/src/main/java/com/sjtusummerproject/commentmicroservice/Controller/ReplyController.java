@@ -55,6 +55,7 @@ public class ReplyController {
                                @RequestParam(value = "commentid")Long commentId,
                                @RequestParam(value = "content",required = false) String content,
                                HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
         response.addHeader("errorNum", result.toString());
@@ -72,6 +73,7 @@ public class ReplyController {
                              @RequestParam(value = "replyid")Long replyId,
                              @RequestParam(value = "content", required = false) String content,
                              HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
         response.addHeader("errorNum", result.toString());
@@ -110,6 +112,7 @@ public class ReplyController {
     public String deleteById(@RequestParam(value = "token") String token,
                              @RequestParam(value = "replyid")Long replyId,
                              HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
         response.addHeader("errorNum", result.toString());
