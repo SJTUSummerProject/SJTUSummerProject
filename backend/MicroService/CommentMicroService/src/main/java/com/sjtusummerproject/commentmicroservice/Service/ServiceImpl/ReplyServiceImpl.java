@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -54,6 +55,7 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
+    @Transactional
     public String deleteById(Long replyId) {
         /*replyid 是唯一的 不会成环删除*/
         List<ReplyEntity> replysToReply = replyRepository.findByTargetObjectId(replyId);

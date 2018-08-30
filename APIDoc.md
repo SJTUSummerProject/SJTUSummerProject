@@ -347,7 +347,7 @@
         -|-|-    
         token|String
         commentid|Long|需要删除的comment的id
-        #### 返回参数 (删除掉的comment信息)
+        #### 返回参数 （返回字符串ok）
     * ### URL: /Reply/AddToComment
         #### 说明：对评论进行回复（即 reply to comment）
         #### 传入参数

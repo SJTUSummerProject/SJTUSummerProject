@@ -60,7 +60,7 @@ public class RabbitCommentMQConfig {
 
     @Bean
     public Binding bindingExchangeReplyReplyQueue(Queue replyReplyQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(replyReplyQueue).to(exchange).with(ReplyCommentROUTING_KEY);
+        return BindingBuilder.bind(replyReplyQueue).to(exchange).with(ReplyReplyROUTING_KEY);
     }
 
     @Bean

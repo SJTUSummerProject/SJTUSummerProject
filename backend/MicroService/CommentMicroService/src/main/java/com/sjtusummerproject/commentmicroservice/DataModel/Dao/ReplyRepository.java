@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface ReplyRepository extends CrudRepository<ReplyEntity,Long> {
-    public ReplyEntity findById(Long replyId);
+    public void findById(Long replyId);
     public Page<ReplyEntity> findByParentIdAndType(Long parentId, String type, Pageable pageable);
     /*用于查询*/
     public Page<ReplyEntity> findByTargetObjectId(Long targetObjectId,Pageable pageable);
