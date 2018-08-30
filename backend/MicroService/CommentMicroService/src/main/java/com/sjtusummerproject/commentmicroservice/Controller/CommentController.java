@@ -117,6 +117,7 @@ public class CommentController {
 
     @RequestMapping(value = "/DeleteByCommentid")
     @ResponseBody
+    @Transactional
     public String deleteByCommentid(@RequestParam(value = "token") String token,
                                            @RequestParam(value = "commentid") Long commentId,
                                            HttpServletResponse response){
