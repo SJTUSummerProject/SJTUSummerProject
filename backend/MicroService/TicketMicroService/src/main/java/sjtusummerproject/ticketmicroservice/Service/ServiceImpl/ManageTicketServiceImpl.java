@@ -46,7 +46,7 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     @Cacheable(value="10m", key = "'ShowPage:'+#pageable.getPageNumber()")
     @Override
     public Page<TicketEntity> QueryTicketPageOptionShow(Pageable pageable) {
-        return ticketPageRepository.findAllAndStatus(0,pageable);
+        return ticketPageRepository.findAllByStatus(0,pageable);
     }
 
     @Override
@@ -345,6 +345,7 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     }
 
     @Override
+    @Transactional
     public String delete(List<Long> ticketids) {
         try{
             for (Long ticketid : ticketids)
