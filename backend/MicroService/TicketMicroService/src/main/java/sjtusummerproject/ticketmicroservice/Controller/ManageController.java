@@ -107,7 +107,7 @@ public class ManageController {
     /*此时这个user的身份一定要是manager*/
     private int authUser(UserEntity userEntity){
         if (userEntity == null) return 1;
-        else if (!userEntity.getAuthority().equals("Manager")) return 2;
+        else if (userEntity.getAuthority().equals("Manager")) return 2;
         else if (userEntity.getStatus().equals("Frozen")) return 3;
         else return 0;
     }
