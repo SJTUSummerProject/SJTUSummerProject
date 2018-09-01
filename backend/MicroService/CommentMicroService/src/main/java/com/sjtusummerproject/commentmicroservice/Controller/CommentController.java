@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RequestMapping(value = "/Comment")
@@ -62,6 +63,7 @@ public class CommentController {
                       @RequestParam(value = "ticketid") Long targetTicketId,
                       @RequestParam(value = "content",defaultValue = "")String content,
                       HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
         response.addHeader("errorNum", result.toString());
@@ -79,6 +81,7 @@ public class CommentController {
     public Page<CommentEntity> queryByUserid(@RequestParam(value = "token") String token,
                                              HttpServletRequest request,
                                              HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
         response.addHeader("errorNum", result.toString());
@@ -101,6 +104,7 @@ public class CommentController {
                                                   @RequestParam(value = "commentid") Long commentId,
                                                   @RequestParam(value = "content") String content,
                                                   HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
         response.addHeader("errorNum", result.toString());
@@ -113,16 +117,19 @@ public class CommentController {
 
     @RequestMapping(value = "/DeleteByCommentid")
     @ResponseBody
-    public CommentEntity deleteByCommentid(@RequestParam(value = "token") String token,
+    @Transactional
+    public String deleteByCommentid(@RequestParam(value = "token") String token,
                                            @RequestParam(value = "commentid") Long commentId,
                                            HttpServletResponse response){
+        response.addHeader("Access-Control-Expose-Headers", "errorNum");
         UserEntity userEntity = authService.callAuthService(token);
         Integer result = authService.authUser(userEntity);
         response.addHeader("errorNum", result.toString());
         if (result != 0) return null;
 
         replyService.deleteByParentId(commentId);
-        return commentService.deleteByCommentid(commentId);
+        commentService.deleteByCommentid(commentId);
+        return "ok";
     }
     /*****************************************************************/
     /** 测试 **/

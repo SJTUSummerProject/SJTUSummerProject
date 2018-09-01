@@ -17,5 +17,5 @@ public interface CommentService {
     public Page<CommentEntity> queryByTicketId(Long ticketid, Pageable pageable);
     public CommentEntity queryByCommentId(Long commentId);
     public CommentEntity updateContentByCommentid(Long commentId, String content);
-    public CommentEntity deleteByCommentid(Long commentId);
+    public void deleteByCommentid(Long commentId);
 }

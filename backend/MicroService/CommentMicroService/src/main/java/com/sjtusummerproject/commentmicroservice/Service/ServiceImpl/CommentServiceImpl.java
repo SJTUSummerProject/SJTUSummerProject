@@ -14,6 +14,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 
+import javax.transaction.Transactional;
 import java.util.Date;
 
 @Service
@@ -62,7 +63,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentEntity deleteByCommentid(Long commentId) {
-        return commentRepository.deleteById(commentId);
+    @Transactional
+    public void deleteByCommentid(Long commentId) {
+        commentRepository.deleteById(commentId);
     }
+
 }

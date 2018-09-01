@@ -30,8 +30,8 @@ public class TicketmicroserviceApplicationTests {
 
 	public List<TicketEntity> generateTickets(){
 		List<TicketEntity> result = new ArrayList<>();
-		TicketEntity t1 = new TicketEntity("1","1",manageTicketService.ChangeStringToDate("2018-01-01"),manageTicketService.ChangeStringToDate("2018-05-25"),"1","1","1","1","1","1",100l,100.0,200.0);
-		TicketEntity t2 = new TicketEntity("2","2",manageTicketService.ChangeStringToDate("2017-01-01"),manageTicketService.ChangeStringToDate("2017-09-01"),"2","2","2","2","2","2",200l,200.0,300.0);
+		TicketEntity t1 = new TicketEntity("1","1",manageTicketService.ChangeStringToDate("2018-01-01"),manageTicketService.ChangeStringToDate("2018-05-25"),"1","1","1","1","1","1",100l,100.0,200.0,0);
+		TicketEntity t2 = new TicketEntity("2","2",manageTicketService.ChangeStringToDate("2017-01-01"),manageTicketService.ChangeStringToDate("2017-09-01"),"2","2","2","2","2","2",200l,200.0,300.0,0);
 		t1.setId(1l);t2.setId(2l);
 		result.add(t1);result.add(t2);
 		return result;

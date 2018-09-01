@@ -39,8 +39,13 @@ public class ReceiveReplyReplyMessageComponent {
         Long repliedId = (Long)message.getFirst("repliedId");
         String content = (String)message.getFirst("content");
 
+        System.out.println(repliedId);
         UserEntity ownerUser = authService.callAuthService(token);
         ReplyEntity replied = replyService.queryById(repliedId);
+        if (replied == null) {
+            System.out.println("The replied is null");
+            return;
+        }
 
         ReplyEntity replyEntity = new ReplyEntity();
 

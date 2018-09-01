@@ -8,7 +8,7 @@ import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 import java.util.Date;
 
 public interface TicketPageRepository extends PagingAndSortingRepository<TicketEntity, Long> {
-    public Page<TicketEntity> findAllAndStatus(int status,Pageable pageable);
+    public Page<TicketEntity> findAllByStatus(int status,Pageable pageable);
     public Page<TicketEntity> findAllByTitleLikeAndStatus(String title, int status, Pageable pageable);
     public Page<TicketEntity> findAllByTypeAndStatus(String type,int status,Pageable pageable);
     public Page<TicketEntity> findAllByCityAndStatus(String city,int status,Pageable pageable);

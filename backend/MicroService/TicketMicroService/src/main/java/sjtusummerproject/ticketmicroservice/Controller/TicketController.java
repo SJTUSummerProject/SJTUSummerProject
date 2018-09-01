@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@RestController
-@RequestMapping(value="/Ticket")
+@RestController("/Ticket")
+@RequestMapping(value = "/Ticket")
 public class TicketController {
     @Value("${ticket.page.size}")
     private int PageSize;
