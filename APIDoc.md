@@ -352,7 +352,7 @@
         #### 说明：对评论进行回复（即 reply to comment）
         #### 传入参数
         变量名|类型|说明
-        -|-|-    
+        -|-|-
         token|String
         commentid|Long|要回复的评论的id
         content|String|回复的内容（不能为空）
