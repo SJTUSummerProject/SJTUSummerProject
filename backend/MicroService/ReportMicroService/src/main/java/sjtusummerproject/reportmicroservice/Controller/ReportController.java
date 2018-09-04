@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import sjtusummerproject.reportmicroservice.DataModel.Domain.DailyReportEntity;
-import sjtusummerproject.reportmicroservice.DataModel.Domain.MonthlyReportEntity;
-import sjtusummerproject.reportmicroservice.DataModel.Domain.UserEntity;
-import sjtusummerproject.reportmicroservice.DataModel.Domain.WeeklyReportEntity;
+import sjtusummerproject.reportmicroservice.DataModel.Domain.*;
 import sjtusummerproject.reportmicroservice.Service.ReportService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,6 +103,26 @@ public class ReportController {
     ) throws ParseException {
         if(identifyAuth(request,response)!=2) return null;
         return reportService.queryMonthlyByCityAndMonth(city,year,month,createPageable(request));
+    }
+
+    @RequestMapping(value = "/AnuuallyQueryByTicketidAndYear")
+    public AnnuallyReportEntity queryAnnuallyByTicketidAndYear(HttpServletRequest request,
+                                                           HttpServletResponse response,
+                                                           @RequestParam(name = "year")int year,
+                                                           @RequestParam(name = "ticketid")Long ticketid
+    ) throws ParseException {
+        if(identifyAuth(request,response)!=2) return null;
+        return reportService.queryAnnuallyByTicketidAndYear(ticketid,year);
+    }
+
+    @RequestMapping(value = "/AnuuallyQueryByCityAndYear")
+    public Page<AnnuallyReportEntity> queryAnnuallyByCityAndYear(HttpServletRequest request,
+                                                               HttpServletResponse response,
+                                                               @RequestParam(name = "year")int year,
+                                                               @RequestParam(name = "city")String city
+    ) throws ParseException {
+        if(identifyAuth(request,response)!=2) return null;
+        return reportService.queryAnnuallyByCityAndYear(city,year,createPageable(request));
     }
 
     private int identifyAuth(HttpServletRequest request,

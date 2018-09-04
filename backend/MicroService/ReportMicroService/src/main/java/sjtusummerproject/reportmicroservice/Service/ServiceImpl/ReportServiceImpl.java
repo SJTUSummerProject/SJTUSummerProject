@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import sjtusummerproject.reportmicroservice.DataModel.Dao.AnnuallyReportRepository;
 import sjtusummerproject.reportmicroservice.DataModel.Dao.DailyReportRepository;
 import sjtusummerproject.reportmicroservice.DataModel.Dao.MonthlyReportRepository;
 import sjtusummerproject.reportmicroservice.DataModel.Dao.WeeklyReportRepository;
+import sjtusummerproject.reportmicroservice.DataModel.Domain.AnnuallyReportEntity;
 import sjtusummerproject.reportmicroservice.DataModel.Domain.DailyReportEntity;
 import sjtusummerproject.reportmicroservice.DataModel.Domain.MonthlyReportEntity;
 import sjtusummerproject.reportmicroservice.DataModel.Domain.WeeklyReportEntity;
@@ -24,6 +26,8 @@ public class ReportServiceImpl implements ReportService {
     WeeklyReportRepository weeklyReportRepository;
     @Autowired
     MonthlyReportRepository monthlyReportRepository;
+    @Autowired
+    AnnuallyReportRepository annuallyReportRepository;
 
     @Override
     public DailyReportEntity queryDailyByTicketidAndDate(Long ticketid, String dateInString) throws ParseException {
@@ -56,6 +60,16 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Page<MonthlyReportEntity> queryMonthlyByCityAndMonth(String city, int year, int month, Pageable pageable) {
-        return null;
+        return monthlyReportRepository.queryByCityAndYearAndMonth(city,year,month,pageable);
+    }
+
+    @Override
+    public AnnuallyReportEntity queryAnnuallyByTicketidAndYear(Long ticketid, int year) {
+        return annuallyReportRepository.queryByTicketIdAndYear(ticketid, year);
+    }
+
+    @Override
+    public Page<AnnuallyReportEntity> queryAnnuallyByCityAndYear(String city, int year, Pageable pageable) {
+        return annuallyReportRepository.queryByCityAndYear(city,year,pageable);
     }
 }
