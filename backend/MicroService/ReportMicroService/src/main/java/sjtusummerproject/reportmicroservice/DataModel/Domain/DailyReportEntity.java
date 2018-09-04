@@ -1,4 +1,4 @@
-package com.example.orderdailyjob.DataModel.Domain;
+package sjtusummerproject.reportmicroservice.DataModel.Domain;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,14 +15,13 @@ public class DailyReportEntity {
     private String priceAndAmount;
     //总售出额
     private Double totalPrice;
-    //上座率
+    //售出率
     private Double rate;
     //城市
     private String city;
-    //报表日期
+    //报表记录Date日期的状况 + 报表生成日期
     @Temporal(TemporalType.DATE)
     private Date date;
     //票名
     private String title;
-
 }
