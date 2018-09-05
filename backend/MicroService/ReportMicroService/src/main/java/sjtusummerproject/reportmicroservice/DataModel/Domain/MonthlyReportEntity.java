@@ -1,28 +1,32 @@
-package com.example.orderdailyjob.DataModel.Domain;
+package sjtusummerproject.reportmicroservice.DataModel.Domain;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="dailyreport")
-public class DailyReportEntity {
+@Table(name="monthlyreport")
+public class MonthlyReportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     //票id
     private Long ticketId;
+    //票名
+    private String title;
     // to simplify the coding, use the string instead of the structure
     private String priceAndAmount;
     //总售出额
     private Double totalPrice;
-    //上座率
+    //售出率
     private Double rate;
     //城市
     private String city;
-    //报表日期
+    //报表生成日期
     @Temporal(TemporalType.DATE)
     private Date date;
-    //票名
-    private String title;
 
+    //报表记录年份
+    private int year;
+    //报表记录月份
+    private int month;
 }
