@@ -28,4 +28,8 @@ public interface TicketPageRepository extends PagingAndSortingRepository<TicketE
     public Page<TicketEntity> findAllByTypeAndCityAndStartDateBetweenAndStatusOrTypeAndCityAndEndDateBetweenAndStatus(String type1,String city1,Date firstDate1,Date secondDate1,int status1,String type2,String city2,Date firstDate2, Date secondDate2,int status2, Pageable pageable);
     public Page<TicketEntity> findAllByTypeAndCityAndLowpriceBetweenAndStatusOrTypeAndCityAndHighpriceBetweenAndStatus(String type1,String city1,double lowPrice1,double highPrice1,int status1,String type2,String city2, double lowPrice2, double highPrice2, int status2,Pageable pageable);
     public Page<TicketEntity> findAllByTypeAndCityAndLowpriceBetweenAndStartDateBetweenAndStatusOrTypeAndCityAndLowpriceBetweenAndEndDateBetweenAndStatusOrTypeAndCityAndHighpriceBetweenAndStartDateBetweenAndStatusOrTypeAndCityAndHighpriceBetweenAndEndDateBetweenAndStatus(String type1,String city1,double lowPrice1,double highPrice1,Date firstDate1,Date secondDate1,int status1,String type2,String city2,double lowPrice2, double highPrice2,Date firstDate2, Date secondDate2,int status2,String type3,String city3,double lowPrice3,double highPrice3, Date firstDate3, Date secondDate3,int status3,String type4,String city4,double lowPrice4,double highPrice4, Date firstDate4, Date secondDate4,int status4,Pageable pageable);
+
+    /********************************************************************************/
+    /** mahout **/
+    public Page<TicketEntity> findAll(Pageable pageable);
 }
