@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Service;
+import sjtusummerproject.creepermicroservice.DataModel.Dao.TicketRepository;
 import sjtusummerproject.creepermicroservice.DataModel.Domain.TicketEntity;
 
 import java.io.BufferedReader;
@@ -20,6 +21,9 @@ import java.util.*;
 public class InputDataServiceImpl{
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
+    TicketRepository ticketRepository;
 
     static long id = 0l;
 
@@ -66,6 +70,7 @@ public class InputDataServiceImpl{
     }
 
     public String readdirfile(String filename,String cityName,String type){
+        System.out.println(filename);//just test
         File datafile = new File(filename);
         BufferedReader reader = null;
         try {
@@ -73,7 +78,7 @@ public class InputDataServiceImpl{
             String tempString = null;
             // 一次读入一行，直到读入null为文件结束
             while ((tempString = reader.readLine()) != null) {
-//                System.out.println(tempString);
+                System.out.println(tempString);//just test
                 parsejson(tempString,cityName,type);
             }
             reader.close();
@@ -84,11 +89,10 @@ public class InputDataServiceImpl{
     }
 
     public String parsejson(String string,String cityName,String type){
-        String sql = "INSERT INTO ticket(id,city,dates,end_date,highprice,image,intro,lowprice,start_date,stock,time,title,type,venue)" +
-                " VALUES(:id,:city,:dates,:endDate,:highprice,:image,:intro,:lowprice,:startDate,:stock,:time,:title,:type,:venue)"
-                ;
+//        String sql = "INSERT INTO ticket(id,city,dates,end_date,highprice,image,intro,lowprice,start_date,stock,time,title,type,venue,status) " +
+//                "  VALUES(:id,:city,:dates,:endDate,:highprice,:image,:intro,:lowprice,:startDate,:stock,:time,:title,:type,:status)"
+//                ;
         JSONObject jsonObject= JSONObject.fromObject(string);
-//        System.out.println(jsonObject);
         Map<String,String> tmp = new HashMap<>();
         for(Object k : jsonObject.keySet()){
             Object v = jsonObject.get(k);
@@ -96,7 +100,6 @@ public class InputDataServiceImpl{
         }
         List<TicketEntity> ticketEntities = new ArrayList<>();
         for(String k : tmp.keySet()){
-//            System.out.println(tmp.get(k));
             JSONObject detailObject = JSONObject.fromObject(tmp.get(k));
             /* 每一个票 */
             Map<String,String> tmp1 = new HashMap<>();
@@ -106,8 +109,6 @@ public class InputDataServiceImpl{
             }
             for(String l : tmp1.keySet()){
                 String s = tmp1.get(l);
-//                System.out.println(s);
-//                System.out.println(cityName);
                 if(l.equals("date"))
                     s = ParseDate(s);
                 if(l.equals("venue"))
@@ -148,15 +149,16 @@ public class InputDataServiceImpl{
             ticketEntity.setLowprice(EachLowPrice);
             ticketEntity.setHighprice(EachHighPrice);
             ticketEntity.setId(++id);
+            ticketEntity.setStatus(0);
+            System.out.println(ticketEntity.getTitle());//just test
 
-            ticketEntities.add(ticketEntity);
+            ticketRepository.save(ticketEntity);
+            //ticketEntities.add(ticketEntity);
 //            ticketRepository.save(ticketEntity);
-//            System.out.println("highprice "+EachHighPrice);
-//            System.out.println("lowprice "+EachLowPrice);
-
         }
-        SqlParameterSource[] sqlParameterSource = SqlParameterSourceUtils.createBatch(ticketEntities.toArray());
-        namedParameterJdbcTemplate.batchUpdate(sql,sqlParameterSource);
+        //System.out.println(ticketEntities.toString());//just test
+        //SqlParameterSource[] sqlParameterSource = SqlParameterSourceUtils.createBatch(ticketEntities.toArray());
+        //namedParameterJdbcTemplate.batchUpdate(sql,sqlParameterSource);
         return "ok";
     }
 

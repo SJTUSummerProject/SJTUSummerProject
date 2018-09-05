@@ -269,6 +269,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         return ticketRepository.save(ticketToUpdate);
     }
 
+    @Override
+    public List<TicketEntity> queryTopSixTicket(Pageable pageable) {
+        Page<TicketEntity> page = ticketPageRepository.findAll(pageable);
+        return page.getContent();
+
+    }
+
     /********************************************************************************/
     /** 自定义内部函数 **/
 

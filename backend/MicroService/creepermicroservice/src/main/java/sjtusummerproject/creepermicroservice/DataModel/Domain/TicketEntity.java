@@ -1,17 +1,24 @@
 package sjtusummerproject.creepermicroservice.DataModel.Domain;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+@Entity
+@Table( name = "ticket" )
 public class TicketEntity implements Serializable{
+    @Id
+    @GeneratedValue()
     private Long id;
     //类型：演唱会 体育赛事等等
     private String type;
     //日期
     private String dates;
     //起始日期
+    @Temporal(TemporalType.DATE)
     private Date startDate;
     //终止日期
+    @Temporal(TemporalType.DATE)
     private Date endDate;
     //时间
     private String time;
@@ -31,6 +38,28 @@ public class TicketEntity implements Serializable{
     private double lowprice;
     //顶价
     private double highprice;
+    //状态 0-ok 1-expired
+    private int status;
+
+    public TicketEntity() {
+    }
+
+    public TicketEntity(String type, String dates, Date startDate, Date endDate, String time, String city, String venue, String title, String image, String intro, Long stock, double lowprice, double highprice, int status) {
+        this.type = type;
+        this.dates = dates;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.time = time;
+        this.city = city;
+        this.venue = venue;
+        this.title = title;
+        this.image = image;
+        this.intro = intro;
+        this.stock = stock;
+        this.lowprice = lowprice;
+        this.highprice = highprice;
+        this.status = status;
+    }
 
     public String getDates() {
         return dates;
@@ -142,5 +171,13 @@ public class TicketEntity implements Serializable{
 
     public void setIntro(String intro) {
         this.intro = intro;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

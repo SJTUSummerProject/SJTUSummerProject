@@ -41,6 +41,7 @@ public interface ManageTicketService {
     public Boolean updateStockPlusById(Long id, Long toPlus);
     public Date ChangeStringToDate(String dateString);
 
+    public List<TicketEntity> queryTopSixTicket(Pageable pageable);
     /* manager */
     public TicketEntity add(String type, String startDateString, String endDateString, String time, String city,
                             String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice);

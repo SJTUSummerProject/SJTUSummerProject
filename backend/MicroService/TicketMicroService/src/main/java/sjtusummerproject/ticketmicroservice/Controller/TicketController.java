@@ -21,6 +21,8 @@ public class TicketController {
     private int PageSize;
     @Value("${ticket.page.offset}")
     private int PageOffset;
+    @Value("${{nearestTicketNumber}}")
+    private int nearestTicketNumber;
 
     @Autowired
     ManageTicketService manageTicketService;
@@ -223,5 +225,14 @@ public class TicketController {
         Long toPlus = Long.parseLong(request.getParameter("plus").trim());
 
         return manageTicketService.updateStockPlusById(ticketid,toPlus);
+    }
+
+    @RequestMapping(value = "/QueryTopSixTicket")
+    @ResponseBody
+    public List<TicketEntity> queryTopSixTicket(){
+        Sort sort = new Sort(Sort.Direction.ASC, "stock");
+        Pageable pageable = new PageRequest(0, nearestTicketNumber);  //分页从第0页开始，每页显示6条记录
+
+        return manageTicketService.queryTopSixTicket(pageable);
     }
 }
