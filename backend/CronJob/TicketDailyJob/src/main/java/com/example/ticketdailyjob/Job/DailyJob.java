@@ -1,12 +1,11 @@
 package com.example.ticketdailyjob.Job;
 
-import com.example.ticketdailyjob.DataModel.Dao.TicketEntity;
-import com.example.ticketdailyjob.DataModel.Domain.TicketRepository;
+import com.example.ticketdailyjob.DataModel.Domain.TicketEntity;
+import com.example.ticketdailyjob.DataModel.Dao.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.util.Date;
 import java.util.List;
 

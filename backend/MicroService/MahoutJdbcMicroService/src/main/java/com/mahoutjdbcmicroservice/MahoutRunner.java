@@ -38,7 +38,7 @@ public class MahoutRunner implements ApplicationRunner{
     @Autowired
     UserRecommandService userRecommandService;
 
-    @Value("${nearestTicketNumber")
+    @Value("${nearestTicketNumber}")
     int nearestTicketNumber;
 
     @Override
