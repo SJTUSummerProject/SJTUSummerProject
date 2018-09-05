@@ -271,7 +271,7 @@ public class ManageTicketServiceImpl implements ManageTicketService {
 
     @Override
     public List<TicketEntity> queryTopSixTicket(Pageable pageable) {
-        Page<TicketEntity> page = ticketPageRepository.findAll(pageable);
+        Page<TicketEntity> page = ticketPageRepository.findAllByStatus(0, pageable);
         return page.getContent();
 
     }
