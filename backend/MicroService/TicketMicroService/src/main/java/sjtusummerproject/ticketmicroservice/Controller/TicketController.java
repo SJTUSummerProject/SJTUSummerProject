@@ -35,7 +35,7 @@ public class TicketController {
     @GetMapping(value="/QueryShowPage")
     @ResponseBody
     public Page<TicketEntity> QueryTicketShowPage(HttpServletRequest request, HttpServletResponse response){
-        //System.out.println("page:"+request.getParameter("pagenumber"));
+        System.out.println("page:"+request.getParameter("pagenumber"));
         return manageTicketService.QueryTicketPageOptionShow(CreatePageable(request));
     }
     @RequestMapping(value = "/QueryByTitle")
