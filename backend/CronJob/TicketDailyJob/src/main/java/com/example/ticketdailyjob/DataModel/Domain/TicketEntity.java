@@ -1,4 +1,4 @@
-package com.example.ticketdailyjob.DataModel.Dao;
+package com.example.ticketdailyjob.DataModel.Domain;
 
 import javax.persistence.*;
 import java.io.Serializable;

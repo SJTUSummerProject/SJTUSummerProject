@@ -1,6 +1,6 @@
-package com.example.ticketdailyjob.DataModel.Domain;
+package com.example.ticketdailyjob.DataModel.Dao;
 
-import com.example.ticketdailyjob.DataModel.Dao.TicketEntity;
+import com.example.ticketdailyjob.DataModel.Domain.TicketEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
