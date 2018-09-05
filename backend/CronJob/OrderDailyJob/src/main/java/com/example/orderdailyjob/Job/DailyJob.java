@@ -28,11 +28,12 @@ public class DailyJob {
     @Value("${storage}")
     Double storage;
     @Value("${ticket-service-url}")
-    String url;
+    String ticketUrl;
     @Transactional
     public void statisticsReportDaily() {
         Date now = new Date();
         List<OrderEntity> orderEntities = orderRepository.findAllByOrOrderTimeEqualsAndStatusLike(now, "待发货");
+        //System.out.println(orderEntities.get(0).getId());
         Map<Long, DailyReportEntity> map = new HashMap<>();
         for (OrderEntity orderEntity : orderEntities) {
             Set<ItemEntity> itemEntities = orderEntity.getItems();
@@ -46,10 +47,12 @@ public class DailyJob {
                     DailyReportEntity dailyReportEntity = new DailyReportEntity();
                     //complete the dailyEntity
                     completeDailyEntity(dailyReportEntity, itemEntity);
+                    map.put(ticketId, dailyReportEntity);
                 }
             }
         }
         for (Map.Entry<Long, DailyReportEntity> entry : map.entrySet()){
+            //System.out.println("here");
             DailyReportEntity dailyReportEntity = entry.getValue();
             Long ticketId = entry.getKey();
             caculateDailyEntity(dailyReportEntity, ticketId);
@@ -59,6 +62,7 @@ public class DailyJob {
 
     private void completeDailyEntity(DailyReportEntity dailyReportEntity, ItemEntity itemEntity){
         String priceAndAmount = dailyReportEntity.getPriceAndAmount();
+        if (priceAndAmount == null) priceAndAmount = "";
         StringBuilder sb = new StringBuilder(priceAndAmount);
         if (!priceAndAmount.isEmpty()) sb.append(':');
         sb.append(itemEntity.getPrice());sb.append(' ');sb.append(itemEntity.getNumber());
@@ -68,15 +72,16 @@ public class DailyJob {
     private void caculateDailyEntity(DailyReportEntity dailyReportEntity, Long ticketId){
         MultiValueMap<String, Long> multiValueMap = new LinkedMultiValueMap<>();
         multiValueMap.add("id",ticketId);
-        url+=ticketId;
+        String url = ticketUrl + ticketId;
         TicketEntity ticketEntity = restTemplate.getForObject(url, TicketEntity.class);
         Map<Double, Long> map = parseJson(dailyReportEntity.getPriceAndAmount());
-        dailyReportEntity.setTicketId(ticketId);
+        dailyReportEntity.setTicketId(ticketEntity.getId());
         dailyReportEntity.setCity(ticketEntity.getCity());
         dailyReportEntity.setTitle(ticketEntity.getTitle());
         dailyReportEntity.setDate(new Date());
         dailyReportEntity.setTotalPrice(caculateTotalPrice(map));
         dailyReportEntity.setRate(caculateRate(map));
+        dailyReportEntity.setPriceAndAmount(caculateAmount(map));
         dailyReportRepository.save(dailyReportEntity);
     }
 
@@ -84,8 +89,14 @@ public class DailyJob {
         Map<Double, Long> result = new HashMap<>();
         String kv[] = json.split(":");
         for (String s : kv){
-            String map[] = s.split(":") ;
-            result.put(Double.parseDouble(map[0]), Long.parseLong(map[1]));
+            String map[] = s.split(" ") ;
+            Double key = Double.parseDouble(map[0]);
+            Long value = Long.parseLong(map[1]);
+            if (result.containsKey(key)){
+                Long oldValue = result.get(key);
+                result.put(key, oldValue + value);
+            }
+            else result.put(key, value);
         }
         return result;
     }
@@ -104,5 +115,25 @@ public class DailyJob {
             total += value;
         }
         return total/storage;
+    }
+
+    private String caculateAmount(Map<Double, Long> map){
+        StringBuilder sb = new StringBuilder();
+        boolean flag =true;
+        for (Map.Entry<Double, Long> entry : map.entrySet()){
+            if(flag == true){
+                sb.append(entry.getKey());
+                sb.append(' ');
+                sb.append(entry.getValue());
+                flag =  false;
+            }
+            else {
+                sb.append(':');
+                sb.append(entry.getKey());
+                sb.append(' ');
+                sb.append(entry.getValue());
+            }
+        }
+        return sb.toString();
     }
 }
