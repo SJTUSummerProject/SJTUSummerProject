@@ -47,7 +47,7 @@ public class MahoutRunner implements ApplicationRunner{
         while(true){
             writeUserTicketFile(getOrders());
             readUserTicketFileAndCreateRecommanderAndSaveToDataBase();
-            sleep(1000*60*15);  //每15分钟更新一次
+            sleep(1000*60*60*12);  //每12小时更新一次
         }
     }
 

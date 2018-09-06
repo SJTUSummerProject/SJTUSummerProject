@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,9 @@ public class RecommandController {
     @RequestMapping(value = "/QueryRecommandTicket")
     @ResponseBody
     public List<Long> queryRecommandTicket(@RequestParam(name = "userid") Long userid){
-        return userRecommandService.queryTicketByUserid(userid);
+        List<Long> list = userRecommandService.queryTicketByUserid(userid);
+        if(list == null)
+            return new LinkedList<>();
+        return list;
     }
 }

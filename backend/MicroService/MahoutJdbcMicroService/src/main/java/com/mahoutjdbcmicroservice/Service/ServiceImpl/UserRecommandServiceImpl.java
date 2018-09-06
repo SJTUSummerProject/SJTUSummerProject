@@ -21,6 +21,8 @@ public class UserRecommandServiceImpl implements UserRecommandService {
     @Override
     public List<Long> queryTicketByUserid(Long userId) {
         UserRecommendEntity userRecommendEntity = userRecommendRepository.findById(userId);
+        if(userRecommendEntity == null)
+            return null;
         return userRecommendEntity.getTicketRecommends();
     }
 }
