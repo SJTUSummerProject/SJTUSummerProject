@@ -54,16 +54,28 @@ public class MahoutRunner implements ApplicationRunner{
     public void writeUserTicketFile(List<OrderEntity> orderList) throws IOException {
         String fileName = "user_ticket.csv";
         File writename = new File(fileName); // 相对路径，如果没有则要建立一个新的output。txt文件
+
         writename.createNewFile(); // 创建新文件
         BufferedWriter out = new BufferedWriter(new FileWriter(writename));
 
+        Map<String,Long> map = new HashMap<>();
         for(OrderEntity eachOrder : orderList){
             Long userId = eachOrder.getUserId();
             Set<ItemEntity> itemSet = eachOrder.getItems();
             for(ItemEntity eachItem : itemSet){
-                Long ticketId = eachItem.getTicketId();
-                out.write(userId+','+ticketId+"\r\n"); // \r\n即为换行
+                String key = userId.toString()+","+eachItem.getTicketId().toString();
+                if(map.get(key)==null){
+                    map.put(key,eachItem.getNumber());
+                }
+                else {
+                    map.put(key,map.get(key)+eachItem.getNumber());
+                }
             }
+        }
+
+        for(Map.Entry<String,Long> entry : map.entrySet()){
+            out.write(entry.getKey()+","+entry.getValue()+"\r\n"); // \r\n即为换行
+            System.out.println(entry.getKey()+","+entry.getValue());
         }
         out.flush(); // 把缓存区内容压入文件
         out.close(); // 最后记得关闭文件
@@ -72,6 +84,8 @@ public class MahoutRunner implements ApplicationRunner{
     public List<OrderEntity> getOrders(){
         return orderService.queryOrders();
     }
+
+
 
     public void readUserTicketFileAndCreateRecommanderAndSaveToDataBase() throws IOException, TasteException {
         DataModel dataModel = new FileDataModel(new File("user_ticket.csv"));
