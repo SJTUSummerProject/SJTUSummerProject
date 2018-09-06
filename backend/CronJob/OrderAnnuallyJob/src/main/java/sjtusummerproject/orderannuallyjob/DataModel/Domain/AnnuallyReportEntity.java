@@ -1,11 +1,11 @@
-package com.example.orderdailyjob.DataModel.Domain;
+package sjtusummerproject.orderannuallyjob.DataModel.Domain;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="monthlyreport")
-public class MonthlyReportEntity {
+@Table(name="annuallyreport")
+public class AnnuallyReportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,8 +27,6 @@ public class MonthlyReportEntity {
 
     //报表记录年份
     private int year;
-    //报表记录月份
-    private int month;
 
     public Long getId() {
         return id;
@@ -100,13 +98,5 @@ public class MonthlyReportEntity {
 
     public void setYear(int year) {
         this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
     }
 }

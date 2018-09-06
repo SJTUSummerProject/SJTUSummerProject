@@ -1,8 +1,5 @@
-package com.example.orderdailyjob.Job;
+package sjtusummerproject.ordermonthlyjob.DataModel.Job;
 
-import com.example.orderdailyjob.DataModel.Dao.*;
-import com.example.orderdailyjob.DataModel.Domain.*;
-import org.apache.commons.collections.map.MultiKeyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,17 +7,21 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import sjtusummerproject.ordermonthlyjob.DataModel.Dao.MonthlyReportRepository;
+import sjtusummerproject.ordermonthlyjob.DataModel.Dao.OrderRepository;
+import sjtusummerproject.ordermonthlyjob.DataModel.Domain.ItemEntity;
+import sjtusummerproject.ordermonthlyjob.DataModel.Domain.MonthlyReportEntity;
+import sjtusummerproject.ordermonthlyjob.DataModel.Domain.OrderEntity;
+import sjtusummerproject.ordermonthlyjob.DataModel.Domain.TicketEntity;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.util.*;
 
 @Component
-public class AnnuallyJob {
+public class MonthlyJob {
     @Autowired
     OrderRepository orderRepository;
     @Autowired
-    AnnuallyReportRepository annuallyReportRepository;
+    MonthlyReportRepository monthlyReportRepository;
 
     RestTemplate restTemplate =new RestTemplate();
     @Value("${storage}")
@@ -28,71 +29,72 @@ public class AnnuallyJob {
     @Value("${ticket-service-url}")
     String ticketUrl;
     @Transactional
-    public void statisticsReportAnnually() {
+    public void statisticsReportMonthly() {
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        calendar.add(Calendar.YEAR, -1);
-        Date firstDayInYear = calendar.getTime();
-        List<OrderEntity> orderEntities = orderRepository.findAllByOrderTimeBetweenAndStatusLike(firstDayInYear,now,"待发货");
+        calendar.add(Calendar.MONTH, -1);
+        Date firstDayInMonth = calendar.getTime();
+        List<OrderEntity> orderEntities = orderRepository.findAllByOrderTimeBetweenAndStatusLike(firstDayInMonth,now,"待发货");
 
-        Map<Long, AnnuallyReportEntity> map = new HashMap<>();
+        Map<Long, MonthlyReportEntity> map = new HashMap<>();
         for (OrderEntity orderEntity : orderEntities) {
             Set<ItemEntity> itemEntities = orderEntity.getItems();
             for (ItemEntity itemEntity : itemEntities) {
                 Long ticketId = itemEntity.getTicketId();
                 if (map.containsKey(ticketId)) {
-                    AnnuallyReportEntity annuallyReportEntity = map.get(ticketId);
+                    MonthlyReportEntity monthlyReportEntity = map.get(ticketId);
                     //change the dailyEntity
-                    completeAnnuallyEntity(annuallyReportEntity,itemEntity);
+                    completeMonthlyEntity(monthlyReportEntity, itemEntity);
                 } else {
-                    AnnuallyReportEntity annuallyReportEntity = new AnnuallyReportEntity();
+                    MonthlyReportEntity monthlyReportEntity = new MonthlyReportEntity();
                     //complete the dailyEntity
-                    completeAnnuallyEntity(annuallyReportEntity,itemEntity);
-                    map.put(ticketId, annuallyReportEntity);
+                    completeMonthlyEntity(monthlyReportEntity, itemEntity);
+                    map.put(ticketId, monthlyReportEntity);
                 }
             }
         }
-        for (Map.Entry<Long, AnnuallyReportEntity> entry : map.entrySet()){
+        for (Map.Entry<Long, MonthlyReportEntity> entry : map.entrySet()){
             //System.out.println("here");
-            AnnuallyReportEntity annuallyReportEntity = entry.getValue();
+            MonthlyReportEntity monthlyReportEntity = entry.getValue();
             Long ticketId = entry.getKey();
-            calculateAnnuallyEntity(annuallyReportEntity,ticketId);
-            annuallyReportRepository.save(annuallyReportEntity);
+            calculateMonthlyEntity(monthlyReportEntity,ticketId);
+            monthlyReportRepository.save(monthlyReportEntity);
         }
     }
 
-    private void completeAnnuallyEntity(AnnuallyReportEntity annuallyReportEntity, ItemEntity itemEntity){
-        String priceAndAmount = annuallyReportEntity.getPriceAndAmount();
+    private void completeMonthlyEntity(MonthlyReportEntity monthlyReportEntity, ItemEntity itemEntity){
+        String priceAndAmount = monthlyReportEntity.getPriceAndAmount();
         if (priceAndAmount == null) priceAndAmount = "";
         StringBuilder sb = new StringBuilder(priceAndAmount);
         if (!priceAndAmount.isEmpty()) sb.append(':');
         sb.append(itemEntity.getPrice());sb.append(' ');sb.append(itemEntity.getNumber());
-        annuallyReportEntity.setPriceAndAmount(sb.toString());
+        monthlyReportEntity.setPriceAndAmount(sb.toString());
     }
 
-    private void calculateAnnuallyEntity(AnnuallyReportEntity annuallyReportEntity, Long ticketId){
+    private void calculateMonthlyEntity(MonthlyReportEntity monthlyReportEntity, Long ticketId){
         MultiValueMap<String, Long> multiValueMap = new LinkedMultiValueMap<>();
         multiValueMap.add("id",ticketId);
         String url = ticketUrl + ticketId;
         TicketEntity ticketEntity = restTemplate.getForObject(url, TicketEntity.class);
-        Map<Double, Long> map = parseJson(annuallyReportEntity.getPriceAndAmount());
+        Map<Double, Long> map = parseJson(monthlyReportEntity.getPriceAndAmount());
 
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        calendar.add(Calendar.YEAR,-1);
+        calendar.add(Calendar.MONTH,-1);
 
-        annuallyReportEntity.setTicketId(ticketEntity.getId());
-        annuallyReportEntity.setCity(ticketEntity.getCity());
-        annuallyReportEntity.setTitle(ticketEntity.getTitle());
-        annuallyReportEntity.setRate(calculateRate(map));
-        annuallyReportEntity.setTotalPrice(calculateTotalPrice(map));
-        annuallyReportEntity.setPriceAndAmount(calculateAmount(map));
-        annuallyReportEntity.setDate(now);
-        annuallyReportEntity.setYear(calendar.get(Calendar.YEAR));
+        monthlyReportEntity.setTicketId(ticketEntity.getId());
+        monthlyReportEntity.setTitle(ticketEntity.getTitle());
+        monthlyReportEntity.setCity(ticketEntity.getCity());
+        monthlyReportEntity.setDate(now);
+        monthlyReportEntity.setTotalPrice(calculateTotalPrice(map));
+        monthlyReportEntity.setRate(calculateRate(map));
+        monthlyReportEntity.setPriceAndAmount(calculateAmount(map));
+        monthlyReportEntity.setYear(calendar.get(Calendar.YEAR));
+        monthlyReportEntity.setMonth(calendar.get(Calendar.MONTH));
 
-        annuallyReportRepository.save(annuallyReportEntity);
+        monthlyReportRepository.save(monthlyReportEntity);
     }
 
     private Map<Double, Long> parseJson(String json){

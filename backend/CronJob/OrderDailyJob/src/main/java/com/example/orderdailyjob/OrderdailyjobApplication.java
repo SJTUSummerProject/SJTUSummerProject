@@ -13,9 +13,8 @@ public class OrderdailyjobApplication {
         SpringApplication.run(OrderdailyjobApplication.class, args);
     }
 
-
     @Bean
-    public CommandLineRunner ticketDailyJob(DailyJob dailyJob){
+    public CommandLineRunner orderDailyJob(DailyJob dailyJob){
         return (args) -> {
             dailyJob.statisticsReportDaily();
         };
