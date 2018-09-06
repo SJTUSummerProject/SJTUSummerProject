@@ -1,8 +1,5 @@
-package com.example.orderdailyjob.Job;
+package sjtusummerproject.orderannuallyjob.Job;
 
-import com.example.orderdailyjob.DataModel.Dao.*;
-import com.example.orderdailyjob.DataModel.Domain.*;
-import org.apache.commons.collections.map.MultiKeyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,17 +7,21 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import sjtusummerproject.orderannuallyjob.DataModel.Dao.AnnuallyReportRepository;
+import sjtusummerproject.orderannuallyjob.DataModel.Dao.OrderRepository;
+import sjtusummerproject.orderannuallyjob.DataModel.Domain.AnnuallyReportEntity;
+import sjtusummerproject.orderannuallyjob.DataModel.Domain.ItemEntity;
+import sjtusummerproject.orderannuallyjob.DataModel.Domain.OrderEntity;
+import sjtusummerproject.orderannuallyjob.DataModel.Domain.TicketEntity;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.util.*;
 
 @Component
-public class WeeklyJob {
+public class AnnuallyJob {
     @Autowired
     OrderRepository orderRepository;
     @Autowired
-    WeeklyReportRepository weeklyReportRepository;
+    AnnuallyReportRepository annuallyReportRepository;
 
     RestTemplate restTemplate =new RestTemplate();
     @Value("${storage}")
@@ -28,71 +29,71 @@ public class WeeklyJob {
     @Value("${ticket-service-url}")
     String ticketUrl;
     @Transactional
-    public void statisticsReportWeekly() {
+    public void statisticsReportAnnually() {
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        calendar.add(Calendar.DATE, -6);
-        Date mondayThisWeek = calendar.getTime();
-        List<OrderEntity> orderEntities = orderRepository.findAllByOrderTimeBetweenAndStatusLike(mondayThisWeek,now,"待发货");
+        calendar.add(Calendar.YEAR, -1);
+        Date firstDayInYear = calendar.getTime();
+        List<OrderEntity> orderEntities = orderRepository.findAllByOrderTimeBetweenAndStatusLike(firstDayInYear,now,"待发货");
 
-        Map<Long, WeeklyReportEntity> map = new HashMap<>();
+        Map<Long, AnnuallyReportEntity> map = new HashMap<>();
         for (OrderEntity orderEntity : orderEntities) {
             Set<ItemEntity> itemEntities = orderEntity.getItems();
             for (ItemEntity itemEntity : itemEntities) {
                 Long ticketId = itemEntity.getTicketId();
                 if (map.containsKey(ticketId)) {
-                    WeeklyReportEntity weeklyReportEntity = map.get(ticketId);
+                    AnnuallyReportEntity annuallyReportEntity = map.get(ticketId);
                     //change the dailyEntity
-                    completeWeeklyEntity(weeklyReportEntity, itemEntity);
+                    completeAnnuallyEntity(annuallyReportEntity,itemEntity);
                 } else {
-                    WeeklyReportEntity weeklyReportEntity = new WeeklyReportEntity();
+                    AnnuallyReportEntity annuallyReportEntity = new AnnuallyReportEntity();
                     //complete the dailyEntity
-                    completeWeeklyEntity(weeklyReportEntity, itemEntity);
-                    map.put(ticketId, weeklyReportEntity);
+                    completeAnnuallyEntity(annuallyReportEntity,itemEntity);
+                    map.put(ticketId, annuallyReportEntity);
                 }
             }
         }
-        for (Map.Entry<Long, WeeklyReportEntity> entry : map.entrySet()){
+        for (Map.Entry<Long, AnnuallyReportEntity> entry : map.entrySet()){
             //System.out.println("here");
-            WeeklyReportEntity weeklyReportEntity = entry.getValue();
+            AnnuallyReportEntity annuallyReportEntity = entry.getValue();
             Long ticketId = entry.getKey();
-            calculateWeeklyEntity(weeklyReportEntity,ticketId);
-            weeklyReportRepository.save(weeklyReportEntity);
+            calculateAnnuallyEntity(annuallyReportEntity,ticketId);
+            annuallyReportRepository.save(annuallyReportEntity);
         }
     }
 
-    private void completeWeeklyEntity(WeeklyReportEntity weeklyReportEntity, ItemEntity itemEntity){
-        String priceAndAmount = weeklyReportEntity.getPriceAndAmount();
+    private void completeAnnuallyEntity(AnnuallyReportEntity annuallyReportEntity, ItemEntity itemEntity){
+        String priceAndAmount = annuallyReportEntity.getPriceAndAmount();
         if (priceAndAmount == null) priceAndAmount = "";
         StringBuilder sb = new StringBuilder(priceAndAmount);
         if (!priceAndAmount.isEmpty()) sb.append(':');
         sb.append(itemEntity.getPrice());sb.append(' ');sb.append(itemEntity.getNumber());
-        weeklyReportEntity.setPriceAndAmount(sb.toString());
+        annuallyReportEntity.setPriceAndAmount(sb.toString());
     }
 
-    private void calculateWeeklyEntity(WeeklyReportEntity weeklyReportEntity, Long ticketId){
+    private void calculateAnnuallyEntity(AnnuallyReportEntity annuallyReportEntity, Long ticketId){
         MultiValueMap<String, Long> multiValueMap = new LinkedMultiValueMap<>();
         multiValueMap.add("id",ticketId);
         String url = ticketUrl + ticketId;
         TicketEntity ticketEntity = restTemplate.getForObject(url, TicketEntity.class);
-        Map<Double, Long> map = parseJson(weeklyReportEntity.getPriceAndAmount());
+        Map<Double, Long> map = parseJson(annuallyReportEntity.getPriceAndAmount());
 
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        weeklyReportEntity.setTicketId(ticketEntity.getId());
-        weeklyReportEntity.setTitle(ticketEntity.getTitle());
-        weeklyReportEntity.setCity(ticketEntity.getCity());
-        weeklyReportEntity.setDate(now);
-        weeklyReportEntity.setTotalPrice(calculateTotalPrice(map));
-        weeklyReportEntity.setRate(calculateRate(map));
-        weeklyReportEntity.setPriceAndAmount(calculateAmount(map));
-        weeklyReportEntity.setYear(calendar.get(Calendar.YEAR));
-        weeklyReportEntity.setMonth(calendar.get(Calendar.MONTH));
-        weeklyReportEntity.setWeek(calendar.get(Calendar.WEEK_OF_MONTH));
+        calendar.add(Calendar.YEAR,-1);
 
-        weeklyReportRepository.save(weeklyReportEntity);
+        annuallyReportEntity.setTicketId(ticketEntity.getId());
+        annuallyReportEntity.setCity(ticketEntity.getCity());
+        annuallyReportEntity.setTitle(ticketEntity.getTitle());
+        annuallyReportEntity.setRate(calculateRate(map));
+        annuallyReportEntity.setTotalPrice(calculateTotalPrice(map));
+        annuallyReportEntity.setPriceAndAmount(calculateAmount(map));
+        annuallyReportEntity.setDate(now);
+        annuallyReportEntity.setYear(calendar.get(Calendar.YEAR));
+
+        annuallyReportRepository.save(annuallyReportEntity);
     }
 
     private Map<Double, Long> parseJson(String json){

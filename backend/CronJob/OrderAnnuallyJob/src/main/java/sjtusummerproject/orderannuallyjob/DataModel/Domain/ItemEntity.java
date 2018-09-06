@@ -1,4 +1,4 @@
-package com.example.orderdailyjob.DataModel.Domain;
+package sjtusummerproject.orderannuallyjob.DataModel.Domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,7 +30,7 @@ public class ItemEntity  {
     String status;
 
     /* 所属订单*/
-     @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)//可选属性optional=false,表示orderEntity不能为空
+     @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH},optional=false)//可选属性optional=false,表示orderEntity不能为空
      @JoinColumn(name="order_id")//设置在item表中的关联字段(外键)
      @JsonIgnore
      private OrderEntity orderEntity;

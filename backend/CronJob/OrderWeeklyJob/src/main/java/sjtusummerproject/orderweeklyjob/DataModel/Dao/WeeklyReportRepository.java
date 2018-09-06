@@ -1,9 +1,9 @@
-package com.example.orderdailyjob.DataModel.Dao;
+package sjtusummerproject.orderweeklyjob.DataModel.Dao;
 
-import com.example.orderdailyjob.DataModel.Domain.WeeklyReportEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import sjtusummerproject.orderweeklyjob.DataModel.Domain.WeeklyReportEntity;
 
 public interface WeeklyReportRepository extends CrudRepository<WeeklyReportEntity,Long>{
     public WeeklyReportEntity queryByTicketIdAndYearAndMonthAndWeek(Long ticketid, int year, int month, int week);
