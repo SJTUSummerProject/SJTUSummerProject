@@ -1,35 +1,43 @@
 package com.mahoutjdbcmicroservice.DataModel.Domain;
 
-
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
+@Table(name = "orders")
 public class OrderEntity implements Serializable{
-    private Long orderId;
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
 
     private Long userId;
     private String receiver;
     private String phone;
     private String address;
     /*
-     * 取消中 - 取消订单
-     * 已取消 - 取消订单
-     * 退款中 - 申请退款
-     * 已退款 - 申请退款
-     * 待付款
-     * 待发货 - attention：没有 "已付款" 这个状态，付款之后就直接变成待发货的状态
-     * 已发货
-     * 已过期
-     * 已删除
-     * 已发货
-     * 已签收
-     * */
+    * 取消中 - 取消订单
+    * 已取消 - 取消订单
+    * 退款中 - 申请退款
+    * 已退款 - 申请退款
+    * 待付款
+    * 待发货 - attention：没有 "已付款" 这个状态，付款之后就直接变成待发货的状态
+    * 已发货
+    * 已过期
+    * 已删除
+    * 已发货
+    * 已签收
+    * */
     private String status;
 
     /* 下订单的具体时间 */
+    @Temporal(TemporalType.DATE)
     private Date orderTime;
 
     /*拥有的票品项*/
+    @OneToMany(mappedBy="orderEntity",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     private Set<ItemEntity> items = new HashSet<>();
     //拥有mappedBy注解的实体类为关系被维护端
 
@@ -63,15 +71,6 @@ public class OrderEntity implements Serializable{
         this.items = items;
     }
 
-    public Long getOrderId() {
-
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
     public Long getUserId() {
         return userId;
     }
@@ -80,12 +79,12 @@ public class OrderEntity implements Serializable{
         this.userId = userId;
     }
 
-    public Long getOrderid() {
-        return orderId;
+    public Long getId() {
+        return id;
     }
 
-    public void setOrderid(Long orderid) {
-        this.orderId = orderid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getReceiver() {
@@ -112,4 +111,3 @@ public class OrderEntity implements Serializable{
         this.address = address;
     }
 }
-

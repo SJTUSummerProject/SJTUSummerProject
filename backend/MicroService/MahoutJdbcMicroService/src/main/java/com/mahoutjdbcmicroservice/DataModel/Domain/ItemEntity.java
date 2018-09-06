@@ -1,9 +1,16 @@
 package com.mahoutjdbcmicroservice.DataModel.Domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "item")
 public class ItemEntity  {
-    Long itemId;
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    Long id;
 
     Long ticketId;
     /* 具体的price */
@@ -24,14 +31,17 @@ public class ItemEntity  {
     String status;
 
     /* 所属订单*/
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)//可选属性optional=false,表示orderEntity不能为空
+    @JoinColumn(name="order_id")//设置在item表中的关联字段(外键)
+    @JsonIgnore
     private OrderEntity orderEntity;
 
-    public Long getItemId() {
-        return itemId;
+    public Long getId() {
+        return id;
     }
 
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getTicketId() {
