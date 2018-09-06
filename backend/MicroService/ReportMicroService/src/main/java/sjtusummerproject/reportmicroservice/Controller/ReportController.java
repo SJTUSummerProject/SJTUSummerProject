@@ -83,7 +83,7 @@ public class ReportController {
         return reportService.queryWeeklyByCityAndWeek(city,year,month,week,createPageable(request));
     }
 
-    @RequestMapping(value = "/MonthlyQueryByTicketidAndWeek")
+    @RequestMapping(value = "/MonthlyQueryByTicketidAndMonth")
     public MonthlyReportEntity queryMonthlyByTicketidAndWeek(HttpServletRequest request,
                                                               HttpServletResponse response,
                                                               @RequestParam(name = "year")int year,
@@ -94,7 +94,7 @@ public class ReportController {
         return reportService.queryMonthlyByTicketidAndMonth(ticketid, year, month);
     }
 
-    @RequestMapping(value = "/MonthlyQueryByCityAndWeek")
+    @RequestMapping(value = "/MonthlyQueryByCityAndMonth")
     public Page<MonthlyReportEntity> queryMonthlyByCityAndMonth(HttpServletRequest request,
                                                              HttpServletResponse response,
                                                              @RequestParam(name = "year")int year,
