@@ -32,6 +32,10 @@ public class ReceiveReplyCommentMessageComponent {
     public void consumeMessage(MultiValueMap<String, Object> message) {
         String token = (String)message.getFirst("token");
         Long targetTicketId = (Long)message.getFirst("targetTicketId");
+        if (targetTicketId == null){
+            System.out.println("wrong");
+            return;
+        }
         String content = (String)message.getFirst("content");
 
         UserEntity userEntity = authService.callAuthService(token);
