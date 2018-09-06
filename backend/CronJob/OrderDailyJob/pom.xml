@@ -56,6 +56,11 @@
             <artifactId>spring-web</artifactId>
             <version>4.3.16.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>3.5</version>
+        </dependency>
     </dependencies>
 
     <build>
