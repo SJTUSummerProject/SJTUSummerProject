@@ -21,7 +21,7 @@ public class TicketController {
     private int PageSize;
     @Value("${ticket.page.offset}")
     private int PageOffset;
-    @Value("${{nearestTicketNumber}}")
+    @Value("${nearestTicketNumber}")
     private int nearestTicketNumber;
 
     @Autowired

@@ -1,4 +1,4 @@
-package com.mahoutjdbcmicroservice.Controller;
+/*package com.mahoutjdbcmicroservice.Controller;
 
 import com.mahoutjdbcmicroservice.Service.UserRecommandService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,3 +24,4 @@ public class RecommandController {
         return userRecommandService.queryTicketByUserid(userid);
     }
 }
+*/

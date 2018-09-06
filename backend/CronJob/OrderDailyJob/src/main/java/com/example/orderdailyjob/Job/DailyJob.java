@@ -32,7 +32,7 @@ public class DailyJob {
     @Transactional
     public void statisticsReportDaily() {
         Date now = new Date();
-        List<OrderEntity> orderEntities = orderRepository.findAllByOrOrderTimeEqualsAndStatusLike(now, "待发货");
+        List<OrderEntity> orderEntities = orderRepository.findAllByOrderTimeEqualsAndStatusLike(now, "待发货");
         //System.out.println(orderEntities.get(0).getId());
         Map<Long, DailyReportEntity> map = new HashMap<>();
         for (OrderEntity orderEntity : orderEntities) {

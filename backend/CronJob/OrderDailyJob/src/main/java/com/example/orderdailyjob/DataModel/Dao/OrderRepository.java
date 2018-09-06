@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends CrudRepository<OrderEntity, Long> {
-    public List<OrderEntity> findAllByOrOrderTimeEqualsAndStatusLike(Date date, String status);
+    public List<OrderEntity> findAllByOrderTimeEqualsAndStatusLike(Date date, String status);
 }

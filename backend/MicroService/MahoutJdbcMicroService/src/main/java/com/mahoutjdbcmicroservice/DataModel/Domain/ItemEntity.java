@@ -1,6 +1,5 @@
 package com.mahoutjdbcmicroservice.DataModel.Domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ItemEntity  {
     Long itemId;
