@@ -30,6 +30,11 @@ public class ReportServiceImpl implements ReportService {
     AnnuallyReportRepository annuallyReportRepository;
 
     @Override
+    public Page<DailyReportEntity> queryDailyReportAll(Pageable pageable) {
+        return dailyReportRepository.queryAll(pageable);
+    }
+
+    @Override
     public DailyReportEntity queryDailyByTicketidAndDate(Long ticketid, String dateInString) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
         Date date= sdf.parse(dateInString);
@@ -44,6 +49,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public Page<WeeklyReportEntity> queryWeeklyReportAll(Pageable pageable) {
+        return weeklyReportRepository.queryAll(pageable);
+    }
+
+    @Override
     public WeeklyReportEntity queryWeeklyByTicketidAndWeek(Long ticketid, int year, int month, int week) {
         return weeklyReportRepository.queryByTicketIdAndYearAndMonthAndWeek(ticketid,year,month,week);
     }
@@ -54,6 +64,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public Page<MonthlyReportEntity> queryMonthlyReportAll(Pageable pageable) {
+        return monthlyReportRepository.queryAll(pageable);
+    }
+
+    @Override
     public MonthlyReportEntity queryMonthlyByTicketidAndMonth(Long ticketid, int year, int month) {
         return monthlyReportRepository.queryByTicketIdAndYearAndMonth(ticketid, year, month);
     }
@@ -61,6 +76,11 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public Page<MonthlyReportEntity> queryMonthlyByCityAndMonth(String city, int year, int month, Pageable pageable) {
         return monthlyReportRepository.queryByCityAndYearAndMonth(city,year,month,pageable);
+    }
+
+    @Override
+    public Page<AnnuallyReportEntity> queryAnnuallyReportAll(Pageable pageable) {
+        return annuallyReportRepository.queryAll(pageable);
     }
 
     @Override

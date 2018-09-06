@@ -38,6 +38,14 @@ public class ReportController {
     @Autowired
     ReportService reportService;
 
+    @RequestMapping(value = "/DailyQueryAll")
+    public Page<DailyReportEntity> queryDailyAll(HttpServletRequest request,
+                                                         HttpServletResponse response
+    ) throws ParseException {
+        if(identifyAuth(request,response)!=2) return null;
+        return reportService.queryDailyReportAll(createPageable(request));
+    }
+
     @RequestMapping(value = "/DailyQueryByTicketidAndDate")
     public DailyReportEntity queryDailyByTicketidAndDate(HttpServletRequest request,
                                                          HttpServletResponse response,
@@ -57,6 +65,14 @@ public class ReportController {
     ) throws ParseException {
         if(identifyAuth(request,response)!=2) return null;
         return reportService.queryDailyByCityAndDate(city,date,createPageable(request));
+    }
+
+    @RequestMapping(value = "/WeeklyQueryAll")
+    public Page<WeeklyReportEntity> queryWeeklyAll(HttpServletRequest request,
+                                                 HttpServletResponse response
+    ) throws ParseException {
+        if(identifyAuth(request,response)!=2) return null;
+        return reportService.queryWeeklyReportAll(createPageable(request));
     }
 
     @RequestMapping(value = "/WeeklyQueryByTicketidAndWeek")
@@ -83,6 +99,14 @@ public class ReportController {
         return reportService.queryWeeklyByCityAndWeek(city,year,month,week,createPageable(request));
     }
 
+    @RequestMapping(value = "/MonthlyQueryAll")
+    public Page<MonthlyReportEntity> queryMonthlyAll(HttpServletRequest request,
+                                                   HttpServletResponse response
+    ) throws ParseException {
+        if(identifyAuth(request,response)!=2) return null;
+        return reportService.queryMonthlyReportAll(createPageable(request));
+    }
+
     @RequestMapping(value = "/MonthlyQueryByTicketidAndMonth")
     public MonthlyReportEntity queryMonthlyByTicketidAndWeek(HttpServletRequest request,
                                                               HttpServletResponse response,
@@ -103,6 +127,14 @@ public class ReportController {
     ) throws ParseException {
         if(identifyAuth(request,response)!=2) return null;
         return reportService.queryMonthlyByCityAndMonth(city,year,month,createPageable(request));
+    }
+
+    @RequestMapping(value = "/AnnuallyQueryAll")
+    public Page<AnnuallyReportEntity> queryAnnuallyAll(HttpServletRequest request,
+                                                     HttpServletResponse response
+    ) throws ParseException {
+        if(identifyAuth(request,response)!=2) return null;
+        return reportService.queryAnnuallyReportAll(createPageable(request));
     }
 
     @RequestMapping(value = "/AnuuallyQueryByTicketidAndYear")

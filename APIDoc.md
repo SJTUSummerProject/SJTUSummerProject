@@ -515,7 +515,8 @@
         
         ！！！！！！！！！！！！
 
-        注意：本微服务中所有的Date变量，在前端传入后端时，其都是String类型，并且都是XXXX-XX-XX（年-月-日格式）
+        注意：1.本微服务中所有的Date变量，在前端传入后端时，其都是String类型，并且都是XXXX-XX-XX（年-月-日格式）
+            2.本微服务每个page的大小为16，也就是说有16个项
         ### response头中errorNum说明
             数字            说明
             0               成功
@@ -568,6 +569,13 @@
             date            年报表生成日期
             title           票品名
             year            年报表记录年份
+        * ### URL：/Manager/DailyQueryAll
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（日报表分页---Page<日报表>）
         * ### URL：/Manager/DailyQueryByTicketidAndDate
             #### 传入参数
             变量名|类型|说明
@@ -585,6 +593,13 @@
             date | String | 要查询的日期（格式必须为 xxxx-xx-xx）
             pagenumber | int | 分页的页数（从1开始计数）
             #### 返回参数（日报表分页---Page<日报表>）
+        * ### URL：/Manager/WeeklyQueryAll
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（周报表分页---Page<周报表>）
         * ### URL：/Manager/WeeklyQueryByTicketidAndWeek
             #### 传入参数
             变量名|类型|说明
@@ -606,6 +621,13 @@
             week | int | 要查询那一周对应的周数
             pagenumber | int | 分页的页数（从1开始计数）
             #### 返回参数（周报表分页---Page<周报表>）
+        * ### URL：/Manager/MonthlyQueryAll
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（月报表分页---Page<月报表>）
         * ### URL：/Manager/MonthlyQueryByTicketidAndMonth
             #### 传入参数
             变量名|类型|说明
@@ -625,6 +647,13 @@
             month | int | 要查询那一月对应的月数
             pagenumber | int | 分页的页数（从1开始计数）
             #### 返回参数（月报表分页---Page<月报表>）
+        * ### URL：/Manager/AnnuallyQueryAll
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（年报表分页---Page<年报表>）
         * ### URL：/Manager/AnuuallyQueryByTicketidAndYear
             #### 传入参数
             变量名|类型|说明
