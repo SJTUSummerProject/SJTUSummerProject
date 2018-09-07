@@ -31,65 +31,65 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Page<DailyReportEntity> queryDailyReportAll(Pageable pageable) {
-        return dailyReportRepository.queryAll(pageable);
+        return dailyReportRepository.findAll(pageable);
     }
 
     @Override
     public DailyReportEntity queryDailyByTicketidAndDate(Long ticketid, String dateInString) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
         Date date= sdf.parse(dateInString);
-        return dailyReportRepository.queryByTicketIdAndDate(ticketid,date);
+        return dailyReportRepository.findAllByTicketIdAndDate(ticketid,date);
     }
 
     @Override
     public Page<DailyReportEntity> queryDailyByCityAndDate(String city, String dateInString, Pageable pageable) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
         Date date= sdf.parse(dateInString);
-        return dailyReportRepository.queryByCityAndDate(city,date,pageable);
+        return dailyReportRepository.findAllByCityAndDate(city,date,pageable);
     }
 
     @Override
     public Page<WeeklyReportEntity> queryWeeklyReportAll(Pageable pageable) {
-        return weeklyReportRepository.queryAll(pageable);
+        return weeklyReportRepository.findAll(pageable);
     }
 
     @Override
     public WeeklyReportEntity queryWeeklyByTicketidAndWeek(Long ticketid, int year, int month, int week) {
-        return weeklyReportRepository.queryByTicketIdAndYearAndMonthAndWeek(ticketid,year,month,week);
+        return weeklyReportRepository.findAllByTicketIdAndYearAndMonthAndWeek(ticketid,year,month,week);
     }
 
     @Override
     public Page<WeeklyReportEntity> queryWeeklyByCityAndWeek(String city, int year, int month, int week, Pageable pageable) {
-        return weeklyReportRepository.queryByCityAndYearAndMonthAndWeek(city, year, month, week, pageable);
+        return weeklyReportRepository.findAllByCityAndYearAndMonthAndWeek(city, year, month, week, pageable);
     }
 
     @Override
     public Page<MonthlyReportEntity> queryMonthlyReportAll(Pageable pageable) {
-        return monthlyReportRepository.queryAll(pageable);
+        return monthlyReportRepository.findAll(pageable);
     }
 
     @Override
     public MonthlyReportEntity queryMonthlyByTicketidAndMonth(Long ticketid, int year, int month) {
-        return monthlyReportRepository.queryByTicketIdAndYearAndMonth(ticketid, year, month);
+        return monthlyReportRepository.findAllByTicketIdAndYearAndMonth(ticketid, year, month);
     }
 
     @Override
     public Page<MonthlyReportEntity> queryMonthlyByCityAndMonth(String city, int year, int month, Pageable pageable) {
-        return monthlyReportRepository.queryByCityAndYearAndMonth(city,year,month,pageable);
+        return monthlyReportRepository.findAllByCityAndYearAndMonth(city,year,month,pageable);
     }
 
     @Override
     public Page<AnnuallyReportEntity> queryAnnuallyReportAll(Pageable pageable) {
-        return annuallyReportRepository.queryAll(pageable);
+        return annuallyReportRepository.findAll(pageable);
     }
 
     @Override
     public AnnuallyReportEntity queryAnnuallyByTicketidAndYear(Long ticketid, int year) {
-        return annuallyReportRepository.queryByTicketIdAndYear(ticketid, year);
+        return annuallyReportRepository.findAllByTicketIdAndYear(ticketid, year);
     }
 
     @Override
     public Page<AnnuallyReportEntity> queryAnnuallyByCityAndYear(String city, int year, Pageable pageable) {
-        return annuallyReportRepository.queryByCityAndYear(city,year,pageable);
+        return annuallyReportRepository.findAllByCityAndYear(city,year,pageable);
     }
 }

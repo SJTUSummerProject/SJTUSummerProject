@@ -127,6 +127,8 @@
     * ### URL： GET /Ticket/QueryByCityAndDateRangePage
     * ### URL： GET /Ticket/QueryByCityAndPriceRangePage
     * ### URL： GET /Ticket/QueryByCityAndPriceRangeAndDateRangePage
+    * ### URL:  GET /Ticket/QueryTopSixTicket
+        ##### 返回参数（包含六张销售量最高的票品所有信息）
 
 
 
@@ -509,8 +511,16 @@
             变量名|类型|说明
             -|-|-       
             token | String | 用户标识
+    * ##RecommendMicroservice port：30013
+        说明：如果调用该api后返回的票品数量少于6张，则再次调用ticket-microservice的/Ticket/QueryTopSixTicket
+        * ### URL: /Recommend/QueryRecommendTicket
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识
+            #### 返回参数（一个带有票品id的数组，通过调用ticket的/Ticket/QueryByBatchIds来获得具体数组）
             
-    * ## ReportMicroService port:空着
+    * ## ReportMicroService port:30014
         说明：管理员需要浏览的报表。报表分为日报表、周报表、月报表、年报表。
         
         ！！！！！！！！！！！！
