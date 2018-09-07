@@ -510,3 +510,164 @@
             -|-|-       
             token | String | 用户标识
             
+    * ## ReportMicroService port:空着
+        说明：管理员需要浏览的报表。报表分为日报表、周报表、月报表、年报表。
+        
+        ！！！！！！！！！！！！
+
+        注意：1.本微服务中所有的Date变量，在前端传入后端时，其都是String类型，并且都是XXXX-XX-XX（年-月-日格式）
+            2.本微服务每个page的大小为16，也就是说有16个项
+        ### response头中errorNum说明
+            数字            说明
+            0               成功
+            1               尚未登录
+            2               身份不对应
+            3               账户被冻结
+        ### 日报表
+            变量名          说明
+            id              日报表唯一标识符
+            ticketId        日报表对应的票品id
+            priceAndAmount  此票品对应的不同价格的票的销售情况（格式 “price1 amount1:price2 amount 2:···”）
+            totalPrice      总利润
+            rate            上座率
+            city            对应城市
+            date            日报表生成日期
+            title           票品名
+        ### 周报表
+            变量名          说明
+            id              周报表唯一标识符
+            ticketId        周报表对应的票品id
+            priceAndAmount  此票品对应的不同价格的票的销售情况（格式 “price1 amount1:price2 amount 2:···”）
+            totalPrice      总利润
+            rate            上座率
+            city            对应城市
+            date            周报表生成日期
+            title           票品名
+            year            周报表记录年份
+            month           周报表记录月份
+            week            周报表记录周数
+        ### 月报表
+            变量名          说明
+            id              月报表唯一标识符
+            ticketId        月报表对应的票品id
+            priceAndAmount  此票品对应的不同价格的票的销售情况（格式 “price1 amount1:price2 amount 2:···”）
+            totalPrice      总利润
+            rate            上座率
+            city            对应城市
+            date            月报表生成日期
+            title           票品名
+            year            月报表记录年份
+            month           月报表记录月份
+        ### 年报表
+            变量名          说明
+            id              年报表唯一标识符
+            ticketId        年报表对应的票品id
+            priceAndAmount  此票品对应的不同价格的票的销售情况（格式 “price1 amount1:price2 amount 2:···”）
+            totalPrice      总利润
+            rate            上座率
+            city            对应城市
+            date            年报表生成日期
+            title           票品名
+            year            年报表记录年份
+        * ### URL：/Manager/DailyQueryAll
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（日报表分页---Page<日报表>）
+        * ### URL：/Manager/DailyQueryByTicketidAndDate
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            ticketid | Long | 查询的票品id
+            date | String | 要查询的日期（格式必须为 xxxx-xx-xx）
+            #### 返回参数（日报表）
+        * ### URL：/Manager/DailyQueryByCityAndDate
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            city | String | 要查询的城市
+            date | String | 要查询的日期（格式必须为 xxxx-xx-xx）
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（日报表分页---Page<日报表>）
+        * ### URL：/Manager/WeeklyQueryAll
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（周报表分页---Page<周报表>）
+        * ### URL：/Manager/WeeklyQueryByTicketidAndWeek
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            ticketid | Long | 查询的票品id
+            year | int | 要查询那一周对应的年份
+            month | int | 要查询那一周对应的月数
+            week | int | 要查询那一周对应的周数
+            #### 返回参数（周报表）
+        * ### URL：/Manager/WeeklyQueryByCityAndWeek
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            city | String | 要查询的城市
+            year | int | 要查询那一周对应的年份
+            month | int | 要查询那一周对应的月数
+            week | int | 要查询那一周对应的周数
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（周报表分页---Page<周报表>）
+        * ### URL：/Manager/MonthlyQueryAll
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（月报表分页---Page<月报表>）
+        * ### URL：/Manager/MonthlyQueryByTicketidAndMonth
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            ticketid | Long | 查询的票品id
+            year | int | 要查询那一月对应的年份
+            month | int | 要查询那一月对应的月数
+            #### 返回参数（月报表）
+        * ### URL：/Manager/MonthlyQueryByCityAndMonth
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            city | String | 要查询的城市
+            year | int | 要查询那一月对应的年份
+            month | int | 要查询那一月对应的月数
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（月报表分页---Page<月报表>）
+        * ### URL：/Manager/AnnuallyQueryAll
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（年报表分页---Page<年报表>）
+        * ### URL：/Manager/AnuuallyQueryByTicketidAndYear
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            ticketid | Long | 查询的票品id
+            year | int | 要查询那一年对应的年份
+            #### 返回参数（年报表）
+        * ### URL：/Manager/AnuuallyQueryByCityAndYear
+            #### 传入参数
+            变量名|类型|说明
+            -|-|-       
+            token | String | 用户标识（一定要是manager才行）
+            city | String | 要查询的城市
+            year | int | 要查询那一月对应的年份
+            pagenumber | int | 分页的页数（从1开始计数）
+            #### 返回参数（年报表分页---Page<年报表>）

@@ -10,12 +10,16 @@ import sjtusummerproject.reportmicroservice.DataModel.Domain.WeeklyReportEntity;
 import java.text.ParseException;
 
 public interface ReportService {
+    public Page<DailyReportEntity> queryDailyReportAll(Pageable pageable);
     public DailyReportEntity queryDailyByTicketidAndDate(Long ticketid, String dateInString) throws ParseException;
     public Page<DailyReportEntity> queryDailyByCityAndDate(String city, String dateInString, Pageable pageable) throws ParseException;
+    public Page<WeeklyReportEntity> queryWeeklyReportAll(Pageable pageable);
     public WeeklyReportEntity queryWeeklyByTicketidAndWeek(Long ticketid, int year, int month, int week);
     public Page<WeeklyReportEntity> queryWeeklyByCityAndWeek(String city, int year, int month, int week, Pageable pageable);
+    public Page<MonthlyReportEntity> queryMonthlyReportAll(Pageable pageable);
     public MonthlyReportEntity queryMonthlyByTicketidAndMonth(Long ticketid, int year, int month);
     public Page<MonthlyReportEntity> queryMonthlyByCityAndMonth(String city, int year, int month, Pageable pageable);
+    public Page<AnnuallyReportEntity> queryAnnuallyReportAll(Pageable pageable);
     public AnnuallyReportEntity queryAnnuallyByTicketidAndYear(Long ticketid, int year);
     public Page<AnnuallyReportEntity> queryAnnuallyByCityAndYear(String city, int year, Pageable pageable);
 }
