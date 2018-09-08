@@ -3,6 +3,10 @@ package sjtusummerproject.usermicroservice.Service.ServiceImpl;
 import org.apache.catalina.User;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import sjtusummerproject.usermicroservice.DataModel.Dao.UserRepository;
 import sjtusummerproject.usermicroservice.DataModel.Domain.UserEntity;
 import sjtusummerproject.usermicroservice.Service.ManageUserService;
@@ -72,6 +76,12 @@ public class ManageUserServiceImplTest extends UsermicroserviceApplicationTests 
     }
 
     @Test
+    public void xupdateUserPasswordOptionByid() {
+        UserEntity userEntity = manageUserService.UpdateUserPasswordOptionById(1L, "1111");
+        assertEquals("1111", userEntity.getPassword());
+    }
+
+    @Test
     public void updateUserPasswordOptionFail() {
         UserEntity userEntity = manageUserService.UpdateUserPasswordOption("pzyyyy", "1111");
         assertNull(userEntity);
@@ -84,9 +94,29 @@ public class ManageUserServiceImplTest extends UsermicroserviceApplicationTests 
     }
 
     @Test
+    public void updateUserAuthorityOptionById() {
+        UserEntity userEntity = manageUserService.UpdateUserAuthorityOptionById(1l, "manager");
+        assertEquals("manager", userEntity.getAuthority());
+    }
+
+    @Test
+    public void yupdateUserStatusOptionByid() {
+        UserEntity userEntity = manageUserService.UpdateUserStatusOptionById(1L, "123");
+        assertEquals("123", userEntity.getStatus());
+    }
+
+    @Test
     public void updateUserAuthorityOptionFail() {
         UserEntity userEntity = manageUserService.UpdateUserAuthorityOption("pzyyyy", "manager");
         assertNull(userEntity);
+    }
+
+    @Test
+    public void queryByBatch(){
+
+        Page<UserEntity> userEntities = manageUserService.QueryBatch(new PageRequest(0 , 10,new Sort(Sort.Direction.DESC, "id")));
+        assertEquals(1, userEntities.getNumberOfElements());
+
     }
 
     @Test

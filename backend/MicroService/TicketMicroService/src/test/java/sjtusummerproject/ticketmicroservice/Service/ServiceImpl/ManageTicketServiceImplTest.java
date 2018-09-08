@@ -10,6 +10,7 @@ import sjtusummerproject.ticketmicroservice.DataModel.Domain.TicketEntity;
 import sjtusummerproject.ticketmicroservice.Service.ManageTicketService;
 import sjtusummerproject.ticketmicroservice.TicketmicroserviceApplicationTests;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,12 +20,13 @@ import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ManageTicketServiceImplTest extends TicketmicroserviceApplicationTests {
 
+
     @Test
     public void aqueryTicketPageOptionShow() {
         List<TicketEntity> tickets = generateTickets();
-        for (TicketEntity t: tickets){
-            ticketRepository.save(t);
-        }
+        ticketRepository.save(tickets.get(0));
+        ticketRepository.save(tickets.get(1));
+        assertEquals(2, tickets.size());
         Page<TicketEntity> ticketEntities = manageTicketService.QueryTicketPageOptionShow(getPagable(1));
         assertEquals(2, ticketEntities.getNumberOfElements());
         assertEquals("1",ticketEntities.getContent().get(0).getCity());
@@ -110,5 +112,24 @@ public class ManageTicketServiceImplTest extends TicketmicroserviceApplicationTe
     public void changeStringToDateFail(){
         Date result = manageTicketService.ChangeStringToDate("1111111");
         assertNull(result);
+    }
+    @Test
+    public void zaddTicket(){
+        TicketEntity t1 = manageTicketService.add("1","2018-01-01","2018-05-25","1","1","1","1",null,"1",100l,100.0,200.0);
+        assertEquals("1", t1.getType());
+    }
+
+    @Test
+    public void zupdateTicket(){
+        TicketEntity t1 = manageTicketService.update(3l,"1","2018-01-01","2018-05-25","1","1","1","1",null,"1",100l,100.0,200.0);
+        assertEquals("1", t1.getType());
+    }
+
+    @Test
+    public void zzdeleteTicket(){
+        List<Long> tickets = new ArrayList<>();
+        tickets.add(1l);
+        manageTicketService.delete(tickets);
+        assertNull(ticketRepository.findById(1l));
     }
 }

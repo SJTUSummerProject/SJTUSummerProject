@@ -60,16 +60,17 @@ public class DailyJob {
         }
     }
 
-    private void completeDailyEntity(DailyReportEntity dailyReportEntity, ItemEntity itemEntity){
+    public DailyReportEntity completeDailyEntity(DailyReportEntity dailyReportEntity, ItemEntity itemEntity){
         String priceAndAmount = dailyReportEntity.getPriceAndAmount();
         if (priceAndAmount == null) priceAndAmount = "";
         StringBuilder sb = new StringBuilder(priceAndAmount);
         if (!priceAndAmount.isEmpty()) sb.append(':');
         sb.append(itemEntity.getPrice());sb.append(' ');sb.append(itemEntity.getNumber());
         dailyReportEntity.setPriceAndAmount(sb.toString());
+        return dailyReportEntity;
     }
 
-    private void calculateDailyEntity(DailyReportEntity dailyReportEntity, Long ticketId){
+    public DailyReportEntity calculateDailyEntity(DailyReportEntity dailyReportEntity, Long ticketId){
         MultiValueMap<String, Long> multiValueMap = new LinkedMultiValueMap<>();
         multiValueMap.add("id",ticketId);
         String url = ticketUrl + ticketId;
@@ -82,10 +83,10 @@ public class DailyJob {
         dailyReportEntity.setTotalPrice(calculateTotalPrice(map));
         dailyReportEntity.setRate(calculateRate(map));
         dailyReportEntity.setPriceAndAmount(calculateAmount(map));
-        dailyReportRepository.save(dailyReportEntity);
+        return dailyReportRepository.save(dailyReportEntity);
     }
 
-    private Map<Double, Long> parseJson(String json){
+    public Map<Double, Long> parseJson(String json){
         Map<Double, Long> result = new HashMap<>();
         String kv[] = json.split(":");
         for (String s : kv){
@@ -101,7 +102,7 @@ public class DailyJob {
         return result;
     }
 
-    private Double calculateTotalPrice(Map<Double, Long> map){
+    public Double calculateTotalPrice(Map<Double, Long> map){
         Double total = 0.0;
         for (Map.Entry<Double, Long> entry : map.entrySet()){
             total += (entry.getKey()*entry.getValue());
@@ -109,7 +110,7 @@ public class DailyJob {
         return total;
     }
 
-    private Double calculateRate(Map<Double, Long> map){
+    public Double calculateRate(Map<Double, Long> map){
         double total = 0.0;
         for (Long value : map.values()){
             total += value;
@@ -117,7 +118,7 @@ public class DailyJob {
         return total/storage;
     }
 
-    private String calculateAmount(Map<Double, Long> map){
+    public String calculateAmount(Map<Double, Long> map){
         StringBuilder sb = new StringBuilder();
         boolean flag =true;
         for (Map.Entry<Double, Long> entry : map.entrySet()){
@@ -135,5 +136,9 @@ public class DailyJob {
             }
         }
         return sb.toString();
+    }
+
+    public void setRestTemplate(RestTemplate restTemplate){
+        this.restTemplate = restTemplate;
     }
 }
