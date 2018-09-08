@@ -28,7 +28,7 @@ public class RecommandController {
     RestTemplate restTemplate = new RestTemplate();
 
     //一次最大返回六个
-    @RequestMapping(value = "/QueryRecommandTicket")
+    @RequestMapping(value = "/QueryRecommendTicket")
     @ResponseBody
     public List<Long> queryRecommandTicket(@RequestParam(name = "token") String token){
         List<Long> result = new LinkedList<>();

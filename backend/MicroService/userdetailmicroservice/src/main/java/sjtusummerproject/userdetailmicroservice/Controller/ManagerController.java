@@ -2,7 +2,9 @@ package sjtusummerproject.userdetailmicroservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,7 +70,7 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "/QueryBatch")
-    Page<UserEntity> queryBatchUser(HttpServletRequest request,
+    String queryBatchUser(HttpServletRequest request,
                                     HttpServletResponse response,
                                     @RequestParam(name = "pagenumber")int pagenumber){
         response.addHeader("Access-Control-Expose-Headers", "errorNum");
@@ -77,10 +79,8 @@ public class ManagerController {
         Integer result = authUser(userEntity);
         response.addHeader("errorNum", ((Integer) result).toString());
         if (result != 0) return null;
-        MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
-        multiValueMap.add("pagenumber", pagenumber);
-        String queryBatchUserUrl = userManagerServiceUrl+"/QueryBatch";
-        return restTemplate.postForObject(queryBatchUserUrl, multiValueMap, Page.class);
+        String queryBatchUserUrl = userManagerServiceUrl+"/QueryBatch?pagenumber="+pagenumber;
+        return restTemplate.getForObject(queryBatchUserUrl, String.class);
     }
 
     @RequestMapping(value = "/UpdateStatus")
