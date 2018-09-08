@@ -95,7 +95,7 @@
         -|-|-
         pagenumber | String |
         city       | String | 所在城市
-    * ### URL：GEt /Ticket/QueryByCityAndTypePage
+    * ### URL：GET /Ticket/QueryByCityAndTypePage
         说明：若city或type为all，则自动调用对应的api
         #### 传入参数
         变量名|类型|说明
@@ -130,7 +130,49 @@
     * ### URL:  GET /Ticket/QueryTopSixTicket
         ##### 返回参数（包含六张销售量最高的票品所有信息）
 
-
+    * ### URL：POST/GET /Manager/Add 
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-
+        token | string | 管理员的身份信息
+        type | String | 票的类型
+        startDate | String | 演出开始日期 格式XXXX-XX-XX
+        endDate | String | 演出结束日期 格式XXXX-XX-XX
+        time | String | 统一为 20:00
+        city | String | 演出的城市
+        venue | String | 具体的地址，需要在地图上能找到（因为到时候需要兼容老裘的地图api）
+        title | String | 票的名字，见其他票品
+        image | MultipartFile | 上传一个票的封面
+        intro | String | 票的简介
+        stock | Long | 票的库存 统一为1000
+        lowprice | Double | 票的最低价
+        highprice | Double | 票的最高价
+        #### 返回参数：json（加入的ticket）
+    * ### URL：POST/GET /Manager/Delete 
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-
+        ticketids | List<Long> |要批量删除的ticketID
+        #### 返回参数：String(你不用管，可能就是提示删除成功之类的)
+    * ### URL：POST/GET /Manager/Update 
+        #### 传入参数
+        变量名|类型|说明
+        -|-|-
+        token | string | 管理员的身份信息
+        ticketid | Long | 票的id
+        type | String | 票的类型
+        startDate | String | 演出开始日期 格式XXXX-XX-XX
+        endDate | String | 演出结束日期 格式XXXX-XX-XX
+        time | String | 统一为 20:00
+        city | String | 演出的城市
+        venue | String | 具体的地址，需要在地图上能找到（因为到时候需要兼容老裘的地图api）
+        title | String | 票的名字，见其他票品
+        image | MultipartFile | 上传一个票的封面
+        intro | String | 票的简介
+        stock | Long | 票的库存 统一为1000
+        lowprice | Double | 票的最低价
+        highprice | Double | 票的最高价
+        #### 返回参数：TicketEntity(修改过后的)
 
 * ## EmailMicrosevice port:30003
     * ### URL：GET /Email/Active
