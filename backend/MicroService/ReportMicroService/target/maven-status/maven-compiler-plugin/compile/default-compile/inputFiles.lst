@@ -1,0 +1,13 @@
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\DataModel\Domain\WeeklyReportEntity.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\DataModel\Dao\MonthlyReportRepository.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\Service\ServiceImpl\ReportServiceImpl.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\Service\ReportService.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\DataModel\Dao\DailyReportRepository.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\Controller\ReportController.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\DataModel\Dao\AnnuallyReportRepository.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\DataModel\Dao\WeeklyReportRepository.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\DataModel\Domain\AnnuallyReportEntity.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\ReportmicroserviceApplication.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\DataModel\Domain\UserEntity.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\DataModel\Domain\DailyReportEntity.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\ReportMicroService\src\main\java\sjtusummerproject\reportmicroservice\DataModel\Domain\MonthlyReportEntity.java

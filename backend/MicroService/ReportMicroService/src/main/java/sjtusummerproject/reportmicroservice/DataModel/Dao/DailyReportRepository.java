@@ -8,7 +8,7 @@ import sjtusummerproject.reportmicroservice.DataModel.Domain.DailyReportEntity;
 import java.util.Date;
 
 public interface DailyReportRepository extends CrudRepository<DailyReportEntity,Long> {
-    public Page<DailyReportEntity> queryAll(Pageable pageable);
-    public DailyReportEntity queryByTicketIdAndDate(Long ticketid, Date date);
-    public Page<DailyReportEntity> queryByCityAndDate(String city, Date date, Pageable pageable);
+    public Page<DailyReportEntity> findAll(Pageable pageable);
+    public DailyReportEntity findAllByTicketIdAndDate(Long ticketid, Date date);
+    public Page<DailyReportEntity> findAllByCityAndDate(String city, Date date, Pageable pageable);
 }

@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import sjtusummerproject.reportmicroservice.DataModel.Domain.WeeklyReportEntity;
 
 public interface WeeklyReportRepository extends CrudRepository<WeeklyReportEntity,Long>{
-    public Page<WeeklyReportEntity> queryAll(Pageable pageable);
-    public WeeklyReportEntity queryByTicketIdAndYearAndMonthAndWeek(Long ticketid, int year, int month, int week);
-    public Page<WeeklyReportEntity> queryByCityAndYearAndMonthAndWeek(String city, int year, int month, int week, Pageable pageable);
+    public Page<WeeklyReportEntity> findAll(Pageable pageable);
+    public WeeklyReportEntity findAllByTicketIdAndYearAndMonthAndWeek(Long ticketid, int year, int month, int week);
+    public Page<WeeklyReportEntity> findAllByCityAndYearAndMonthAndWeek(String city, int year, int month, int week, Pageable pageable);
 }
