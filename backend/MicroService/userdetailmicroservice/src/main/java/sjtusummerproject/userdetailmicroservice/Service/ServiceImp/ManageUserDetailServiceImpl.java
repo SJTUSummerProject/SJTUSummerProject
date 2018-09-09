@@ -97,6 +97,9 @@ public class ManageUserDetailServiceImpl implements ManageUserDetailService {
 
     @Override
     public void deleteUserDetail(Long userid) {
+        if(userDetailRepository.findById(userid)==null){
+            return;
+        }
         userDetailRepository.deleteById(userid);
     }
 }
