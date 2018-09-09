@@ -39,6 +39,8 @@ public class ManageUserServiceImpl implements ManageUserService {
 
     @Override
     public void DeleteUserOption(Long id) {
+        if(userRepository.findById(id) == null)
+            return;
         userRepository.delete(id);
     }
 
