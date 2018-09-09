@@ -17,24 +17,20 @@ import javax.imageio.stream.ImageOutputStream;
 
 /**
  * 裁剪、缩放图片工具类
- * @author CSDN 没有梦想-何必远方
  */
 public class ImgUtils {
-
-    @Value("${picture.height}")
-    private int height;
-    @Value("${picture.width}")
-    private int width;
 
     /**
      * 缩放图片方法
      */
-    public MultipartFile scale(MultipartFile image) {
+    public InputStream scale(MultipartFile image) {
         try {
+            int height = 400;
+            int width = 300;
             double ratio = 0.0; // 缩放比例
             BufferedImage bi = ImageIO.read(image.getInputStream());
 
-            Image itemp = bi.getScaledInstance(width, height, bi.SCALE_SMOOTH);//bi.SCALE_SMOOTH  选择图像平滑度比缩放速度具有更高优先级的图像缩放算法。
+            Image itemp = bi.getScaledInstance(300, 400, bi.SCALE_SMOOTH);//bi.SCALE_SMOOTH  选择图像平滑度比缩放速度具有更高优先级的图像缩放算法。
             // 计算比例
             if ((bi.getHeight() > height) || (bi.getWidth() > width)) {
                 double   ratioHeight = (new Integer(height)).doubleValue()/ bi.getHeight();
@@ -70,7 +66,7 @@ public class ImgUtils {
             ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
             ImageIO.write((BufferedImage)itemp, "jpg", imOut);
             InputStream is = new ByteArrayInputStream(bs.toByteArray());
-            return (MultipartFile)is;
+            return is;
             //ImageIO.write((BufferedImage) itemp, "JPEG", new File(result));      //输出压缩图片
         } catch (IOException e) {
             e.printStackTrace();

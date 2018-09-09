@@ -24,8 +24,12 @@ import sjtusummerproject.ticketmicroservice.Utils.ImgUtils;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static org.apache.tomcat.util.http.fileupload.IOUtils.copy;
 
 @CacheConfig(cacheNames = "TicketRedis")
 @Service
@@ -250,11 +254,15 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     public TicketEntity update(Long ticketid, String type, String startDateString, String endDateString, String time, String city, String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice) {
         TicketEntity ticketToUpdate = ticketRepository.findById(ticketid);
         String dateRelateInfo = null;
-        if (startDateString!=null && endDateString != null)  ticketToUpdate.setDates(parseStringtoDateList(startDateString,endDateString));
-        ticketToUpdate.setStartDate(ChangeStringToDate(startDateString));
-        ticketToUpdate.setEndDate(ChangeStringToDate(endDateString));
-
-        Date now = new Date();
+        if (startDateString!=null && endDateString != null)  {
+            ticketToUpdate.setDates(parseStringtoDateList(startDateString,endDateString));
+            ticketToUpdate.setStartDate(ChangeStringToDate(startDateString));
+            ticketToUpdate.setEndDate(ChangeStringToDate(endDateString));
+            if((ChangeStringToDate(endDateString)).before(new Date()))
+                ticketToUpdate.setStatus(1);
+            else
+                ticketToUpdate.setStatus(0);
+        }
         if (type != null) ticketToUpdate.setType(type);
         if (time != null) ticketToUpdate.setTime(time);
         if (city != null) ticketToUpdate.setCity(city);
@@ -265,10 +273,6 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         if (lowprice != null) ticketToUpdate.setLowprice(lowprice);
         if (highprice != null) ticketToUpdate.setHighprice(highprice);
         if (image != null) ticketToUpdate.setImage(saveImage(image));
-        if((ChangeStringToDate(endDateString)).before(now))
-            ticketToUpdate.setStatus(1);
-        else
-            ticketToUpdate.setStatus(0);
 
         return ticketRepository.save(ticketToUpdate);
     }
@@ -298,24 +302,27 @@ public class ManageTicketServiceImpl implements ManageTicketService {
 
     @Override
     public String saveImage(MultipartFile image){
-        try {
             if (image == null) {
                 return null;
             }
 
             ImgUtils imgUtils = new ImgUtils();
-            MultipartFile afterHandledImage = imgUtils.scale(image);
+            InputStream afterHandledImage = imgUtils.scale(image);
 
             UUID uuid = UUID.randomUUID();
             String id = uuid.toString();
             PictureEntity pictureEntity = new PictureEntity();
             pictureEntity.setUuid(id);
-            pictureEntity.setBase64(afterHandledImage.getBytes());
-            pictureRepository.save(pictureEntity);
-            return imgServiceUrl+uuid;
-        }
-        catch (Exception e){
-            return null;
+            try{
+                ByteArrayOutputStream output = new ByteArrayOutputStream();
+                copy(afterHandledImage, output);
+                pictureEntity.setBase64(output.toByteArray());
+                pictureRepository.save(pictureEntity);
+                return imgServiceUrl+uuid;
+            }
+            catch (Exception e){
+                System.out.println("here!");
+                return null;
         }
     }
 
