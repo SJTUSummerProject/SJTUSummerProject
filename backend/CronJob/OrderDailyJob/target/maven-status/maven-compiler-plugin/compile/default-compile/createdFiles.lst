@@ -1,0 +1,8 @@
+com\example\orderdailyjob\Job\DailyJob.class
+com\example\orderdailyjob\OrderdailyjobApplication.class
+com\example\orderdailyjob\DataModel\Domain\OrderEntity.class
+com\example\orderdailyjob\DataModel\Domain\ItemEntity.class
+com\example\orderdailyjob\DataModel\Dao\OrderRepository.class
+com\example\orderdailyjob\DataModel\Domain\DailyReportEntity.class
+com\example\orderdailyjob\DataModel\Dao\DailyReportRepository.class
+com\example\orderdailyjob\DataModel\Domain\TicketEntity.class

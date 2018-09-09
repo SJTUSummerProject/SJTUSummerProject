@@ -1,0 +1,3 @@
+com\example\orderdailyjob\job\DailyJobTest.class
+com\example\orderdailyjob\Mock\TicketTemplateMock.class
+com\example\orderdailyjob\OrderdailyjobApplicationTests.class

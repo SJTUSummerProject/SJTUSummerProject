@@ -1,0 +1,4 @@
+com\example\ticketdailyjob\DataModel\Domain\TicketRepository.class
+com\example\ticketdailyjob\Job\DailyJob.class
+com\example\ticketdailyjob\DataModel\Dao\TicketEntity.class
+com\example\ticketdailyjob\TicketdailyjobApplication.class

@@ -1,0 +1,8 @@
+sjtusummerproject\ordermonthlyjob\DataModel\Dao\MonthlyReportRepository.class
+sjtusummerproject\ordermonthlyjob\DataModel\Job\MonthlyJob.class
+sjtusummerproject\ordermonthlyjob\DataModel\Domain\MonthlyReportEntity.class
+sjtusummerproject\ordermonthlyjob\DataModel\Domain\OrderEntity.class
+sjtusummerproject\ordermonthlyjob\OrdermonthlyjobApplication.class
+sjtusummerproject\ordermonthlyjob\DataModel\Domain\ItemEntity.class
+sjtusummerproject\ordermonthlyjob\DataModel\Dao\OrderRepository.class
+sjtusummerproject\ordermonthlyjob\DataModel\Domain\TicketEntity.class

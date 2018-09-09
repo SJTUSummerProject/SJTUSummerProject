@@ -1,0 +1,15 @@
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\Service\ServiceImpl\UserRecommandServiceImpl.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\DataModel\Dao\OrderRepository.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\DataModel\Domain\OrderEntity.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\MahoutjdbcmicroserviceApplication.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\Service\ServiceImpl\OrderServiceImpl.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\Config\RestTemplateConfig.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\Service\OrderService.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\DataModel\Domain\ItemEntity.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\Service\UserRecommandService.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\Controller\RecommandController.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\DataModel\Domain\UserEntity.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\DataModel\Domain\UserRecommendEntity.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\Config\CorsConfig.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\DataModel\Dao\UserRecommendRepository.java
+C:\Users\thinkpad\Desktop\SJTUSummerProject\backend\MicroService\MahoutJdbcMicroService\src\main\java\com\mahoutjdbcmicroservice\MahoutRunner.java

@@ -1,0 +1,15 @@
+com\mahoutjdbcmicroservice\MahoutRunner.class
+com\mahoutjdbcmicroservice\DataModel\Domain\UserRecommendEntity.class
+com\mahoutjdbcmicroservice\DataModel\Domain\OrderEntity.class
+com\mahoutjdbcmicroservice\Service\OrderService.class
+com\mahoutjdbcmicroservice\DataModel\Domain\ItemEntity.class
+com\mahoutjdbcmicroservice\Service\UserRecommandService.class
+com\mahoutjdbcmicroservice\Service\ServiceImpl\UserRecommandServiceImpl.class
+com\mahoutjdbcmicroservice\DataModel\Domain\UserEntity.class
+com\mahoutjdbcmicroservice\DataModel\Dao\UserRecommendRepository.class
+com\mahoutjdbcmicroservice\Config\RestTemplateConfig.class
+com\mahoutjdbcmicroservice\Service\ServiceImpl\OrderServiceImpl.class
+com\mahoutjdbcmicroservice\Controller\RecommandController.class
+com\mahoutjdbcmicroservice\Config\CorsConfig.class
+com\mahoutjdbcmicroservice\DataModel\Dao\OrderRepository.class
+com\mahoutjdbcmicroservice\MahoutjdbcmicroserviceApplication.class
