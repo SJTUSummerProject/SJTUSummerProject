@@ -103,6 +103,7 @@ public class ManageTicketServiceImplTest extends TicketmicroserviceApplicationTe
         boolean result = manageTicketService.updateStockPlusById(2l,100l);
         assertEquals(300l, (long)ticketRepository.findById(2l).getStock());
     }
+
     @Test
     public void changeStringToDateSuccess() {
         Date result = manageTicketService.ChangeStringToDate("1999-05-25");

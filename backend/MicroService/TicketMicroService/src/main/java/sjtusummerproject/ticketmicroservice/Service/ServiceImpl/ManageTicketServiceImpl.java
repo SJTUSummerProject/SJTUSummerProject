@@ -219,7 +219,7 @@ public class ManageTicketServiceImpl implements ManageTicketService {
 
     //类型：演唱会 体育赛事等等
     @Override
-    @CacheEvict(allEntries = true)
+    @CacheEvict(value = "10m",allEntries = true)
     public TicketEntity add(String type, String startDateString, String endDateString, String time, String city, String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice) {
         TicketEntity ticketToInsert = new TicketEntity();
 
@@ -246,13 +246,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
     }
 
     @Override
-    @CacheEvict(allEntries = true)
+    @CacheEvict(value = "10m",allEntries = true)
     public TicketEntity update(Long ticketid, String type, String startDateString, String endDateString, String time, String city, String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice) {
         TicketEntity ticketToUpdate = ticketRepository.findById(ticketid);
         String dateRelateInfo = null;
         if (startDateString!=null && endDateString != null)  ticketToUpdate.setDates(parseStringtoDateList(startDateString,endDateString));
         ticketToUpdate.setStartDate(ChangeStringToDate(startDateString));
-        ticketToUpdate.setStartDate(ChangeStringToDate(endDateString));
+        ticketToUpdate.setEndDate(ChangeStringToDate(endDateString));
 
         Date now = new Date();
         if (type != null) ticketToUpdate.setType(type);
@@ -349,7 +349,7 @@ public class ManageTicketServiceImpl implements ManageTicketService {
 
     @Override
     @Transactional
-    @CacheEvict(allEntries = true)
+    @CacheEvict(value = "10m",allEntries = true)
     public String delete(String ticketIds) {
         String[] splitIds = ticketIds.trim().replace("[","").replace("]","").split(",");
         for(String eachId : splitIds){
@@ -358,10 +358,4 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         return "ok";
     }
 
-    private long flushDB(){
-        return redisTemplate.execute(c -> {
-            c.flushDb();
-            return 1l;
-        });
-    }
 }
