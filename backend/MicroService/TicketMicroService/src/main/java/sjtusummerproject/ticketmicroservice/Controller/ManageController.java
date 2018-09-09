@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController("/Manager")
@@ -61,8 +62,13 @@ public class ManageController {
     @Transactional
     public String deleteOne(HttpServletRequest request,
                                   HttpServletResponse response,
-                                  @RequestParam(name = "ticketids")List<Long> ticketids){
+                                  @RequestParam(name = "ticketids")String ticketidsString){
         if(identifyAuth(request,response)!=2) return null;
+        String[] idArray = ticketidsString.replace('[',' ').replace(']',' ').trim().split(",");
+        List<Long> ticketids = new LinkedList<>();
+        for(String eachIdString : idArray){
+            ticketids.add(Long.parseLong(eachIdString.trim()));
+        }
         return manageTicketService.delete(ticketids);
     }
 

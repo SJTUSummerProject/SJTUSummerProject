@@ -1,0 +1,2 @@
+1.fix bug in userdetail-microservice
+2.design the frontend manager-manage-user-info
