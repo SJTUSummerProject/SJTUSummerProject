@@ -3,9 +3,11 @@ package sjtusummerproject.ticketmicroservice.Service.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Isolation;
@@ -36,6 +38,9 @@ public class ManageTicketServiceImpl implements ManageTicketService {
 
     @Autowired
     PictureRepository pictureRepository;
+
+    @Autowired
+    RedisTemplate<?,?> redisTemplate;
 
     @Value("${imgservice.url}")
     String imgServiceUrl;
@@ -214,13 +219,13 @@ public class ManageTicketServiceImpl implements ManageTicketService {
 
     //类型：演唱会 体育赛事等等
     @Override
+    @CacheEvict(allEntries = true)
     public TicketEntity add(String type, String startDateString, String endDateString, String time, String city, String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice) {
         TicketEntity ticketToInsert = new TicketEntity();
 
-        HashMap<String,Object> dateRelateInfo = parseStringtoDateList(startDateString,endDateString);
-        ticketToInsert.setDates((String)dateRelateInfo.get("Dates"));
-        ticketToInsert.setStartDate((Date)dateRelateInfo.get("startDate"));
-        ticketToInsert.setEndDate((Date)dateRelateInfo.get("endDate"));
+        ticketToInsert.setDates(parseStringtoDateList(startDateString, endDateString));
+        ticketToInsert.setStartDate(ChangeStringToDate(startDateString));
+        ticketToInsert.setEndDate(ChangeStringToDate(endDateString));
 
         Date now = new Date();
         ticketToInsert.setType(type);
@@ -233,35 +238,34 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         ticketToInsert.setLowprice(lowprice);
         ticketToInsert.setHighprice(highprice);
         ticketToInsert.setImage(saveImage(image));
-        if(((Date) dateRelateInfo.get("endDate")).before(now))
+        if(ChangeStringToDate(endDateString).before(now))
             ticketToInsert.setStatus(1);
         else
             ticketToInsert.setStatus(0);
-
         return ticketRepository.save(ticketToInsert);
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public TicketEntity update(Long ticketid, String type, String startDateString, String endDateString, String time, String city, String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice) {
         TicketEntity ticketToUpdate = ticketRepository.findById(ticketid);
-
-        HashMap<String,Object> dateRelateInfo = parseStringtoDateList(startDateString,endDateString);
-        ticketToUpdate.setDates((String)dateRelateInfo.get("Dates"));
-        ticketToUpdate.setStartDate((Date)dateRelateInfo.get("startDate"));
-        ticketToUpdate.setEndDate((Date)dateRelateInfo.get("endDate"));
+        String dateRelateInfo = null;
+        if (startDateString!=null && endDateString != null)  ticketToUpdate.setDates(parseStringtoDateList(startDateString,endDateString));
+        ticketToUpdate.setStartDate(ChangeStringToDate(startDateString));
+        ticketToUpdate.setStartDate(ChangeStringToDate(endDateString));
 
         Date now = new Date();
-        ticketToUpdate.setType(type);
-        ticketToUpdate.setTime(time);
-        ticketToUpdate.setCity(city);
-        ticketToUpdate.setVenue(venue);
-        ticketToUpdate.setTitle(title);
-        ticketToUpdate.setIntro(intro);
-        ticketToUpdate.setStock(stock);
-        ticketToUpdate.setLowprice(lowprice);
-        ticketToUpdate.setHighprice(highprice);
-        ticketToUpdate.setImage(saveImage(image));
-        if(((Date) dateRelateInfo.get("endDate")).before(now))
+        if (type != null) ticketToUpdate.setType(type);
+        if (time != null) ticketToUpdate.setTime(time);
+        if (city != null) ticketToUpdate.setCity(city);
+        if (venue != null) ticketToUpdate.setVenue(venue);
+        if (title != null) ticketToUpdate.setTitle(title);
+        if (intro != null) ticketToUpdate.setIntro(intro);
+        if (stock != null) ticketToUpdate.setStock(stock);
+        if (lowprice != null) ticketToUpdate.setLowprice(lowprice);
+        if (highprice != null) ticketToUpdate.setHighprice(highprice);
+        if (image != null) ticketToUpdate.setImage(saveImage(image));
+        if((ChangeStringToDate(endDateString)).before(now))
             ticketToUpdate.setStatus(1);
         else
             ticketToUpdate.setStatus(0);
@@ -315,22 +319,15 @@ public class ManageTicketServiceImpl implements ManageTicketService {
         }
     }
 
-    public HashMap<String,Object> parseStringtoDateList(String startDateString, String endDateString){
+    public String parseStringtoDateList(String startDateString, String endDateString){
         //startDateString, endDateString 的格式都是 2018-07-25
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        HashMap<String,Object> res = new HashMap<>();
         int count = 0;
-
-        Date startDate = new Date();
-        Date endDate = new Date();
+        String datesString = "";
 
         try {
-            startDate = sdf.parse(startDateString);
-            endDate = sdf.parse(endDateString);
-            res.put("startDate",startDate);
-            res.put("endDate",endDate);
-
-            String datesString = "";
+            Date startDate = ChangeStringToDate(startDateString);
+            Date endDate = ChangeStringToDate(endDateString);
             Date tmpDate = startDate;
             while(tmpDate.compareTo(endDate)==-1){
                 datesString += sdf.format(tmpDate)+" , ";
@@ -344,22 +341,27 @@ public class ManageTicketServiceImpl implements ManageTicketService {
                     break;
             }
             datesString += sdf.format(endDate);
-            res.put("Dates",datesString);
         }catch (Exception e){
             System.out.println("崩了？");
         }
-        return res;
+        return datesString;
     }
 
     @Override
     @Transactional
-    public String delete(List<Long> ticketids) {
-        try{
-            for (Long ticketid : ticketids)
-                ticketRepository.deleteById(ticketid);
-            return "ok";
-        }catch (Exception e){
-            return "error";
+    @CacheEvict(allEntries = true)
+    public String delete(String ticketIds) {
+        String[] splitIds = ticketIds.trim().replace("[","").replace("]","").split(",");
+        for(String eachId : splitIds){
+            ticketRepository.deleteById(Long.parseLong(eachId.trim()));
         }
+        return "ok";
+    }
+
+    private long flushDB(){
+        return redisTemplate.execute(c -> {
+            c.flushDb();
+            return 1l;
+        });
     }
 }

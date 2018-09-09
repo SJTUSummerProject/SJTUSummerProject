@@ -64,30 +64,25 @@ public class ManageController {
                                   HttpServletResponse response,
                                   @RequestParam(name = "ticketids")String ticketidsString){
         if(identifyAuth(request,response)!=2) return null;
-        String[] idArray = ticketidsString.replace('[',' ').replace(']',' ').trim().split(",");
-        List<Long> ticketids = new LinkedList<>();
-        for(String eachIdString : idArray){
-            ticketids.add(Long.parseLong(eachIdString.trim()));
-        }
-        return manageTicketService.delete(ticketids);
+        else return manageTicketService.delete(ticketidsString);
     }
 
-    @RequestMapping(name = "/Update")
+    @RequestMapping(value = "/Update")
     public TicketEntity update(HttpServletRequest request,
                             HttpServletResponse response,
                             @RequestParam(name = "ticketid")Long ticketid,
-                            @RequestParam(name = "type")String type,
-                            @RequestParam(name = "startDate")String startDateString,
-                            @RequestParam(name = "endDate")String endDateString,
-                            @RequestParam(name = "time")String time,// time : 20:00
-                            @RequestParam(name = "city")String city,
-                            @RequestParam(name = "venue")String venue,
-                            @RequestParam(name = "title")String title,
-                            @RequestParam(name = "image")MultipartFile image,
-                            @RequestParam(name = "intro")String intro,
-                            @RequestParam(name = "stock")Long stock,
-                            @RequestParam(name = "lowprice")Double lowprice,
-                            @RequestParam(name = "highprice")Double highprice
+                            @RequestParam(name = "type",required = false)String type,
+                            @RequestParam(name = "startDate",required = false)String startDateString,
+                            @RequestParam(name = "endDate",required = false)String endDateString,
+                            @RequestParam(name = "time",required = false)String time,// time : 20:00
+                            @RequestParam(name = "city",required = false)String city,
+                            @RequestParam(name = "venue",required = false)String venue,
+                            @RequestParam(name = "title",required = false)String title,
+                            @RequestParam(name = "image",required = false)MultipartFile image,
+                            @RequestParam(name = "intro",required = false)String intro,
+                            @RequestParam(name = "stock",required = false)Long stock,
+                            @RequestParam(name = "lowprice",required = false)Double lowprice,
+                            @RequestParam(name = "highprice",required = false)Double highprice
     ){
         if(identifyAuth(request,response)!=2) return null;
         return manageTicketService.update(ticketid,type,startDateString,endDateString,time,city,venue,title,image,intro,stock,lowprice,highprice);

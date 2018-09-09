@@ -127,9 +127,8 @@ public class ManageTicketServiceImplTest extends TicketmicroserviceApplicationTe
 
     @Test
     public void zzdeleteTicket(){
-        List<Long> tickets = new ArrayList<>();
-        tickets.add(1l);
-        manageTicketService.delete(tickets);
+        manageTicketService.delete("[1,2,3]");
         assertNull(ticketRepository.findById(1l));
+        assertNull(ticketRepository.findById(2l));
     }
 }

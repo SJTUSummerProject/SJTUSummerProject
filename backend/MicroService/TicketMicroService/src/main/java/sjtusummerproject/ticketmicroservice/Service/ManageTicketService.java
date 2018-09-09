@@ -48,5 +48,5 @@ public interface ManageTicketService {
     public String saveImage(MultipartFile image);
     public TicketEntity update(Long ticketid, String type, String startDateString, String endDateString, String time, String city,
                                String venue, String title, MultipartFile image, String intro, Long stock, Double lowprice, Double highprice);
-    public String delete(List<Long> ticketids);
+    public String delete(String ticketids);
 }

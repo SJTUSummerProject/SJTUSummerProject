@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableCaching
-@EnableTransactionManagement
 public class TicketmicroserviceApplication {
 
 	public static void main(String[] args) {
