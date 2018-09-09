@@ -52,7 +52,7 @@ public class MahoutRunner implements ApplicationRunner{
         while(true){
             writeUserTicketFile(getOrders());
             readUserTicketFileAndCreateRecommanderAndSaveToDataBase();
-            sleep(1000*60*60*12);  //每12小时更新一次
+            sleep(1000*60*60);  //每1小时更新一次
         }
     }
 
@@ -80,7 +80,7 @@ public class MahoutRunner implements ApplicationRunner{
 
         for(Map.Entry<String,Long> entry : map.entrySet()){
             out.write(entry.getKey()+"\r\n"); // \r\n即为换行
-            System.out.println(entry.getKey()+","+entry.getValue());
+            //System.out.println(entry.getKey()+","+entry.getValue());
         }
         out.flush(); // 把缓存区内容压入文件
         out.close(); // 最后记得关闭文件
@@ -95,7 +95,7 @@ public class MahoutRunner implements ApplicationRunner{
     public void readUserTicketFileAndCreateRecommanderAndSaveToDataBase() throws IOException, TasteException {
         DataModel model = new GenericBooleanPrefDataModel(GenericBooleanPrefDataModel.toDataMap(new FileDataModel(new File("user_ticket.csv"))));
         UserSimilarity similarity = new LogLikelihoodSimilarity(model);
-        NearestNUserNeighborhood neighbor = new NearestNUserNeighborhood(2, similarity, model);
+        NearestNUserNeighborhood neighbor = new NearestNUserNeighborhood(5, similarity, model);
         Recommender recommender = new GenericBooleanPrefUserBasedRecommender(model, neighbor, similarity);
         LongPrimitiveIterator iter = model.getUserIDs();
 
@@ -105,30 +105,6 @@ public class MahoutRunner implements ApplicationRunner{
             long patron = iter.nextLong();
             writeDatabase(patron, recommender);
         }
-
-        //用户相似度，使用基于皮尔逊相关系数计算相似度
-       /* UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
-
-//选择邻居用户，使用NearestNUserNeighborhood实现UserNeighborhood接口，选择邻近的4个用户
-        UserNeighborhood neighborhood = new NearestNUserNeighborhood(2, similarity, model);
-
-        Recommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
-
-//给用户1推荐4个物品
-        List<RecommendedItem> recommendations = recommender.recommend(1, 4);
-
-        for (RecommendedItem recommendation : recommendations) {
-            System.out.println(recommendation);
-        }
-        DataModel dataModel = new FileDataModel(new File("user_ticket.csv"));
-
-        PearsonCorrelationSimilarity pearsonCorrelationSimilarity = new PearsonCorrelationSimilarity(dataModel);
-        UserNeighborhood neighborhood = new NearestNUserNeighborhood(nearestTicketNumber, pearsonCorrelationSimilarity, dataModel);//选择最近的6个ticket
-        Recommender recommender = new GenericUserBasedRecommender(dataModel, neighborhood, pearsonCorrelationSimilarity);
-
-        for(LongPrimitiveIterator userIds = recommender.getDataModel().getUserIDs(); userIds.hasNext();){
-            writeDatabase(userIds.nextLong(),recommender);
-        }*/
     }
 
     public void writeDatabase(Long userId, Recommender recommender) throws TasteException {
