@@ -307,21 +307,19 @@ public class ManageTicketServiceImpl implements ManageTicketService {
             }
 
             ImgUtils imgUtils = new ImgUtils();
-            InputStream afterHandledImage = imgUtils.scale(image);
+            ByteArrayOutputStream afterHandledImage = imgUtils.scale(image);
 
             UUID uuid = UUID.randomUUID();
             String id = uuid.toString();
             PictureEntity pictureEntity = new PictureEntity();
             pictureEntity.setUuid(id);
             try{
-                ByteArrayOutputStream output = new ByteArrayOutputStream();
-                copy(afterHandledImage, output);
-                pictureEntity.setBase64(output.toByteArray());
+                pictureEntity.setBase64(afterHandledImage.toByteArray());
                 pictureRepository.save(pictureEntity);
                 return imgServiceUrl+uuid;
             }
             catch (Exception e){
-                System.out.println("here!");
+                System.out.println("here");
                 return null;
         }
     }

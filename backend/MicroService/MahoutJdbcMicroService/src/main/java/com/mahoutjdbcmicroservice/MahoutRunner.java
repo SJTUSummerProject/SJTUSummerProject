@@ -6,22 +6,24 @@ import com.mahoutjdbcmicroservice.DataModel.Domain.UserRecommendEntity;
 import com.mahoutjdbcmicroservice.Service.OrderService;
 import com.mahoutjdbcmicroservice.Service.UserRecommandService;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
+import org.apache.mahout.cf.taste.impl.model.GenericBooleanPrefDataModel;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 import org.apache.mahout.cf.taste.impl.neighborhood.NearestNUserNeighborhood;
+import org.apache.mahout.cf.taste.impl.recommender.GenericBooleanPrefItemBasedRecommender;
+import org.apache.mahout.cf.taste.impl.recommender.GenericBooleanPrefUserBasedRecommender;
 import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
+import org.apache.mahout.cf.taste.impl.similarity.LogLikelihoodSimilarity;
 import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
+import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -40,6 +42,9 @@ public class MahoutRunner implements ApplicationRunner{
 
     @Value("${nearestTicketNumber}")
     int nearestTicketNumber;
+
+    @Value("${neighborhood.num}")
+    int NEIGHBORHOOD_NUM;
 
     @Override
     public void run(ApplicationArguments var) throws Exception{
@@ -74,7 +79,7 @@ public class MahoutRunner implements ApplicationRunner{
         }
 
         for(Map.Entry<String,Long> entry : map.entrySet()){
-            out.write(entry.getKey()+","+entry.getValue()+"\r\n"); // \r\n即为换行
+            out.write(entry.getKey()+"\r\n"); // \r\n即为换行
             System.out.println(entry.getKey()+","+entry.getValue());
         }
         out.flush(); // 把缓存区内容压入文件
@@ -88,6 +93,33 @@ public class MahoutRunner implements ApplicationRunner{
 
 
     public void readUserTicketFileAndCreateRecommanderAndSaveToDataBase() throws IOException, TasteException {
+        DataModel model = new GenericBooleanPrefDataModel(GenericBooleanPrefDataModel.toDataMap(new FileDataModel(new File("user_ticket.csv"))));
+        UserSimilarity similarity = new LogLikelihoodSimilarity(model);
+        NearestNUserNeighborhood neighbor = new NearestNUserNeighborhood(2, similarity, model);
+        Recommender recommender = new GenericBooleanPrefUserBasedRecommender(model, neighbor, similarity);
+        LongPrimitiveIterator iter = model.getUserIDs();
+
+        List< RecommendedItem> tickets = null;
+
+        while (iter.hasNext()) {
+            long patron = iter.nextLong();
+            writeDatabase(patron, recommender);
+        }
+
+        //用户相似度，使用基于皮尔逊相关系数计算相似度
+       /* UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
+
+//选择邻居用户，使用NearestNUserNeighborhood实现UserNeighborhood接口，选择邻近的4个用户
+        UserNeighborhood neighborhood = new NearestNUserNeighborhood(2, similarity, model);
+
+        Recommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
+
+//给用户1推荐4个物品
+        List<RecommendedItem> recommendations = recommender.recommend(1, 4);
+
+        for (RecommendedItem recommendation : recommendations) {
+            System.out.println(recommendation);
+        }
         DataModel dataModel = new FileDataModel(new File("user_ticket.csv"));
 
         PearsonCorrelationSimilarity pearsonCorrelationSimilarity = new PearsonCorrelationSimilarity(dataModel);
@@ -96,7 +128,7 @@ public class MahoutRunner implements ApplicationRunner{
 
         for(LongPrimitiveIterator userIds = recommender.getDataModel().getUserIDs(); userIds.hasNext();){
             writeDatabase(userIds.nextLong(),recommender);
-        }
+        }*/
     }
 
     public void writeDatabase(Long userId, Recommender recommender) throws TasteException {
